@@ -26,7 +26,7 @@ public class Company
     }
 
 
-    public async Task AddWorkers(int userid)
+    public async Task<bool> AddWorkers(int userid)
     {
         string sql = $"INSERT INTO company_{CompanyId}.workers VALUES({userid});";
 
@@ -41,5 +41,6 @@ public class Company
         }
             
         await con.CloseAsync();
+        return true;
     }
 }

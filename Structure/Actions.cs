@@ -32,11 +32,11 @@ namespace backend.structure
             {
                 Actions.Login => UserMethod.Login(args["email"].ToString(), args["password"].ToString()).Result,
                 Actions.CreateUser => UserMethod.CreateUser(args["firstName"].ToString(), args["lastName"].ToString(), args["email"].ToString(), args["password"].ToString()).Result,
-                Actions.IsUserExist => UserMethod.IsUserExist((int)args["id"]).Result,
-                Actions.GetUserData => UserMethod.GetUserData((int)args["id"]).Result,
+                Actions.IsUserExist => await UserMethod.IsUserExist((int)args["id"]),
+                Actions.GetUserData => await UserMethod.GetUserData((int)args["id"]),
                 
-                Actions.RegisterCompany => CompaniesMethod.CreateCompany(args["name"].ToString(), args["email"].ToString(), args["password"].ToString()),
-                Actions.JoinCompany => CompaniesMethod.GetCompany(args["id"].ToString(), false).Result.AddWorkers((int)args["workersId"]),
+                Actions.RegisterCompany => await CompaniesMethod.CreateCompany(args["name"].ToString(), args["email"].ToString(), args["password"].ToString()),
+                Actions.JoinCompany => (await CompaniesMethod.GetCompany(args["id"].ToString(), false)).AddWorkers((int)args["workersId"]),
                 
                 _ => throw new CustomError("UnknowAction", 500)
             };
