@@ -50,10 +50,10 @@ public static class CompaniesMethod
 
         return company;
     }
-    private static async Task<string> GetUserPassword(int id)
+    private static async Task<string> GetUserPassword(string id)
     {
         string? password = string.Empty;
-        string sql = $"SELECT password, login FROM user_{id}.user;";
+        string sql = $"SELECT password, login FROM company_{id}.data;";
 
         NpgsqlConnection con = new(ConnectionsData.GetConectionString("moveeko"));
         await using (NpgsqlCommand command = new NpgsqlCommand(sql, con))
@@ -287,5 +287,38 @@ public static class CompaniesMethod
                     return hasRows;
                 }
             }
+            
+            
         }
+    public static async Task<object> Login(string? email, string? password)
+    {
+        string sql = $"SELECT id FROM base.base WHERE email = '{email}';";
+
+        NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
+        NpgsqlCommand command = new NpgsqlCommand(sql, con);
+
+        await con.OpenAsync();
+        NpgsqlDataReader reader = await command.ExecuteReaderAsync();
+        string id;
+        if (reader.HasRows)
+        {
+            await reader.ReadAsync();
+            id = reader.GetString(0);
+        }
+        else
+        {
+            throw new CustomError("InvalidLogin");
+        }
+
+        await con.CloseAsync();
+
+        if (password != GetUserPassword(id).Result)
+        {
+            throw new CustomError("InvalidLogin");
+        }
+
+        Company company = GetCompany(id, false).Result;
+
+        return company;
+    }
 }
