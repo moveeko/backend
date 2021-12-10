@@ -35,22 +35,21 @@ public static class CompaniesMethod
     public static async Task<object> CreateCompany(string? name, string? email, string? password)
     {
         string? id = CreateCompanyMethod.GenerateId().Result;
-        Company user = new Company(id, email);
+        Company company = new Company(id, email);
             
         if (!ValidateLogin(name,email, password))
         {
             throw new CustomError("InvalidLogin");
         }
-        if (CreateCompanyMethod.IsLoginOrEmailExist(user).Result)
+        if (CreateCompanyMethod.IsLoginOrEmailExist(company).Result)
         {
             throw new CustomError("UserIsExist");
         }
 
-        await CreateCompanyMethod.CreateDataBase(user, password);
+        await CreateCompanyMethod.CreateDataBase(company, password);
 
-        return user;
+        return company;
     }
-    
     private static async Task<string> GetUserPassword(int id)
     {
         string? password = string.Empty;
@@ -155,6 +154,30 @@ public static class CompaniesMethod
 
         return true;
     }
+
+    public async static Task<List<Company>> GetAllCompany()
+    {
+        List<Company> companies = new List<Company>();
+        string sql = $"SELECT * FROM base.company;";
+
+        NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
+        NpgsqlCommand command = new NpgsqlCommand(sql, con);
+
+        await con.OpenAsync();
+        NpgsqlDataReader reader = await command.ExecuteReaderAsync();
+
+        var result = reader.HasRows;
+
+        await con.CloseAsync();
+
+        while (reader.Read())
+        {
+            companies.Add(GetCompany(reader.GetString(0), false).Result);
+        }
+
+        return companies;
+    }
+
     private static class CreateCompanyMethod
         {
             private static async Task<string?> CreateIdToken()

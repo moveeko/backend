@@ -17,7 +17,6 @@ namespace backend.UserManager
             LastName = firstName;
             Email = email;
             Avatar = avatar == null ? "None" : avatar;
-            IsActivated = isActivated == null ? true : (bool)isActivated;
         }
 
         public User(int id, string? firstName, string? lastName, string? email)
