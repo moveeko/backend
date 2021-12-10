@@ -31,12 +31,12 @@ namespace backend.structure
         {
             return action switch
             {
-                Actions.Login => UserMethod.Login(args["email"].ToString(), args["password"].ToString()).Result,
-                Actions.CreateUser => UserMethod.CreateUser(args["firstName"].ToString(), args["lastName"].ToString(), args["email"].ToString(), args["password"].ToString()).Result,
-                Actions.IsUserExist => UserMethod.IsUserExist((int)args["id"]).Result,
-                Actions.GetUserData => UserMethod.GetUserData((int)args["id"]).Result,
+                Actions.Login => await UserMethod.Login(args["email"].ToString(), args["password"].ToString()),
+                Actions.CreateUser => await UserMethod.CreateUser(args["firstName"].ToString(), args["lastName"].ToString(), args["email"].ToString(), args["password"].ToString()),
+                Actions.IsUserExist => await UserMethod.IsUserExist((int)args["id"]),
+                Actions.GetUserData => await UserMethod.GetUserData((int)args["id"]),
                 
-                _ => throw new CustomError("UnknowAction", 500)
+                _ => throw new CustomError("UnknownAction", 500)
             };
         }
     }

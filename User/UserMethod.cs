@@ -60,6 +60,7 @@ namespace backend.UserManager
 
             if (password != GetUserPassword(id).Result)
             {
+                var result = GetUserPassword(id).Result;
                 throw new CustomError("InvalidLogin");
             }
 
@@ -79,9 +80,8 @@ namespace backend.UserManager
                 catch (CustomError cf)
                 {
                     name = cf.Name;
+                    throw new CustomError(name);
                 }
-
-                throw new CustomError(name);
             }
 
             string sql = $"SELECT * FROM user_{id}.user;";
@@ -114,7 +114,7 @@ namespace backend.UserManager
         private static async Task<string> GetUserPassword(int id)
         {
             string? password = string.Empty;
-            string sql = $"SELECT password, login FROM user_{id}.user;";
+            string sql = $"SELECT password, email FROM user_{id}.user;";
 
             NpgsqlConnection con = new(ConnectionsData.GetConectionString("moveeko"));
             await using (NpgsqlCommand command = new NpgsqlCommand(sql, con))
@@ -140,7 +140,7 @@ namespace backend.UserManager
         public static async Task<User> CreateUser(string? firstName, string? lastName, string? email, string? password)
         {
             int id = UserCreateUserMethods.GenerateId().Result;
-            User user = new User(id, firstName, lastName, email);
+            User user = new (id, firstName, lastName, email);
             
             if (!UserCreateUserMethods.ValidateLogin(firstName,lastName,email, password))
             {
@@ -192,7 +192,7 @@ namespace backend.UserManager
 
                 if (password != null)
                 {
-                    NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("Main"));
+                    NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
                     await con.OpenAsync();
                     NpgsqlCommand command = new NpgsqlCommand();
                     command.Connection = con;
@@ -256,20 +256,17 @@ namespace backend.UserManager
                     return hasRows;
                 }
             }
-            public static bool ValidateLogin(string? firstName, string? lastName, string? email, string? password)
+            public static bool ValidateLogin(string firstName, string lastName, string email, string password)
             {
-                if (firstName != null && lastName != null) 
+                if ((password.Length <= 5 || password.Length >= 30))
                     return false;
-                if (password != null && (password.Length <= 5 || password.Length >= 30))
+                if (!password.Any(char.IsUpper))
                     return false;
-                if (password != null && !password.Any(char.IsUpper))
+                if (!email.Contains('@'))
                     return false;
-                if (email != null && !email.Contains('@'))
+                if (!email.Contains('.'))
                     return false;
-                if (email != null && !email.Contains('.'))
-                    
-                    return false;
-                if (password != null && !password.Any(char.IsLower))
+                if (!password.Any(char.IsLower))
                     return false;
 
                 return true;
