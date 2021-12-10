@@ -6,7 +6,17 @@ namespace backend.structure
 {
     public enum Actions
     {
-        
+        GetCompanyRanking,
+        GetAllCompanies,
+        RegisterCompany,
+        CreateCompanyToken,
+        GetCompanyToken,
+        ChangeCompanyPrivacy,
+        GetTodayActivity,
+        SetStartActivity,
+        SetEndActivity,
+        JoinCompany,
+        Empty
     }
 
     public static class ActionHandler
