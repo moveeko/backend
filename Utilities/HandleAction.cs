@@ -38,16 +38,11 @@ namespace backend.Utilities
             return StatusCode(500, _config.IsDevelopment() ? ex.Message : "please contact support");
         }
         
-         public async Task SetResponse(Arg[] args, bool reqToken, Actions action)
+         public async Task SetResponse(Arg[] args, Actions action)
         {
             try
             {
                 Dictionary<string, object> data = args.ToDictionary(item => item.Name, item => item.Value);
-
-                if (reqToken)
-                {
-                    //check token here
-                }
 
                 var task = Task.Run(async () => await ActionHandler.GetAction(action, data));
 
@@ -78,7 +73,7 @@ namespace backend.Utilities
             }
         }
         
-        public async Task SetResponse(JObject json, string reqArgs ,bool reqToken, Actions action)
+        public async Task SetResponse(JObject json, string reqArgs, Actions action)
         {
             Dictionary<string, object> formData = 
                 json.ToObject<Dictionary<string, object>>() ?? 
@@ -103,9 +98,8 @@ namespace backend.Utilities
 
             if (!error)
             {
-                await SetResponse(args.ToArray(), reqToken, action);
+                await SetResponse(args.ToArray(), action);
             }
         }
-    }
     }
 }
