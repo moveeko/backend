@@ -38,7 +38,7 @@ namespace backend.structure
                 Actions.RegisterCompany => await CompaniesMethod.CreateCompany(args["name"].ToString(), args["email"].ToString(), args["password"].ToString()),
                 Actions.JoinCompany => (await CompaniesMethod.GetCompany(args["id"].ToString(), false)).AddWorkers((int)args["workersId"]),
                 
-                _ => throw new CustomError("UnknowAction", 500)
+                _ => throw new CustomError("UnknownAction", 500)
             };
         }
     }
