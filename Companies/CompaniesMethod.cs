@@ -274,7 +274,7 @@ public static class CompaniesMethod
             }
             public static async Task<bool> IsLoginOrEmailExist(Company company)
             {
-                string sql = $"SELECT * FROM base.base WHERE email = '{company.CompanyEmail}';";
+                string sql = $"SELECT * FROM base.company WHERE email = '{company.CompanyEmail}';";
                 NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
 
                 using (NpgsqlCommand command = new NpgsqlCommand(sql, con))
