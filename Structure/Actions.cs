@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using backend.Companies;
 using backend.UserManager;
 using backend.Utilities;
 
@@ -15,8 +16,6 @@ namespace backend.structure
         GetCompanyRanking,
         GetAllCompanies,
         RegisterCompany,
-        CreateCompanyToken,
-        GetCompanyToken,
         ChangeCompanyPrivacy,
         GetTodayActivity,
         SetStartActivity,
@@ -31,10 +30,13 @@ namespace backend.structure
         {
             return action switch
             {
-                Actions.Login => await UserMethod.Login(args["email"].ToString(), args["password"].ToString()),
-                Actions.CreateUser => await UserMethod.CreateUser(args["firstName"].ToString(), args["lastName"].ToString(), args["email"].ToString(), args["password"].ToString()),
+                Actions.Login => UserMethod.Login(args["email"].ToString(), args["password"].ToString()).Result,
+                Actions.CreateUser => UserMethod.CreateUser(args["firstName"].ToString(), args["lastName"].ToString(), args["email"].ToString(), args["password"].ToString()).Result,
                 Actions.IsUserExist => await UserMethod.IsUserExist((int)args["id"]),
                 Actions.GetUserData => await UserMethod.GetUserData((int)args["id"]),
+                
+                Actions.RegisterCompany => await CompaniesMethod.CreateCompany(args["name"].ToString(), args["email"].ToString(), args["password"].ToString()),
+                Actions.JoinCompany => (await CompaniesMethod.GetCompany(args["id"].ToString(), false)).AddWorkers((int)args["workersId"]),
                 
                 _ => throw new CustomError("UnknownAction", 500)
             };

@@ -35,7 +35,6 @@ namespace backend.UserManager
         public string? Email { get ; set; }
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public int PlaceInRanging { get ; set; }
-        public bool IsActivated { get; set; }
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public string? Avatar { get; set; }
         

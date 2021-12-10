@@ -209,33 +209,19 @@ namespace backend.UserManager
                           $"lastName varchar(255)," +
                           $"email varchar(255)," +
                           $"password varchar(255)," +
-                          $"avatar varchar(1048576));";
+                          $"avatar varchar(1048576)," +
+                          $"companyToken varchar(255));";
                     command.CommandText = sql;
                     await command.ExecuteNonQueryAsync();
 
-                    sql = $"create table user_{user.Id}.tokens(" +
-                          $"token varchar(6)," +
-                          $"isActivated bool);";
-                    command.CommandText = sql;
-                    await command.ExecuteNonQueryAsync();
-
-                    command.CommandText = $"create table user_{user.Id}.friends(" +
-                                          "recipient int," +
-                                          "type int);";
-                    await command.ExecuteNonQueryAsync();
-
-                    command.CommandText = $"create table user_{user.Id}.activity(" +
-                                          "day varchar(255)," +
-                                          "steps int);";
-                    await command.ExecuteNonQueryAsync();
                     
                     command.CommandText =
                         $"Insert into base.base (id, email)  VALUES({user.Id},'{user.Email}');";
                     await command.ExecuteNonQueryAsync();
                     
                     command.CommandText =
-                        $"Insert into user_{user.Id}.user (id, firstName, lastName, email, password, avatar)" +
-                        $" VALUES({user.Id},'{user.FirstName}','{user.LastName}','{user.Email}','{Convert.ToBase64String(Encoding.UTF8.GetBytes(password))}', '{"defult"}');";
+                        $"Insert into user_{user.Id}.user (id, firstName, lastName, email, password, avatar, companyToken)" +
+                        $" VALUES({user.Id},'{user.FirstName}','{user.LastName}','{user.Email}','{Convert.ToBase64String(Encoding.UTF8.GetBytes(password))}', '{"defult"}', '0');";
                     await command.ExecuteNonQueryAsync();
                     
                     await con.CloseAsync();
