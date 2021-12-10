@@ -136,19 +136,14 @@ namespace backend.Controllers
             return data;
         }
         
-        [HttpPost("/api/v1s/company/registerCompany")]
-        public async Task<ActionResult<object>> RegisterCompany(string companyName, string companyEmail, string companyPassword)
+        [HttpPost("/api/v1/company/registerCompany")]
+        public async Task<ActionResult<object>> RegisterCompany([FromBody] JObject json)
         {
             Task<dynamic> task = Task.Run(async () =>
             {
                 HandleAction action = new(_config);
 
-                await action.SetResponse(new[]
-                {
-                    new HandleAction.Arg("name", companyName),
-                    new HandleAction.Arg("email", companyEmail),
-                    new HandleAction.Arg("password", companyPassword)
-                }, Actions.RegisterCompany);
+                await action.SetResponse(json, "name, email, password", Actions.RegisterCompany);
 
                 return action.Response;
             })!;
@@ -159,6 +154,46 @@ namespace backend.Controllers
 
             return data;
         }
+        
+        [HttpPost("/api/v1/company/loginCompany")]
+        public async Task<ActionResult<object>> LoginCompany([FromBody] JObject json)
+        {
+            Task<dynamic> task = Task.Run(async () =>
+            {
+                HandleAction action = new(_config);
+
+                await action.SetResponse(json, "email, password", Actions.LoginCompany);
+
+                return action.Response;
+            })!;
+
+            await task.WaitAsync(TimeSpan.FromSeconds(999));
+
+            dynamic data = task.Result;
+
+            return data;
+        }
+        
+        [HttpPost("/api/v1/company/joinCompany")]
+        public async Task<ActionResult<object>> JoinCompany([FromBody] JObject json)
+        {
+            Task<dynamic> task = Task.Run(async () =>
+            {
+                HandleAction action = new(_config);
+
+                await action.SetResponse(json, "token, id", Actions.JoinCompany);
+
+                return action.Response;
+            })!;
+
+            await task.WaitAsync(TimeSpan.FromSeconds(999));
+
+            dynamic data = task.Result;
+
+            return data;
+        }
+        
+        
         
     }
 }

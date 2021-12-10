@@ -1,13 +1,17 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 using backend.UserManager;
 using backend.Utilities;
 using backend.Utilitis;
 using Npgsql;
 
-namespace backend.Companies;
-
-public static class CompaniesMethod
+namespace backend.Companies
+{
+    public static class CompaniesMethod
 {
     public static async Task<object> IsCompanyExist(string? id)
     {
@@ -185,7 +189,7 @@ public static class CompaniesMethod
 
                 string? IdToken = CreateIdToken().Result;
                 
-                string sql = $"SELECT * FROM base.base WHERE idtoken = '{IdToken}';";
+                string sql = $"SELECT * FROM base.company WHERE idtoken = '{IdToken}';";
 
                 using (NpgsqlCommand command = new NpgsqlCommand(sql, con))
                 {
@@ -224,7 +228,7 @@ public static class CompaniesMethod
                     await command.ExecuteNonQueryAsync();
                     
                     sql = $"create table company_{company.CompanyId}.data(" +
-                          $"idtoken string," +
+                          $"idtoken varchar(255)," +
                           $"name varchar(255)," +
                           $"email varchar(255)," +
                           $"password varchar(255)," +
@@ -232,18 +236,18 @@ public static class CompaniesMethod
                     command.CommandText = sql;
                     await command.ExecuteNonQueryAsync();
 
-                    sql = $"create table company_{company.CompanyId}.workers(int id);";
+                    sql = $"create table company_{company.CompanyId}.workers(id int);";
                     command.CommandText = sql;
                     await command.ExecuteNonQueryAsync();
                     
                     
                     command.CommandText =
-                        $"Insert into base.company (id, email)  VALUES({company.CompanyId},'{company.CompanyEmail}');";
+                        $"Insert into base.company (idtoken, email)  VALUES('{company.CompanyId}','{company.CompanyEmail}');";
                     await command.ExecuteNonQueryAsync();
                     
                     command.CommandText =
-                        $"Insert into company_{company.CompanyId}.data (id, name, email, email, password, avatar)" +
-                        $" VALUES({company.CompanyId},'{company.CompanyName}','{company.CompanyEmail}', '{Convert.ToBase64String(Encoding.UTF8.GetBytes(password))}', '{"defult"}');";
+                        $"Insert into company_{company.CompanyId}.data (idtoken, name, email, password, avatar)" +
+                        $" VALUES('{company.CompanyId}','{company.CompanyName}','{company.CompanyEmail}', '{Convert.ToBase64String(Encoding.UTF8.GetBytes(password))}', '{"defult"}');";
                     await command.ExecuteNonQueryAsync();
                     
                     await con.CloseAsync();
@@ -265,4 +269,5 @@ public static class CompaniesMethod
                 }
             }
         }
+}
 }

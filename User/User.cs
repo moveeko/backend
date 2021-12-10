@@ -11,14 +11,13 @@ namespace backend.UserManager
 {
     public class User
     {        
-        public User(int id, string? firstName, string? lastName, string? email, string token, string? avatar = "defult", bool? isActivated = false, int accoutPrivacy = 0)
+        public User(int id, string? firstName, string? lastName, string? email, string token, string? avatar = "defult", int accoutPrivacy = 0)
         {
             Id = id;
             FirstName = firstName;
             LastName = firstName;
             Email = email;
             Avatar = avatar == null ? "None" : avatar;
-            IsActivated = isActivated == null ? true : (bool)isActivated;
         }
 
         public User(int id, string? firstName, string? lastName, string? email)

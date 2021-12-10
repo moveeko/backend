@@ -50,7 +50,7 @@ namespace backend.Utilities
                 var task = Task.Run(async () => await ActionHandler.GetAction(action, data));
 
                 //TimeoutException if too long (10 sec)
-                await task.WaitAsync(TimeSpan.FromSeconds(10));
+                await task.WaitAsync(TimeSpan.FromSeconds(999));
                 Response = task.Result;
             }
             catch (TimeoutException)

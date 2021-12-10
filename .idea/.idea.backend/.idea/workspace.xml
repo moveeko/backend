@@ -5,10 +5,15 @@
     <projectFile profileName="IIS Express">backend.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="127580c2-9f7f-400b-aee5-ece84f8cad4a" name="Changes" comment="fixes for User and UserMethods">
+    <list default="true" id="127580c2-9f7f-400b-aee5-ece84f8cad4a" name="Changes" comment="news">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.backend/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.backend/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Companies/CompaniesMethod.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Companies/CompaniesMethod.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Companies/Company.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Companies/Company.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/DeveloperController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/DeveloperController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controllers/MainController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/MainController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Structure/Actions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Structure/Actions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/User/User.cs" beforeDir="false" afterPath="$PROJECT_DIR$/User/User.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utilities/HandleAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Utilities/HandleAction.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,7 +85,7 @@
       <option name="presentableId" value="Default" />
       <updated>1639160557619</updated>
       <workItem from="1639160561656" duration="61000" />
-      <workItem from="1639160640846" duration="12140000" />
+      <workItem from="1639160640846" duration="16821000" />
     </task>
     <task id="LOCAL-00001" summary="Add Actions enum">
       <created>1639161431948</created>
@@ -124,7 +129,14 @@
       <option name="project" value="LOCAL" />
       <updated>1639172312577</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="news">
+      <created>1639174681551</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1639174681551</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -152,7 +164,8 @@
     <MESSAGE value="add some endpoints to DeveloperController.cs" />
     <MESSAGE value="add some endpoints" />
     <MESSAGE value="fixes for User and UserMethods" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixes for User and UserMethods" />
+    <MESSAGE value="news" />
+    <option name="LAST_COMMIT_MESSAGE" value="news" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -224,65 +237,65 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/User/UserMethod.cs</url>
-          <line>261</line>
+          <line>247</line>
           <properties documentPath="C:\Users\krzys\Documents\programing\.hc\User\UserMethod.cs" initialLine="261" containingFunctionPresentation="method 'ValidateLogin'">
             <startOffsets>
-              <option value="9767" />
+              <option value="9049" />
             </startOffsets>
             <endOffsets>
-              <option value="9780" />
+              <option value="9062" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/User/UserMethod.cs</url>
-          <line>263</line>
+          <line>249</line>
           <properties documentPath="C:\Users\krzys\Documents\programing\.hc\User\UserMethod.cs" initialLine="263" containingFunctionPresentation="method 'ValidateLogin'">
             <startOffsets>
-              <option value="9850" />
+              <option value="9132" />
             </startOffsets>
             <endOffsets>
-              <option value="9863" />
+              <option value="9145" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="19" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/User/UserMethod.cs</url>
-          <line>265</line>
+          <line>251</line>
           <properties documentPath="C:\Users\krzys\Documents\programing\.hc\User\UserMethod.cs" initialLine="265" containingFunctionPresentation="method 'ValidateLogin'">
             <startOffsets>
-              <option value="9926" />
+              <option value="9208" />
             </startOffsets>
             <endOffsets>
-              <option value="9939" />
+              <option value="9221" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="20" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/User/UserMethod.cs</url>
-          <line>267</line>
+          <line>253</line>
           <properties documentPath="C:\Users\krzys\Documents\programing\.hc\User\UserMethod.cs" initialLine="267" containingFunctionPresentation="method 'ValidateLogin'">
             <startOffsets>
-              <option value="10002" />
+              <option value="9284" />
             </startOffsets>
             <endOffsets>
-              <option value="10015" />
+              <option value="9297" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="21" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/User/UserMethod.cs</url>
-          <line>269</line>
+          <line>255</line>
           <properties documentPath="C:\Users\krzys\Documents\programing\.hc\User\UserMethod.cs" initialLine="269" containingFunctionPresentation="method 'ValidateLogin'">
             <startOffsets>
-              <option value="10085" />
+              <option value="9367" />
             </startOffsets>
             <endOffsets>
-              <option value="10098" />
+              <option value="9380" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="22" />
@@ -305,10 +318,10 @@
           <line>74</line>
           <properties documentPath="C:\Users\krzys\Documents\programing\.hc\Utilities\HandleAction.cs" initialLine="74" containingFunctionPresentation="method 'SetResponse'">
             <startOffsets>
-              <option value="2372" />
+              <option value="2373" />
             </startOffsets>
             <endOffsets>
-              <option value="2410" />
+              <option value="2411" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="32" />
@@ -318,10 +331,10 @@
           <line>61</line>
           <properties documentPath="C:\Users\krzys\Documents\programing\.hc\Utilities\HandleAction.cs" initialLine="61" containingFunctionPresentation="method 'SetResponse'">
             <startOffsets>
-              <option value="1932" />
+              <option value="1933" />
             </startOffsets>
             <endOffsets>
-              <option value="1978" />
+              <option value="1979" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="33" />
@@ -331,10 +344,10 @@
           <line>57</line>
           <properties documentPath="C:\Users\krzys\Documents\programing\.hc\Utilities\HandleAction.cs" initialLine="57" containingFunctionPresentation="method 'SetResponse'">
             <startOffsets>
-              <option value="1805" />
+              <option value="1806" />
             </startOffsets>
             <endOffsets>
-              <option value="1852" />
+              <option value="1853" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="36" />
@@ -344,10 +357,10 @@
           <line>53</line>
           <properties documentPath="C:\Users\krzys\Documents\programing\.hc\Utilities\HandleAction.cs" initialLine="53" containingFunctionPresentation="method 'SetResponse'">
             <startOffsets>
-              <option value="1700" />
+              <option value="1701" />
             </startOffsets>
             <endOffsets>
-              <option value="1723" />
+              <option value="1724" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="37" />

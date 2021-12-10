@@ -174,6 +174,50 @@ namespace backend.Controllers
             return data;
         }
         
+        [HttpPost("/api/v0/company/joinCompany")]
+        public async Task<ActionResult<object>> JoinCompany(string companyToken, int id)
+        {
+            Task<dynamic> task = Task.Run(async () =>
+            {
+                HandleAction action = new(_config);
+
+                await action.SetResponse(new[]
+                {
+                    new HandleAction.Arg("token", companyToken),
+                    new HandleAction.Arg("id", id)
+                }, Actions.JoinCompany);
+
+                return action.Response;
+            })!;
+
+            await task.WaitAsync(TimeSpan.FromSeconds(999));
+
+            dynamic data = task.Result;
+
+            return data;
+        }
         
+        [HttpPost("/api/v0/company/returnWorkers")]
+        public async Task<ActionResult<object>> ReturnWorkers(string companyToken, int id)
+        {
+            Task<dynamic> task = Task.Run(async () =>
+            {
+                HandleAction action = new(_config);
+
+                await action.SetResponse(new[]
+                {
+                    new HandleAction.Arg("token", companyToken),
+                    new HandleAction.Arg("id", id)
+                }, Actions.CreateUser);
+
+                return action.Response;
+            })!;
+
+            await task.WaitAsync(TimeSpan.FromSeconds(999));
+
+            dynamic data = task.Result;
+
+            return data;
+        }
     }
 }
