@@ -16,6 +16,30 @@ namespace backend.Controllers
         {
             _config = config;
         }
+        
+        //Actions
+        [HttpGet("/api/v0/action/login")]
+        public async Task<ActionResult<object>> Login(string email, string password)
+        {
+            Task<dynamic> task = Task.Run(async () =>
+            {
+                HandleAction action = new(_config);
+
+                await action.SetResponse(new []
+                {
+                    new HandleAction.Arg("email", email),
+                    new HandleAction.Arg("password", password)
+                }, Actions.GetCompanyRanking);
+
+                return action.Response;
+            })!;
+
+            await task.WaitAsync(TimeSpan.FromSeconds(999));
+
+            dynamic data = task.Result;
+
+            return data;
+        }
 
         //Company Functions
         [HttpGet("/api/v0/company/getCompanyRanking")]
@@ -79,5 +103,7 @@ namespace backend.Controllers
 
             return data;
         }
+        
+        
     }
 }
