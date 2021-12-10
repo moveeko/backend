@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using backend.Companies;
 using backend.UserManager;
 using backend.Utilities;
 
@@ -15,8 +16,6 @@ namespace backend.structure
         GetCompanyRanking,
         GetAllCompanies,
         RegisterCompany,
-        CreateCompanyToken,
-        GetCompanyToken,
         ChangeCompanyPrivacy,
         GetTodayActivity,
         SetStartActivity,
@@ -35,6 +34,7 @@ namespace backend.structure
                 Actions.CreateUser => UserMethod.CreateUser(args["firstName"].ToString(), args["lastName"].ToString(), args["email"].ToString(), args["password"].ToString()).Result,
                 Actions.IsUserExist => UserMethod.IsUserExist((int)args["id"]).Result,
                 Actions.GetUserData => UserMethod.GetUserData((int)args["id"]).Result,
+                Actions.RegisterCompany => CompaniesMethod.CreateCompany(args["name"].ToString(), args["email"].ToString(), args["password"].ToString()),
                 
                 _ => throw new CustomError("UnknowAction", 500)
             };
