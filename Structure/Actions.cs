@@ -34,7 +34,9 @@ namespace backend.structure
                 Actions.CreateUser => UserMethod.CreateUser(args["firstName"].ToString(), args["lastName"].ToString(), args["email"].ToString(), args["password"].ToString()).Result,
                 Actions.IsUserExist => UserMethod.IsUserExist((int)args["id"]).Result,
                 Actions.GetUserData => UserMethod.GetUserData((int)args["id"]).Result,
+                
                 Actions.RegisterCompany => CompaniesMethod.CreateCompany(args["name"].ToString(), args["email"].ToString(), args["password"].ToString()),
+                Actions.JoinCompany => CompaniesMethod.GetCompany(args["id"].ToString(), false).Result.AddWorkers((int)args["workersId"]),
                 
                 _ => throw new CustomError("UnknowAction", 500)
             };

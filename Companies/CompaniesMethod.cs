@@ -9,7 +9,7 @@ namespace backend.Companies;
 
 public static class CompaniesMethod
 {
-    public static async Task<object> IsCompanyExist(string id)
+    public static async Task<object> IsCompanyExist(string? id)
     {
         string sql = $"SELECT * FROM base.base WHERE id = {id};";
 
@@ -34,7 +34,7 @@ public static class CompaniesMethod
     }
     public static async Task<object> CreateCompany(string? name, string? email, string? password)
     {
-        string id = CreateCompanyMethod.GenerateId().Result;
+        string? id = CreateCompanyMethod.GenerateId().Result;
         Company user = new Company(id, email);
             
         if (!ValidateLogin(name,email, password))
@@ -77,8 +77,7 @@ public static class CompaniesMethod
             return "";
         }
     }
-
-    public static async Task<Company> GetCompany(string id, bool reqCheckId)
+    public static async Task<Company> GetCompany(string? id, bool reqCheckId)
     {
         if (reqCheckId)
         {
@@ -118,7 +117,6 @@ public static class CompaniesMethod
 
         return company;
     }
-
     public async static Task<List<int>> ReturnWorkers(string id)
     {
         string sql = $"SELECT * FROM company_{id}.workers;";
@@ -159,7 +157,7 @@ public static class CompaniesMethod
     }
     private static class CreateCompanyMethod
         {
-            private static async Task<string> CreateIdToken()
+            private static async Task<string?> CreateIdToken()
             {
                 Random rnd = new Random();
 
@@ -172,7 +170,7 @@ public static class CompaniesMethod
                 }
                 
                 Random random = new Random();
-                string IdToken= "";
+                string? IdToken= "";
 
                 for (int i = 0; i != lengthToken; i++)
                 {
@@ -181,11 +179,11 @@ public static class CompaniesMethod
 
                 return IdToken;
             }
-            public static async Task<string> GenerateId()
+            public static async Task<string?> GenerateId()
             {
                 NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
 
-                string IdToken = CreateIdToken().Result;
+                string? IdToken = CreateIdToken().Result;
                 
                 string sql = $"SELECT * FROM base.base WHERE idtoken = '{IdToken}';";
 
