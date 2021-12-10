@@ -18,7 +18,7 @@ namespace backend.Controllers
             _config = config;
         }
 
-        [HttpPost("/")]
+        [HttpPost("")]
         public async Task<ActionResult<object>> Teample()
         {
             return "";
