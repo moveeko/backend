@@ -49,7 +49,7 @@ namespace backend.UserManager
             command.Connection = con;
             
             command.CommandText =
-                $"Insert into user_{user.Id}.activity (data, type)  VALUES('{today.Data.ToString()}', {(int) today.Type}, null);";
+                $"Insert into user_{user.Id}.activity (data, type)  VALUES('{today.Data.ToString()}', {(int) today.Type});";
             await command.ExecuteNonQueryAsync();
             
             return today; 

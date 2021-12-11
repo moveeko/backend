@@ -220,7 +220,7 @@ namespace backend.UserManager
                     sql = $"create table user_{user.Id}.activity(" +
                           $"data varchar(255)," +
                           $"type int," +
-                          $"index serial);";
+                          $"index SERIAL PRIMARY KEY);";
                     command.CommandText = sql;
                     await command.ExecuteNonQueryAsync();
                     

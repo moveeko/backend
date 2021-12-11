@@ -97,7 +97,6 @@ namespace backend.Companies
             string sql = $"SELECT * FROM company_{CompanyId}.workers;";
 
             NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
-            Company company;
 
             List<User> workers = new List<User>();
 
@@ -113,6 +112,7 @@ namespace backend.Companies
             }
 
             await con.CloseAsync();
+            
             return workers;
         }  
 

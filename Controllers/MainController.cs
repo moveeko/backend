@@ -1,10 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
-using backend.structure;
+﻿using backend.structure;
 using backend.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Cors;
 
 namespace backend.Controllers

@@ -29,7 +29,6 @@ namespace backend.structure
         GetCompanyWorkers,
         JoinCompany,
         LoginCompany,
-        Empty,
         ReturnActivity,
         SetNewEmailCompany,
         SetNewAvatarCompany,
@@ -47,7 +46,6 @@ namespace backend.structure
                 Actions.IsUserExist => await UserMethod.IsUserExist((int)args["id"]),
                 Actions.GetUserData => await UserMethod.GetUserData((int)args["id"]),
                 
-                Actions.SetNewEmail  => await UserMethod.GetUserData((int)args["id"]).Result.SetNewEmail(args["newEmail"].ToString()),
                 Actions.SetNewAvatar  => await UserMethod.GetUserData((int)args["id"]).Result.SetNewAvatar(args["newAvatar"].ToString()),
                 Actions.SetNewPassword  => await UserMethod.GetUserData((int)args["id"]).Result.SetNewPassword(args["newPassword"].ToString()),
                 
