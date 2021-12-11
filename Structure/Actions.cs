@@ -22,10 +22,6 @@ namespace backend.structure
         SetNewPassword,
         ChoosePlan,
         AddActivity,
-        ChangeCompanyPrivacy,
-        GetTodayActivity,
-        SetStartActivity,
-        SetEndActivity,
         GetCompanyWorkers,
         JoinCompany,
         LoginCompany,
@@ -64,7 +60,7 @@ namespace backend.structure
                 Actions.SetNewEmailCompany  => await CompaniesMethod.GetCompany(args["token"].ToString()).Result.SetNewEmail(args["newEmail"].ToString()),
                 Actions.SetNewAvatarCompany  => await CompaniesMethod.GetCompany(args["token"].ToString()).Result.SetNewAvatar(args["avatar"].ToString()),
                 Actions.SetNewPasswordCompany  => await CompaniesMethod.GetCompany(args["token"].ToString()).Result.SetNewPassword(args["newPassword"].ToString()),
-                Actions.ChoosePlan  => await CompaniesMethod.GetCompany(args["token"].ToString()).Result.ChoosePlan(args["maxusers"].ToString()),
+                Actions.ChoosePlan  => await CompaniesMethod.GetCompany(args["token"].ToString()).Result.ChoosePlan((int)args["maxusers"]),
                 
                 _ => throw new CustomError("UnknownAction", 500)
             };

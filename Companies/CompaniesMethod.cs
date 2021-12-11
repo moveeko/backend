@@ -115,7 +115,7 @@ namespace backend.Companies
 
                 company = new Company(id, email, name, avatar, ReturnWorkers(companyid).Result);
 
-                company.maxusers = reader.GetInt32(6);
+                company.maxusers = reader.GetInt32(5);
             }
 
             
@@ -277,7 +277,7 @@ namespace backend.Companies
                         
 
                         command.CommandText =
-                            $"Insert into company_{company.CompanyId}.data (idtoken, name, email, password, avatar)" +
+                            $"Insert into company_{company.CompanyId}.data (idtoken, name, email, password, avatar, maxusers)" +
                             $" VALUES('{company.CompanyId}','{company.CompanyName}','{company.CompanyEmail}', '{Convert.ToBase64String(Encoding.UTF8.GetBytes(password))}', '{avatar}', 0);";
                         await command.ExecuteNonQueryAsync();
                         
