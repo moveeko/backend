@@ -1,0 +1,8 @@
+﻿,
+  "Kestrel": {
+    "Endpoints": {
+      "Https": {
+        "Url": "https://192.168.0.21:5010"
+      }
+    }
+  }

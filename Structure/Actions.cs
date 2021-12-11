@@ -21,7 +21,7 @@ namespace backend.structure
         SetNewEmail,
         SetNewPassword,
         
-        AddTodayActivityBeforteWork,
+        AddActivity,
         ChangeCompanyPrivacy,
         GetTodayActivity,
         SetStartActivity,
@@ -54,7 +54,7 @@ namespace backend.structure
                 Actions.LoginCompany => await CompaniesMethod.Login(args["email"].ToString(), args["password"].ToString()),
                 Actions.DeleteWorkerFromCompany => CompaniesMethod.GetCompany(args["token"].ToString(),  false).Result.DeleteWorker((int)args["id"]),
                 
-                Actions.AddTodayActivityBeforteWork => await ActivityHandler.AddActivityBeforeWork(await UserMethod.GetUserData((int)args["id"], false), (ActivityHandler.TransportType)args["type"]),
+                Actions.AddActivity => await ActivityHandler.AddActivity(await UserMethod.GetUserData((int)args["id"], false), (ActivityHandler.TransportType)args["type"]),
                 
                 _ => throw new CustomError("UnknownAction", 500)
             };
