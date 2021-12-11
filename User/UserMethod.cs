@@ -108,7 +108,8 @@ namespace backend.UserManager
                     lastName,
                     email, reader.GetString(6),avatar);
             }
-            
+
+            user.activity = await ActivityHandler.ReturnActivity(user, 30);
             await con.CloseAsync();
 
             return user;
