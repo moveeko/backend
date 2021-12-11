@@ -231,5 +231,65 @@ namespace backend.Controllers
             return data;
         }
         
+        //User actions
+        
+        [HttpPost("/api/v1/user/setNewEmail")]
+        public async Task<ActionResult<object>> SetNewEmail([FromBody] JObject json)
+        {
+            Task<dynamic> task = Task.Run(async () =>
+            {
+                HandleAction action = new(_config);
+
+                await action.SetResponse(json, "id, newEmail", Actions.SetNewEmail);
+
+                return action.Response;
+            })!;
+
+            await task.WaitAsync(TimeSpan.FromSeconds(999));
+
+            dynamic data = task.Result;
+
+            return data;
+        }
+        
+        [HttpPost("/api/v1/user/setNewPassword")]
+        public async Task<ActionResult<object>> SetNewPassword([FromBody] JObject json)
+        {
+            Task<dynamic> task = Task.Run(async () =>
+            {
+                HandleAction action = new(_config);
+
+                await action.SetResponse(json, "id, newPassword", Actions.SetNewPassword);
+
+                return action.Response;
+            })!;
+
+            await task.WaitAsync(TimeSpan.FromSeconds(999));
+
+            dynamic data = task.Result;
+
+            return data;
+        }
+        
+        [HttpPost("/api/v1/user/setNewAvatar")]
+        public async Task<ActionResult<object>> SetNewAvatar([FromBody] JObject json)
+        {
+            Task<dynamic> task = Task.Run(async () =>
+            {
+                HandleAction action = new(_config);
+
+                await action.SetResponse(json, "id, newAvatar", Actions.SetNewAvatar);
+
+                return action.Response;
+            })!;
+
+            await task.WaitAsync(TimeSpan.FromSeconds(999));
+
+            dynamic data = task.Result;
+
+            return data;
+        }
+        
+        
     }
 }

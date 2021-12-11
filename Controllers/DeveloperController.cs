@@ -265,5 +265,76 @@ namespace backend.Controllers
             return data;
         }
         
+        //User actions
+
+        [HttpPost("/api/v0/user/setNewEmail")]
+        public async Task<ActionResult<object>> NewEmail(int id, string newEmail)
+        {
+            Task<dynamic> task = Task.Run(async () =>
+            {
+                HandleAction action = new(_config);
+
+                await action.SetResponse(new[]
+                {
+                    new HandleAction.Arg("id", id),
+                    new HandleAction.Arg("newEmail", newEmail)
+                }, Actions.SetNewEmail);
+
+                return action.Response;
+            })!;
+
+            await task.WaitAsync(TimeSpan.FromSeconds(999));
+
+            dynamic data = task.Result;
+
+            return data;
+        }
+        
+        [HttpPost("/api/v0/user/setNewPassword")]
+        public async Task<ActionResult<object>> NewPassword(int id, string newPassword)
+        {
+            Task<dynamic> task = Task.Run(async () =>
+            {
+                HandleAction action = new(_config);
+
+                await action.SetResponse(new[]
+                {
+                    new HandleAction.Arg("id", id),
+                    new HandleAction.Arg("newPassword", newPassword)
+                }, Actions.SetNewPassword);
+
+                return action.Response;
+            })!;
+
+            await task.WaitAsync(TimeSpan.FromSeconds(999));
+
+            dynamic data = task.Result;
+
+            return data;
+        }
+        
+        [HttpPost("/api/v0/user/setNewAvatar")]
+        public async Task<ActionResult<object>> NewAvatar(int id, string newAvatar)
+        {
+            Task<dynamic> task = Task.Run(async () =>
+            {
+                HandleAction action = new(_config);
+
+                await action.SetResponse(new[]
+                {
+                    new HandleAction.Arg("id", id),
+                    new HandleAction.Arg("newAvatar", newAvatar)
+                }, Actions.SetNewAvatar);
+
+                return action.Response;
+            })!;
+
+            await task.WaitAsync(TimeSpan.FromSeconds(999));
+
+            dynamic data = task.Result;
+
+            return data;
+        }
+
     }
 }
