@@ -137,7 +137,7 @@ namespace backend.UserManager
                 return "";
             }
         }
-        public static async Task<User> CreateUser(string? firstName, string lastName, string? email, string? password)
+        public static async Task<User> CreateUser(string? firstName, string? lastName, string? email, string? password)
         {
             int id = UserCreateUserMethods.GenerateId().Result;
             User user = new User(id, firstName, lastName, email);
@@ -256,7 +256,7 @@ namespace backend.UserManager
                     return hasRows;
                 }
             }
-            public static bool ValidateLogin(string? firstName, string lastName, string? email, string? password)
+            public static bool ValidateLogin(string? firstName, string? lastName, string? email, string? password)
             {
                 if (firstName != null && lastName != null) 
                     return false;
