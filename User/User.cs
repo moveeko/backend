@@ -35,6 +35,9 @@ namespace backend.UserManager
         public string? Avatar { get; set; }
         public string CompanyToken;
         public List<ActivityHandler.ReturnDay> activity;
+
+        public int points;
+        
         
         public async Task<bool> SetNewEmail(string? newEmail) //Async
         {

@@ -110,7 +110,11 @@ namespace backend.UserManager
             }
 
             user.activity = await ActivityHandler.ReturnActivity(user, 30);
+
+            user.points = await CalculatePoints(user.activity);
+            
             await con.CloseAsync();
+            
 
             return user;
         }
@@ -158,6 +162,20 @@ namespace backend.UserManager
             await UserCreateUserMethods.CreateDataBase(user, password);
 
             return user;
+        }
+
+        private static async Task<int> CalculatePoints(List<ActivityHandler.ReturnDay> list)
+        {
+            int i = 0;
+            foreach (var item in list)
+            {
+                if (item.Type != 0)
+                {
+                    i++;
+                }
+            }
+
+            return i * 10;
         }
         
         private static class UserCreateUserMethods
@@ -273,41 +291,6 @@ namespace backend.UserManager
                 return true;
             }
         }
-        private static class LoginMethod
-        {
-            public static string GenerateToken(User user)
-            {
-                List<char> chars = new List<char>();
-                const int lengthToken = 6;
-
-                for (int i = 65; i != 90; i++)
-                {
-                    chars.Add((char)i);
-                }
-                
-                Random random = new Random();
-                string token = "";
-
-                for (int i = 0; i != lengthToken; i++)
-                {
-                    token += chars[random.Next(0, chars.Count - 1)];
-                }
-                
-                NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("Main"));
-                NpgsqlCommand command = new NpgsqlCommand();
-
-                command.CommandText =
-                    $"Insert into user_{user.Id}.tokens VALUES('{token}', true);";
-                command.Connection = con;
-
-                con.Open();
-                command.ExecuteNonQuery();
-                con.Close();
-                
-                return token;
-                
-                
-            }
-        }
+ 
     }
 }
