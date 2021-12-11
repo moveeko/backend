@@ -251,6 +251,26 @@ namespace backend.Controllers
             return data;
         }
         
+        [HttpPost("/api/v1/company/ChoosePlan")]
+        public async Task<ActionResult<object>> ChoosePlan([FromBody] JObject json)
+        {
+            Task<dynamic> task = Task.Run(async () =>
+            {
+                HandleAction action = new(_config);
+
+                await action.SetResponse(json, "token, maxusers", Actions.ChoosePlan);
+
+                return action.Response;
+            })!;
+
+            await task.WaitAsync(TimeSpan.FromSeconds(999));
+
+            dynamic data = task.Result;
+
+            return data;
+        }
+
+        
         //User actions
 
         [HttpPost("/api/v1/user/setNewEmail")]
@@ -351,3 +371,6 @@ namespace backend.Controllers
         
     }
 }
+
+
+//maxusers

@@ -22,6 +22,8 @@ namespace backend.Companies
 
         public List<int> workers;
 
+        public int maxusers;
+
         public Company(string? id, string? companyEmail, string? name)
         {
             CompanyId = id;
@@ -137,7 +139,7 @@ namespace backend.Companies
 
         }
         
-                public async Task<bool> SetNewEmail(string? newEmail) //Async
+        public async Task<bool> SetNewEmail(string? newEmail) //Async
         {
             NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
             NpgsqlCommand command = new NpgsqlCommand();
@@ -168,8 +170,7 @@ namespace backend.Companies
             
             await con.CloseAsync();
             return true;
-        }        
-        
+        }
         public async Task<bool> SetNewPassword(string? newPassword) //Async
         {
             NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
@@ -185,7 +186,6 @@ namespace backend.Companies
             await con.CloseAsync();
             return true;
         }
-
         public async Task<int> CalculatePoints(bool AVG)
         {
             var list = await this.ReturnWorkers();
@@ -209,6 +209,22 @@ namespace backend.Companies
                 return sum;
             }
         }
+
+        public async Task<bool> ChoosePlan(int maxusers)
+        {
+            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
+            NpgsqlCommand command = new NpgsqlCommand();
+            command.Connection = con;
+            await con.OpenAsync();
+            //
+            command.CommandText =
+                $"UPDATE company_{this.CompanyId}.data SET maxusers = {maxusers};";
+            await command.ExecuteNonQueryAsync();
+            
+            await con.CloseAsync();
+            return true;
+        }
+        
     }
 }
 

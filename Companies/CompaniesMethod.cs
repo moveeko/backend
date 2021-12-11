@@ -114,8 +114,11 @@ namespace backend.Companies
                 string avatar = reader.GetString(4);
 
                 company = new Company(id, email, name, avatar, ReturnWorkers(companyid).Result);
+
+                company.maxusers = reader.GetInt32(6);
             }
 
+            
             company.companyPointsAvg = await company.CalculatePoints(true);
             company.companyPointsSum = await company.CalculatePoints(false);
                 
@@ -255,7 +258,8 @@ namespace backend.Companies
                               $"name varchar(255)," +
                               $"email varchar(255)," +
                               $"password varchar(255)," +
-                              $"avatar varchar(1048576));";
+                              $"avatar varchar(1048576)," +
+                              $"maxusers int);";
                         command.CommandText = sql;
                         await command.ExecuteNonQueryAsync();
 
@@ -274,7 +278,7 @@ namespace backend.Companies
 
                         command.CommandText =
                             $"Insert into company_{company.CompanyId}.data (idtoken, name, email, password, avatar)" +
-                            $" VALUES('{company.CompanyId}','{company.CompanyName}','{company.CompanyEmail}', '{Convert.ToBase64String(Encoding.UTF8.GetBytes(password))}', '{avatar}');";
+                            $" VALUES('{company.CompanyId}','{company.CompanyName}','{company.CompanyEmail}', '{Convert.ToBase64String(Encoding.UTF8.GetBytes(password))}', '{avatar}', 0);";
                         await command.ExecuteNonQueryAsync();
                         
                         await con.CloseAsync();
