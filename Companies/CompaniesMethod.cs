@@ -1,17 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 using backend.UserManager;
 using backend.Utilities;
 using backend.Utilitis;
 using Npgsql;
 
-namespace backend.Companies
-{
-    public static class CompaniesMethod
+namespace backend.Companies;
+
+public static class CompaniesMethod
 {
     public static async Task<object> IsCompanyExist(string? id)
     {
@@ -39,7 +35,7 @@ namespace backend.Companies
     public static async Task<object> CreateCompany(string? name, string? email, string? password)
     {
         string? id = CreateCompanyMethod.GenerateId().Result;
-        Company company = new Company(id, email, name);
+        Company company = new Company(id, email);
             
         if (!ValidateLogin(name,email, password))
         {
@@ -158,6 +154,30 @@ namespace backend.Companies
 
         return true;
     }
+
+    public async static Task<List<Company>> GetAllCompany()
+    {
+        List<Company> companies = new List<Company>();
+        string sql = $"SELECT * FROM base.company;";
+
+        NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
+        NpgsqlCommand command = new NpgsqlCommand(sql, con);
+
+        await con.OpenAsync();
+        NpgsqlDataReader reader = await command.ExecuteReaderAsync();
+
+        var result = reader.HasRows;
+
+        await con.CloseAsync();
+
+        while (reader.Read())
+        {
+            companies.Add(GetCompany(reader.GetString(0), false).Result);
+        }
+
+        return companies;
+    }
+
     private static class CreateCompanyMethod
         {
             private static async Task<string?> CreateIdToken()
@@ -188,7 +208,7 @@ namespace backend.Companies
 
                 string? IdToken = CreateIdToken().Result;
                 
-                string sql = $"SELECT * FROM base.company WHERE idtoken = '{IdToken}';";
+                string sql = $"SELECT * FROM base.base WHERE idtoken = '{IdToken}';";
 
                 using (NpgsqlCommand command = new NpgsqlCommand(sql, con))
                 {
@@ -227,7 +247,7 @@ namespace backend.Companies
                     await command.ExecuteNonQueryAsync();
                     
                     sql = $"create table company_{company.CompanyId}.data(" +
-                          $"idtoken varchar(255)," +
+                          $"idtoken string," +
                           $"name varchar(255)," +
                           $"email varchar(255)," +
                           $"password varchar(255)," +
@@ -235,18 +255,18 @@ namespace backend.Companies
                     command.CommandText = sql;
                     await command.ExecuteNonQueryAsync();
 
-                    sql = $"create table company_{company.CompanyId}.workers(id int);";
+                    sql = $"create table company_{company.CompanyId}.workers(int id);";
                     command.CommandText = sql;
                     await command.ExecuteNonQueryAsync();
                     
                     
                     command.CommandText =
-                        $"Insert into base.company (idtoken, email)  VALUES('{company.CompanyId}','{company.CompanyEmail}');";
+                        $"Insert into base.company (id, email)  VALUES({company.CompanyId},'{company.CompanyEmail}');";
                     await command.ExecuteNonQueryAsync();
                     
                     command.CommandText =
-                        $"Insert into company_{company.CompanyId}.data (idtoken, name, email, password, avatar)" +
-                        $" VALUES('{company.CompanyId}','{company.CompanyName}','{company.CompanyEmail}', '{Convert.ToBase64String(Encoding.UTF8.GetBytes(password))}', '{"defult"}');";
+                        $"Insert into company_{company.CompanyId}.data (id, name, email, email, password, avatar)" +
+                        $" VALUES({company.CompanyId},'{company.CompanyName}','{company.CompanyEmail}', '{Convert.ToBase64String(Encoding.UTF8.GetBytes(password))}', '{"defult"}');";
                     await command.ExecuteNonQueryAsync();
                     
                     await con.CloseAsync();
@@ -254,7 +274,7 @@ namespace backend.Companies
             }
             public static async Task<bool> IsLoginOrEmailExist(Company company)
             {
-                string sql = $"SELECT * FROM base.base WHERE email = '{company.CompanyEmail}';";
+                string sql = $"SELECT * FROM base.company WHERE email = '{company.CompanyEmail}';";
                 NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
 
                 using (NpgsqlCommand command = new NpgsqlCommand(sql, con))
@@ -267,6 +287,38 @@ namespace backend.Companies
                     return hasRows;
                 }
             }
+            
+            
         }
-}
+    public static async Task<object> Login(string? email, string? password)
+    {
+        string sql = $"SELECT id FROM base.base WHERE email = '{email}';";
+
+        NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
+        NpgsqlCommand command = new NpgsqlCommand(sql, con);
+
+        await con.OpenAsync();
+        NpgsqlDataReader reader = await command.ExecuteReaderAsync();
+        string id;
+        if (reader.HasRows)
+        {
+            await reader.ReadAsync();
+            id = reader.GetString(0);
+        }
+        else
+        {
+            throw new CustomError("InvalidLogin");
+        }
+
+        await con.CloseAsync();
+
+        if (password != GetUserPassword(id).Result)
+        {
+            throw new CustomError("InvalidLogin");
+        }
+
+        Company company = GetCompany(id, false).Result;
+
+        return company;
+    }
 }
