@@ -297,7 +297,7 @@ namespace backend.Controllers
             {
                 HandleAction action = new(_config);
 
-                await action.SetResponse(json, "id, activityType", Actions.AddActivity);
+                await action.SetResponse(json, "id, type", Actions.AddActivity);
 
                 return action.Response;
             })!;

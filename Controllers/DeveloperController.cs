@@ -346,7 +346,7 @@ namespace backend.Controllers
                 await action.SetResponse(new[]
                 {
                     new HandleAction.Arg("id", id),
-                    new HandleAction.Arg("activity", activityType)
+                    new HandleAction.Arg("type", activityType)
                 }, Actions.AddActivity);
 
                 return action.Response;
@@ -358,6 +358,28 @@ namespace backend.Controllers
 
             return data;
         }
+    
+        [HttpPost("/api/v0/user/ReturnActivity")]
+        public async Task<ActionResult<object>> ReturnActivity(int id, int limit)
+        {
+            Task<dynamic> task = Task.Run(async () =>
+            {
+                HandleAction action = new(_config);
 
+                await action.SetResponse(new[]
+                {
+                    new HandleAction.Arg("id", id),
+                    new HandleAction.Arg("limit", limit)
+                }, Actions.ReturnActivity);
+
+                return action.Response;
+            })!;
+
+            await task.WaitAsync(TimeSpan.FromSeconds(999));
+
+            dynamic data = task.Result;
+
+            return data;
+        }
     }
 }
