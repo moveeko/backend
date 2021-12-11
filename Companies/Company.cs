@@ -17,6 +17,9 @@ namespace backend.Companies
         public string? CompanyAvatar;
         public User[]? CompanyUsers;
 
+        public int companyPointsSum;
+        public int companyPointsAvg;
+
         public List<int> workers;
 
         public Company(string? id, string? companyEmail, string? name)
@@ -181,6 +184,29 @@ namespace backend.Companies
             
             await con.CloseAsync();
             return true;
+        }
+
+        public async Task<int> CalculatePoints(bool AVG)
+        {
+            var list = await this.ReturnWorkers();
+
+            int sum = 0;
+            int i = 0;
+
+            foreach (var item in list)
+            {
+                sum += item.points;
+                i++;
+            }
+
+            if (AVG)
+            {
+                return sum / i;
+            }
+            else
+            {
+                return sum;
+            }
         }
     }
 }

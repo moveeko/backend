@@ -115,6 +115,9 @@ namespace backend.Companies
 
                 company = new Company(id, email, name, avatar, ReturnWorkers(companyid).Result);
             }
+
+            company.companyPointsAvg = await company.CalculatePoints(true);
+            company.companyPointsSum = await company.CalculatePoints(false);
                 
             await con.CloseAsync();
 
