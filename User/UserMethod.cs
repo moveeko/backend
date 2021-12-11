@@ -192,7 +192,7 @@ namespace backend.UserManager
 
                 if (password != null)
                 {
-                    NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("Main"));
+                    NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
                     await con.OpenAsync();
                     NpgsqlCommand command = new NpgsqlCommand();
                     command.Connection = con;
@@ -213,21 +213,6 @@ namespace backend.UserManager
                     command.CommandText = sql;
                     await command.ExecuteNonQueryAsync();
 
-                    sql = $"create table user_{user.Id}.tokens(" +
-                          $"token varchar(6)," +
-                          $"isActivated bool);";
-                    command.CommandText = sql;
-                    await command.ExecuteNonQueryAsync();
-
-                    command.CommandText = $"create table user_{user.Id}.friends(" +
-                                          "recipient int," +
-                                          "type int);";
-                    await command.ExecuteNonQueryAsync();
-
-                    command.CommandText = $"create table user_{user.Id}.activity(" +
-                                          "day varchar(255)," +
-                                          "steps int);";
-                    await command.ExecuteNonQueryAsync();
                     
                     command.CommandText =
                         $"Insert into base.base (id, email)  VALUES({user.Id},'{user.Email}');";
