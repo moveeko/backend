@@ -201,6 +201,7 @@ namespace backend.Companies
 
             if (AVG)
             {
+                if (sum == 0) return 0;
                 return sum / i;
             }
             else
