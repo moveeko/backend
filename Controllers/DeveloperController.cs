@@ -208,7 +208,7 @@ namespace backend.Controllers
                 {
                     new HandleAction.Arg("token", companyToken),
                     new HandleAction.Arg("id", id)
-                }, Actions.CreateUser);
+                }, Actions.ReturnWorkers);
 
                 return action.Response;
             })!;

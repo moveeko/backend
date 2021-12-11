@@ -1,0 +1,320 @@
+Index: Structure/Actions.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>using System;\r\nusing System.Collections.Generic;\r\nusing System.Threading.Tasks;\r\nusing backend.Companies;\r\nusing backend.UserManager;\r\nusing backend.Utilities;\r\n\r\nnamespace backend.structure\r\n{\r\n    public enum Actions\r\n    {\r\n        Login,\r\n        IsUserExist,\r\n        GetUserData,\r\n        CreateUser,\r\n        GetCompanyRanking,\r\n        GetAllCompanies,\r\n        RegisterCompany,\r\n        ChangeCompanyPrivacy,\r\n        GetTodayActivity,\r\n        SetStartActivity,\r\n        SetEndActivity,\r\n        JoinCompany,\r\n        Empty\r\n    }\r\n\r\n    public static class ActionHandler\r\n    {\r\n        public static async Task<object> GetAction(Actions action, Dictionary<string, object> args)\r\n        {\r\n            return action switch\r\n            {\r\n                Actions.Login => UserMethod.Login(args[\"email\"].ToString(), args[\"password\"].ToString()).Result,\r\n                Actions.CreateUser => UserMethod.CreateUser(args[\"firstName\"].ToString(), args[\"lastName\"].ToString(), args[\"email\"].ToString(), args[\"password\"].ToString()).Result,\r\n                Actions.IsUserExist => await UserMethod.IsUserExist((int)args[\"id\"]),\r\n                Actions.GetUserData => await UserMethod.GetUserData((int)args[\"id\"]),\r\n                \r\n                Actions.RegisterCompany => await CompaniesMethod.CreateCompany(args[\"name\"].ToString(), args[\"email\"].ToString(), args[\"password\"].ToString()),\r\n                Actions.JoinCompany => await CompaniesMethod.GetCompany(args[\"token\"].ToString(), false).Result.AddWorkers((int)args[\"id\"]),\r\n                \r\n                _ => throw new CustomError(\"UnknownAction\", 500)\r\n            };\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Structure/Actions.cs b/Structure/Actions.cs
+--- a/Structure/Actions.cs	(revision 1d5b358705326e4caf7b01e9595e78df6607ae79)
++++ b/Structure/Actions.cs	(date 1639181333109)
+@@ -20,6 +20,7 @@
+         GetTodayActivity,
+         SetStartActivity,
+         SetEndActivity,
++        GetCompanyWorkers,
+         JoinCompany,
+         Empty
+     }
+@@ -37,6 +38,7 @@
+                 
+                 Actions.RegisterCompany => await CompaniesMethod.CreateCompany(args["name"].ToString(), args["email"].ToString(), args["password"].ToString()),
+                 Actions.JoinCompany => await CompaniesMethod.GetCompany(args["token"].ToString(), false).Result.AddWorkers((int)args["id"]),
++                Actions.GetCompanyWorkers => await CompaniesMethod.GetCompany(args["token"].ToString(), false).Result.GetWorkers(),
+                 
+                 _ => throw new CustomError("UnknownAction", 500)
+             };
+Index: Companies/Company.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>using System.Collections.Generic;\r\nusing System.Threading.Tasks;\r\nusing backend.UserManager;\r\nusing backend.Utilitis;\r\nusing Npgsql;\r\n\r\nnamespace backend.Companies\r\n{\r\n    public class Company\r\n    {\r\n        public string? CompanyId;\r\n        public string CompanyName;\r\n        public string? CompanyEmail;\r\n        public User[]? CompanyUsers;\r\n\r\n        public List<int> workers;\r\n\r\n        public Company(string? id, string? companyEmail)\r\n        {\r\n            CompanyId = id;\r\n            CompanyEmail = companyEmail;\r\n        }\r\n\r\n        public Company(string? id, string? companyEmail, string companyName, List<int> ids)\r\n        {\r\n            CompanyId = id;\r\n            CompanyEmail = companyEmail;\r\n            CompanyName = companyName;\r\n            workers = ids;\r\n        }\r\n\r\n\r\n        public async Task<bool> AddWorkers(int userid)\r\n        {\r\n            string sql = $\"INSERT INTO company_{CompanyId}.workers VALUES({userid});\";\r\n\r\n            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString(\"moveeko\"));\r\n            Company company;\r\n\r\n            await using (NpgsqlCommand command = new NpgsqlCommand(sql, con))\r\n            {\r\n                await con.OpenAsync();\r\n                await command.ExecuteNonQueryAsync();\r\n                await con.CloseAsync();\r\n            }\r\n            \r\n            await con.CloseAsync();\r\n            return true;\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Companies/Company.cs b/Companies/Company.cs
+--- a/Companies/Company.cs	(revision 1d5b358705326e4caf7b01e9595e78df6607ae79)
++++ b/Companies/Company.cs	(date 1639180968386)
+@@ -15,10 +15,10 @@
+ 
+         public List<int> workers;
+ 
+-        public Company(string? id, string? companyEmail)
+-        {
++        public Company(string? id, string? companyEmail, string? name){
+             CompanyId = id;
+             CompanyEmail = companyEmail;
++            CompanyName = name;
+         }
+ 
+         public Company(string? id, string? companyEmail, string companyName, List<int> ids)
+Index: Companies/CompaniesMethod.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>using System;\r\nusing System.Collections.Generic;\r\nusing System.Linq;\r\nusing System.Text;\r\nusing System.Threading.Tasks;\r\nusing System.Xml.Serialization;\r\nusing backend.UserManager;\r\nusing backend.Utilities;\r\nusing backend.Utilitis;\r\nusing Npgsql;\r\n\r\nnamespace backend.Companies\r\n{\r\n    public static class CompaniesMethod\r\n{\r\n    public static async Task<object> IsCompanyExist(string? id)\r\n    {\r\n        string sql = $\"SELECT * FROM base.base WHERE id = {id};\";\r\n\r\n        NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString(\"moveeko\"));\r\n        NpgsqlCommand command = new NpgsqlCommand(sql, con);\r\n\r\n        await con.OpenAsync();\r\n        NpgsqlDataReader reader = await command.ExecuteReaderAsync();\r\n            \r\n        var result = reader.HasRows;\r\n\r\n        await con.CloseAsync();\r\n\r\n        if (result)\r\n        {\r\n            return GetCompany(id,  false).Result;\r\n        }\r\n        else\r\n        {\r\n            throw new CustomError(\"UserNotExist\");\r\n        }\r\n    }\r\n    public static async Task<object> CreateCompany(string? name, string? email, string? password)\r\n    {\r\n        string? id = CreateCompanyMethod.GenerateId().Result;\r\n        Company user = new Company(id, email);\r\n            \r\n        if (!ValidateLogin(name,email, password))\r\n        {\r\n            throw new CustomError(\"InvalidLogin\");\r\n        }\r\n        if (CreateCompanyMethod.IsLoginOrEmailExist(user).Result)\r\n        {\r\n            throw new CustomError(\"UserIsExist\");\r\n        }\r\n\r\n        await CreateCompanyMethod.CreateDataBase(user, password);\r\n\r\n        return user;\r\n    }\r\n    \r\n    private static async Task<string> GetUserPassword(int id)\r\n    {\r\n        string? password = string.Empty;\r\n        string sql = $\"SELECT password, login FROM user_{id}.user;\";\r\n\r\n        NpgsqlConnection con = new(ConnectionsData.GetConectionString(\"moveeko\"));\r\n        await using (NpgsqlCommand command = new NpgsqlCommand(sql, con))\r\n        {\r\n            await con.OpenAsync();\r\n            NpgsqlDataReader reader = await command.ExecuteReaderAsync();\r\n\r\n            if (reader.HasRows)\r\n            {\r\n                await reader.ReadAsync();\r\n                password = reader[\"password\"].ToString();\r\n            }\r\n\r\n            await con.CloseAsync();\r\n        }\r\n            \r\n        if (password != null) return Encoding.UTF8.GetString(Convert.FromBase64String(password));\r\n        else\r\n        {\r\n            return \"\";\r\n        }\r\n    }\r\n    public static async Task<Company> GetCompany(string? id, bool reqCheckId)\r\n    {\r\n        if (reqCheckId)\r\n        {\r\n            var name = \"\";\r\n            try\r\n            {\r\n                await IsCompanyExist(id);\r\n            }\r\n            catch (CustomError cf)\r\n            {\r\n                name = cf.Name;\r\n            }\r\n\r\n            throw new CustomError(name);\r\n        }\r\n\r\n        string sql = $\"SELECT * FROM company_{id}.data;\";\r\n\r\n        NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString(\"moveeko\"));\r\n        Company company;\r\n\r\n        await using (NpgsqlCommand command = new NpgsqlCommand(sql, con))\r\n        {\r\n            await con.OpenAsync();\r\n            NpgsqlDataReader reader = await command.ExecuteReaderAsync();\r\n\r\n            await reader.ReadAsync();\r\n            string companyid = reader.GetString(0);\r\n            string name = reader.GetString(1);\r\n            string email = reader.GetString(3);\r\n            string avatar = reader.GetString(4);\r\n\r\n            company = new Company(id, email, name, ReturnWorkers(companyid).Result);\r\n        }\r\n            \r\n        await con.CloseAsync();\r\n\r\n        return company;\r\n    }\r\n    public async static Task<List<int>> ReturnWorkers(string id)\r\n    {\r\n        string sql = $\"SELECT * FROM company_{id}.workers;\";\r\n\r\n        NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString(\"moveeko\"));\r\n\r\n        List<int> workers = new List<int>();\r\n        \r\n        await using (NpgsqlCommand command = new NpgsqlCommand(sql, con))\r\n        {\r\n            await con.OpenAsync();\r\n            NpgsqlDataReader reader = await command.ExecuteReaderAsync();\r\n\r\n            while (reader.Read())\r\n            {\r\n                workers.Add((int)reader[\"id\"]);\r\n            }\r\n\r\n            await con.CloseAsync();\r\n        }\r\n\r\n        return workers;\r\n    }\r\n    public static bool ValidateLogin(string? name, string? email, string? password)\r\n    {\r\n        if (password.Length <= 5 || password.Length >= 30)\r\n            return false;\r\n        if (!password.Any(char.IsUpper))\r\n            return false;\r\n        if (!email.Contains('@'))\r\n            return false;\r\n        if (!email.Contains('.'))\r\n            return false;\r\n        if (!password.Any(char.IsLower))\r\n            return false;\r\n\r\n        return true;\r\n    }\r\n    private static class CreateCompanyMethod\r\n        {\r\n            private static async Task<string?> CreateIdToken()\r\n            {\r\n                Random rnd = new Random();\r\n\r\n                List<char> chars = new List<char>();\r\n                const int lengthToken = 6;\r\n\r\n                for (int i = 65; i != 90; i++)\r\n                {\r\n                    chars.Add((char)i);\r\n                }\r\n                \r\n                Random random = new Random();\r\n                string? IdToken= \"\";\r\n\r\n                for (int i = 0; i != lengthToken; i++)\r\n                {\r\n                    IdToken += chars[random.Next(0, chars.Count - 1)];\r\n                }\r\n\r\n                return IdToken;\r\n            }\r\n            public static async Task<string?> GenerateId()\r\n            {\r\n                NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString(\"moveeko\"));\r\n\r\n                string? IdToken = CreateIdToken().Result;\r\n                \r\n                string sql = $\"SELECT * FROM base.company WHERE idtoken = '{IdToken}';\";\r\n\r\n                using (NpgsqlCommand command = new NpgsqlCommand(sql, con))\r\n                {\r\n                    await con.OpenAsync();\r\n\r\n                    NpgsqlDataReader reader = await command.ExecuteReaderAsync();\r\n\r\n                    while (await reader.ReadAsync())\r\n                    {\r\n                        IdToken = CreateIdToken().Result;\r\n                        int idFromData = int.Parse(reader[\"id\"].ToString() ?? string.Empty);\r\n                        if (IdToken != idFromData.ToString())\r\n                        {\r\n                            break;\r\n                        }\r\n                    }\r\n\r\n                    await con.CloseAsync();\r\n                    return IdToken;\r\n                }\r\n            }\r\n            public static async Task CreateDataBase(Company company, string? password)\r\n            {\r\n                string schemaName = \"company_\" + company.CompanyId;\r\n\r\n                if (password != null)\r\n                {\r\n                    NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString(\"moveeko\"));\r\n                    await con.OpenAsync();\r\n                    NpgsqlCommand command = new NpgsqlCommand();\r\n                    command.Connection = con;\r\n\r\n                    string sql = $\"create schema {schemaName}; alter schema {schemaName} owner to postgres;\";\r\n                    command.CommandText = sql;\r\n\r\n                    await command.ExecuteNonQueryAsync();\r\n                    \r\n                    sql = $\"create table company_{company.CompanyId}.data(\" +\r\n                          $\"idtoken varchar(255),\" +\r\n                          $\"name varchar(255),\" +\r\n                          $\"email varchar(255),\" +\r\n                          $\"password varchar(255),\" +\r\n                          $\"avatar varchar(1048576));\";\r\n                    command.CommandText = sql;\r\n                    await command.ExecuteNonQueryAsync();\r\n\r\n                    sql = $\"create table company_{company.CompanyId}.workers(id int);\";\r\n                    command.CommandText = sql;\r\n                    await command.ExecuteNonQueryAsync();\r\n                    \r\n                    \r\n                    command.CommandText =\r\n                        $\"Insert into base.company (idtoken, email)  VALUES('{company.CompanyId}','{company.CompanyEmail}');\";\r\n                    await command.ExecuteNonQueryAsync();\r\n                    \r\n                    command.CommandText =\r\n                        $\"Insert into company_{company.CompanyId}.data (idtoken, name, email, password, avatar)\" +\r\n                        $\" VALUES('{company.CompanyId}','{company.CompanyName}','{company.CompanyEmail}', '{Convert.ToBase64String(Encoding.UTF8.GetBytes(password))}', '{\"defult\"}');\";\r\n                    await command.ExecuteNonQueryAsync();\r\n                    \r\n                    await con.CloseAsync();\r\n                }\r\n            }\r\n            public static async Task<bool> IsLoginOrEmailExist(Company company)\r\n            {\r\n                string sql = $\"SELECT * FROM base.base WHERE email = '{company.CompanyEmail}';\";\r\n                NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString(\"moveeko\"));\r\n\r\n                using (NpgsqlCommand command = new NpgsqlCommand(sql, con))\r\n                {\r\n                    await con.OpenAsync();\r\n                    NpgsqlDataReader reader = await command.ExecuteReaderAsync();\r\n                    bool hasRows = reader.HasRows;\r\n\r\n                    await con.CloseAsync();\r\n                    return hasRows;\r\n                }\r\n            }\r\n        }\r\n}\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Companies/CompaniesMethod.cs b/Companies/CompaniesMethod.cs
+--- a/Companies/CompaniesMethod.cs	(revision 1d5b358705326e4caf7b01e9595e78df6607ae79)
++++ b/Companies/CompaniesMethod.cs	(date 1639181333113)
+@@ -39,7 +39,7 @@
+     public static async Task<object> CreateCompany(string? name, string? email, string? password)
+     {
+         string? id = CreateCompanyMethod.GenerateId().Result;
+-        Company user = new Company(id, email);
++        Company user = new Company(id, email, name);
+             
+         if (!ValidateLogin(name,email, password))
+         {
+@@ -121,29 +121,8 @@
+ 
+         return company;
+     }
+-    public async static Task<List<int>> ReturnWorkers(string id)
+-    {
+-        string sql = $"SELECT * FROM company_{id}.workers;";
+-
+-        NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
++    
+ 
+-        List<int> workers = new List<int>();
+-        
+-        await using (NpgsqlCommand command = new NpgsqlCommand(sql, con))
+-        {
+-            await con.OpenAsync();
+-            NpgsqlDataReader reader = await command.ExecuteReaderAsync();
+-
+-            while (reader.Read())
+-            {
+-                workers.Add((int)reader["id"]);
+-            }
+-
+-            await con.CloseAsync();
+-        }
+-
+-        return workers;
+-    }
+     public static bool ValidateLogin(string? name, string? email, string? password)
+     {
+         if (password.Length <= 5 || password.Length >= 30)
+Index: Controllers/MainController.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>using System;\r\nusing System.Threading.Tasks;\r\nusing backend.structure;\r\nusing backend.Utilities;\r\nusing Microsoft.AspNetCore.Mvc;\r\nusing Newtonsoft.Json.Linq;\r\nusing Microsoft.AspNetCore.Hosting;\r\nusing Microsoft.AspNetCore.Cors;\r\n\r\nnamespace backend.Controllers\r\n{\r\n    [EnableCors]\r\n    [ApiController]\r\n    public class MainController : Controller\r\n    {\r\n        private readonly IWebHostEnvironment _config;\r\n\r\n        public MainController(IWebHostEnvironment config)\r\n        {\r\n            _config = config;\r\n        }\r\n\r\n        //Actions\r\n        [HttpPost(\"/api/v1/action/login\")]\r\n        public async Task<ActionResult<object>> Login([FromBody] JObject json)\r\n        {\r\n            Task<dynamic> task = Task.Run(async () =>\r\n            {\r\n                HandleAction action = new(_config);\r\n\r\n                await action.SetResponse(json, \"email, password\", Actions.Login);\r\n\r\n                return action.Response;\r\n            })!;\r\n\r\n            await task.WaitAsync(TimeSpan.FromSeconds(999));\r\n\r\n            dynamic data = task.Result;\r\n\r\n            return data;\r\n        }\r\n        \r\n        [HttpPost(\"/api/v1/action/isUserExist\")]\r\n        public async Task<ActionResult<object>> IsUserExist([FromBody] JObject json)\r\n        {\r\n            Task<dynamic> task = Task.Run(async () =>\r\n            {\r\n                HandleAction action = new(_config);\r\n\r\n                await action.SetResponse(json, \"id\", Actions.IsUserExist);\r\n\r\n                return action.Response;\r\n            })!;\r\n\r\n            await task.WaitAsync(TimeSpan.FromSeconds(999));\r\n\r\n            dynamic data = task.Result;\r\n\r\n            return data;\r\n        }\r\n\r\n        [HttpPost(\"/api/v1/action/getUserData\")]\r\n        public async Task<ActionResult<object>> GetUserData([FromBody] JObject json)\r\n        {\r\n            Task<dynamic> task = Task.Run(async () =>\r\n            {\r\n                HandleAction action = new(_config);\r\n\r\n                await action.SetResponse(json, \"id\", Actions.GetUserData);\r\n\r\n                return action.Response;\r\n            })!;\r\n\r\n            await task.WaitAsync(TimeSpan.FromSeconds(999));\r\n\r\n            dynamic data = task.Result;\r\n\r\n            return data;\r\n        }\r\n\r\n        [HttpPost(\"/api/v1/action/createUser\")]\r\n        public async Task<ActionResult<object>> CreateUser([FromBody] JObject json)\r\n        {\r\n            Task<dynamic> task = Task.Run(async () =>\r\n            {\r\n                HandleAction action = new(_config);\r\n\r\n                await action.SetResponse(json, \"firstName, lastName, email, password\", Actions.CreateUser);\r\n\r\n                return action.Response;\r\n            })!;\r\n\r\n            await task.WaitAsync(TimeSpan.FromSeconds(999));\r\n\r\n            dynamic data = task.Result;\r\n\r\n            return data;\r\n        }\r\n\r\n        //Company Functions\r\n        [HttpGet(\"/api/v1/company/getCompanyRanking\")]\r\n        public async Task<ActionResult<object>> GetCompanyRanking()\r\n        {\r\n            Task<dynamic> task = Task.Run(async () =>\r\n            {\r\n                HandleAction action = new(_config);\r\n\r\n                await action.SetResponse(null, Actions.GetCompanyRanking);\r\n\r\n                return action.Response;\r\n            })!;\r\n\r\n            await task.WaitAsync(TimeSpan.FromSeconds(999));\r\n\r\n            dynamic data = task.Result;\r\n\r\n            return data;\r\n        }\r\n        \r\n        [HttpGet(\"/api/v1/company/getAllCompanies\")]\r\n        public async Task<ActionResult<object>> GetAllCompanies()\r\n        {\r\n            Task<dynamic> task = Task.Run(async () =>\r\n            {\r\n                HandleAction action = new(_config);\r\n\r\n                await action.SetResponse(null, Actions.GetAllCompanies);\r\n\r\n                return action.Response;\r\n            })!;\r\n\r\n            await task.WaitAsync(TimeSpan.FromSeconds(999));\r\n\r\n            dynamic data = task.Result;\r\n\r\n            return data;\r\n        }\r\n        \r\n        [HttpPost(\"/api/v1/company/registerCompany\")]\r\n        public async Task<ActionResult<object>> RegisterCompany([FromBody] JObject json)\r\n        {\r\n            Task<dynamic> task = Task.Run(async () =>\r\n            {\r\n                HandleAction action = new(_config);\r\n\r\n                await action.SetResponse(json, \"name, email, password\", Actions.RegisterCompany);\r\n\r\n                return action.Response;\r\n            })!;\r\n\r\n            await task.WaitAsync(TimeSpan.FromSeconds(999));\r\n\r\n            dynamic data = task.Result;\r\n\r\n            return data;\r\n        }\r\n        \r\n        [HttpPost(\"/api/v1/company/loginCompany\")]\r\n        public async Task<ActionResult<object>> LoginCompany([FromBody] JObject json)\r\n        {\r\n            Task<dynamic> task = Task.Run(async () =>\r\n            {\r\n                HandleAction action = new(_config);\r\n\r\n                await action.SetResponse(json, \"email, password\", Actions.LoginCompany);\r\n\r\n                return action.Response;\r\n            })!;\r\n\r\n            await task.WaitAsync(TimeSpan.FromSeconds(999));\r\n\r\n            dynamic data = task.Result;\r\n\r\n            return data;\r\n        }\r\n        \r\n        [HttpPost(\"/api/v1/company/joinCompany\")]\r\n        public async Task<ActionResult<object>> JoinCompany([FromBody] JObject json)\r\n        {\r\n            Task<dynamic> task = Task.Run(async () =>\r\n            {\r\n                HandleAction action = new(_config);\r\n\r\n                await action.SetResponse(json, \"token, id\", Actions.JoinCompany);\r\n\r\n                return action.Response;\r\n            })!;\r\n\r\n            await task.WaitAsync(TimeSpan.FromSeconds(999));\r\n\r\n            dynamic data = task.Result;\r\n\r\n            return data;\r\n        }\r\n        \r\n        \r\n        \r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Controllers/MainController.cs b/Controllers/MainController.cs
+--- a/Controllers/MainController.cs	(revision 1d5b358705326e4caf7b01e9595e78df6607ae79)
++++ b/Controllers/MainController.cs	(date 1639180803503)
+@@ -155,24 +155,24 @@
+             return data;
+         }
+         
+-        [HttpPost("/api/v1/company/loginCompany")]
+-        public async Task<ActionResult<object>> LoginCompany([FromBody] JObject json)
+-        {
+-            Task<dynamic> task = Task.Run(async () =>
+-            {
+-                HandleAction action = new(_config);
+-
+-                await action.SetResponse(json, "email, password", Actions.LoginCompany);
+-
+-                return action.Response;
+-            })!;
+-
+-            await task.WaitAsync(TimeSpan.FromSeconds(999));
+-
+-            dynamic data = task.Result;
+-
+-            return data;
+-        }
++        // [HttpPost("/api/v1/company/loginCompany")]
++        // public async Task<ActionResult<object>> LoginCompany([FromBody] JObject json)
++        // {
++        //     Task<dynamic> task = Task.Run(async () =>
++        //     {
++        //         HandleAction action = new(_config);
++        //
++        //         await action.SetResponse(json, "email, password", Actions.LoginCompany);
++        //
++        //         return action.Response;
++        //     })!;
++        //
++        //     await task.WaitAsync(TimeSpan.FromSeconds(999));
++        //
++        //     dynamic data = task.Result;
++        //
++        //     return data;
++        // }
+         
+         [HttpPost("/api/v1/company/joinCompany")]
+         public async Task<ActionResult<object>> JoinCompany([FromBody] JObject json)
+Index: Controllers/DeveloperController.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>using Microsoft.AspNetCore.Mvc;\r\nusing System;\r\nusing System.Threading.Tasks;\r\nusing backend.structure;\r\nusing backend.Utilities;\r\nusing Microsoft.AspNetCore.Hosting;\r\n\r\nnamespace backend.Controllers\r\n{\r\n    [ApiController]\r\n    public class DeveloperController : Controller\r\n    {\r\n        private readonly IWebHostEnvironment _config;\r\n\r\n        public DeveloperController(IWebHostEnvironment config)\r\n        {\r\n            _config = config;\r\n        }\r\n        \r\n        //Actions\r\n        [HttpPost(\"/api/v0/action/login\")]\r\n        public async Task<ActionResult<object>> Login(string email, string password)\r\n        {\r\n            Task<dynamic> task = Task.Run(async () =>\r\n            {\r\n                HandleAction action = new(_config);\r\n\r\n                await action.SetResponse(new []\r\n                {\r\n                    new HandleAction.Arg(\"email\", email),\r\n                    new HandleAction.Arg(\"password\", password)\r\n                }, Actions.Login);\r\n\r\n                return action.Response;\r\n            })!;\r\n\r\n            await task.WaitAsync(TimeSpan.FromSeconds(999));\r\n\r\n            dynamic data = task.Result;\r\n\r\n            return data;\r\n        }\r\n        \r\n        [HttpPost(\"/api/v0/action/isUserExist\")]\r\n        public async Task<ActionResult<object>> IsUserExist(int id)\r\n        {\r\n            Task<dynamic> task = Task.Run(async () =>\r\n            {\r\n                HandleAction action = new(_config);\r\n\r\n                await action.SetResponse(new []\r\n                {\r\n                    new HandleAction.Arg(\"id\", id)\r\n                }, Actions.IsUserExist);\r\n\r\n                return action.Response;\r\n            })!;\r\n\r\n            await task.WaitAsync(TimeSpan.FromSeconds(999));\r\n\r\n            dynamic data = task.Result;\r\n\r\n            return data;\r\n        }\r\n        \r\n        [HttpPost(\"/api/v0/action/getUserData\")]\r\n        public async Task<ActionResult<object>> GetUserData(int id)\r\n        {\r\n            Task<dynamic> task = Task.Run(async () =>\r\n            {\r\n                HandleAction action = new(_config);\r\n\r\n                await action.SetResponse(new []\r\n                {\r\n                    new HandleAction.Arg(\"id\", id)\r\n                }, Actions.GetUserData);\r\n\r\n                return action.Response;\r\n            })!;\r\n\r\n            await task.WaitAsync(TimeSpan.FromSeconds(999));\r\n\r\n            dynamic data = task.Result;\r\n\r\n            return data;\r\n        }\r\n        \r\n        [HttpPost(\"/api/v0/action/createUser\")]\r\n        public async Task<ActionResult<object>> CreateUser(string firstName, string lastName, string email, string password)\r\n        {\r\n            Task<dynamic> task = Task.Run(async () =>\r\n            {\r\n                HandleAction action = new(_config);\r\n\r\n                await action.SetResponse(new[]\r\n                {\r\n                    new HandleAction.Arg(\"firstName\", firstName),\r\n                    new HandleAction.Arg(\"lastName\", lastName),\r\n                    new HandleAction.Arg(\"email\", email),\r\n                    new HandleAction.Arg(\"password\", password)\r\n                }, Actions.CreateUser);\r\n\r\n                return action.Response;\r\n            })!;\r\n\r\n            await task.WaitAsync(TimeSpan.FromSeconds(999));\r\n\r\n            dynamic data = task.Result;\r\n\r\n            return data;\r\n        }\r\n    \r\n\r\n        //Company Functions\r\n        [HttpGet(\"/api/v0/company/getCompanyRanking\")]\r\n        public async Task<ActionResult<object>> GetCompanyRanking()\r\n        {\r\n            Task<dynamic> task = Task.Run(async () =>\r\n            {\r\n                HandleAction action = new(_config);\r\n\r\n                await action.SetResponse(null, Actions.GetCompanyRanking);\r\n\r\n                return action.Response;\r\n            })!;\r\n\r\n            await task.WaitAsync(TimeSpan.FromSeconds(999));\r\n\r\n            dynamic data = task.Result;\r\n\r\n            return data;\r\n        }\r\n        \r\n        [HttpGet(\"/api/v0/company/getAllCompanies\")]\r\n        public async Task<ActionResult<object>> GetAllCompanies()\r\n        {\r\n            Task<dynamic> task = Task.Run(async () =>\r\n            {\r\n                HandleAction action = new(_config);\r\n\r\n                await action.SetResponse(null, Actions.GetAllCompanies);\r\n\r\n                return action.Response;\r\n            })!;\r\n\r\n            await task.WaitAsync(TimeSpan.FromSeconds(999));\r\n\r\n            dynamic data = task.Result;\r\n\r\n            return data;\r\n        }\r\n        \r\n        [HttpPost(\"/api/v0/company/registerCompany\")]\r\n        public async Task<ActionResult<object>> RegisterCompany(string companyName, string companyEmail, string companyPassword)\r\n        {\r\n            Task<dynamic> task = Task.Run(async () =>\r\n            {\r\n                HandleAction action = new(_config);\r\n\r\n                await action.SetResponse(new[]\r\n                {\r\n                    new HandleAction.Arg(\"name\", companyName),\r\n                    new HandleAction.Arg(\"email\", companyEmail),\r\n                    new HandleAction.Arg(\"password\", companyPassword)\r\n                }, Actions.RegisterCompany);\r\n\r\n                return action.Response;\r\n            })!;\r\n\r\n            await task.WaitAsync(TimeSpan.FromSeconds(999));\r\n\r\n            dynamic data = task.Result;\r\n\r\n            return data;\r\n        }\r\n        \r\n        [HttpPost(\"/api/v0/company/joinCompany\")]\r\n        public async Task<ActionResult<object>> JoinCompany(string companyToken, int id)\r\n        {\r\n            Task<dynamic> task = Task.Run(async () =>\r\n            {\r\n                HandleAction action = new(_config);\r\n\r\n                await action.SetResponse(new[]\r\n                {\r\n                    new HandleAction.Arg(\"token\", companyToken),\r\n                    new HandleAction.Arg(\"id\", id)\r\n                }, Actions.JoinCompany);\r\n\r\n                return action.Response;\r\n            })!;\r\n\r\n            await task.WaitAsync(TimeSpan.FromSeconds(999));\r\n\r\n            dynamic data = task.Result;\r\n\r\n            return data;\r\n        }\r\n        \r\n        [HttpPost(\"/api/v0/company/returnWorkers\")]\r\n        public async Task<ActionResult<object>> ReturnWorkers(string companyToken, int id)\r\n        {\r\n            Task<dynamic> task = Task.Run(async () =>\r\n            {\r\n                HandleAction action = new(_config);\r\n\r\n                await action.SetResponse(new[]\r\n                {\r\n                    new HandleAction.Arg(\"token\", companyToken),\r\n                    new HandleAction.Arg(\"id\", id)\r\n                }, Actions.CreateUser);\r\n\r\n                return action.Response;\r\n            })!;\r\n\r\n            await task.WaitAsync(TimeSpan.FromSeconds(999));\r\n\r\n            dynamic data = task.Result;\r\n\r\n            return data;\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Controllers/DeveloperController.cs b/Controllers/DeveloperController.cs
+--- a/Controllers/DeveloperController.cs	(revision 1d5b358705326e4caf7b01e9595e78df6607ae79)
++++ b/Controllers/DeveloperController.cs	(date 1639181004992)
+@@ -208,7 +208,7 @@
+                 {
+                     new HandleAction.Arg("token", companyToken),
+                     new HandleAction.Arg("id", id)
+-                }, Actions.CreateUser);
++                }, Actions.ReturnWorkers);
+ 
+                 return action.Response;
+             })!;
+Index: .idea/.idea.backend/.idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoGeneratedRunConfigurationManager\">\r\n    <projectFile profileName=\"backend\">backend.csproj</projectFile>\r\n    <projectFile profileName=\"IIS Express\">backend.csproj</projectFile>\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"127580c2-9f7f-400b-aee5-ece84f8cad4a\" name=\"Changes\" comment=\"news\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/.idea.backend/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/.idea.backend/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Companies/CompaniesMethod.cs\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Companies/CompaniesMethod.cs\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Companies/Company.cs\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Companies/Company.cs\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Controllers/DeveloperController.cs\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Controllers/DeveloperController.cs\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Controllers/MainController.cs\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Controllers/MainController.cs\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Structure/Actions.cs\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Structure/Actions.cs\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/User/User.cs\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/User/User.cs\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Utilities/HandleAction.cs\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Utilities/HandleAction.cs\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"HighlightingSettingsPerFile\">\r\n    <setting file=\"mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs\" root0=\"SKIP_HIGHLIGHTING\" />\r\n    <setting file=\"mock://C:/Users/krzys/Documents/programing/.hc/Controllers/DeveloperController.cs\" root0=\"SKIP_HIGHLIGHTING\" />\r\n    <setting file=\"mock://C:/Users/krzys/Documents/programing/.hc/structure/Actions.cs\" root0=\"SKIP_HIGHLIGHTING\" />\r\n    <setting file=\"mock://C:/Users/krzys/Documents/programing/.hc/Utilities/HandleAction.cs\" root0=\"SKIP_HIGHLIGHTING\" />\r\n    <setting file=\"mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs\" root0=\"SKIP_HIGHLIGHTING\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"226aaySvnEbzlnO3mKTZSsdOHy0\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">\r\n    <property name=\"DebuggerViewTab_PTCS_FirstProportionKey\" value=\"0.3502052\" />\r\n    <property name=\"DebuggerViewTab_PTCS_LastProportionKey\" value=\"0.0\" />\r\n    <property name=\"RunOnceActivity.OpenProjectViewOnStart\" value=\"true\" />\r\n    <property name=\"RunOnceActivity.ShowReadmeOnStart\" value=\"true\" />\r\n    <property name=\"WebServerToolWindowFactoryState\" value=\"false\" />\r\n    <property name=\"settings.editor.selected.configurable\" value=\"preferences.pluginManager\" />\r\n    <property name=\"vue.rearranger.settings.migration\" value=\"true\" />\r\n  </component>\r\n  <component name=\"RunManager\" selected=\".NET Launch Settings Profile.backend\">\r\n    <configuration name=\"backend\" type=\"LaunchSettings\" factoryName=\".NET Launch Settings Profile\">\r\n      <option name=\"LAUNCH_PROFILE_PROJECT_FILE_PATH\" value=\"$PROJECT_DIR$/backend.csproj\" />\r\n      <option name=\"LAUNCH_PROFILE_TFM\" value=\"net6.0\" />\r\n      <option name=\"LAUNCH_PROFILE_NAME\" value=\"backend\" />\r\n      <option name=\"USE_EXTERNAL_CONSOLE\" value=\"0\" />\r\n      <option name=\"USE_MONO\" value=\"0\" />\r\n      <option name=\"RUNTIME_ARGUMENTS\" value=\"\" />\r\n      <option name=\"GENERATE_APPLICATIONHOST_CONFIG\" value=\"1\" />\r\n      <option name=\"SHOW_IIS_EXPRESS_OUTPUT\" value=\"0\" />\r\n      <option name=\"SEND_DEBUG_REQUEST\" value=\"1\" />\r\n      <option name=\"ADDITIONAL_IIS_EXPRESS_ARGUMENTS\" value=\"\" />\r\n      <method v=\"2\">\r\n        <option name=\"Build\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"backend: IIS Express\" type=\"LaunchSettings\" factoryName=\".NET Launch Settings Profile\">\r\n      <option name=\"LAUNCH_PROFILE_PROJECT_FILE_PATH\" value=\"$PROJECT_DIR$/backend.csproj\" />\r\n      <option name=\"LAUNCH_PROFILE_TFM\" value=\"net6.0\" />\r\n      <option name=\"LAUNCH_PROFILE_NAME\" value=\"IIS Express\" />\r\n      <option name=\"USE_EXTERNAL_CONSOLE\" value=\"0\" />\r\n      <option name=\"USE_MONO\" value=\"0\" />\r\n      <option name=\"RUNTIME_ARGUMENTS\" value=\"\" />\r\n      <option name=\"GENERATE_APPLICATIONHOST_CONFIG\" value=\"1\" />\r\n      <option name=\"SHOW_IIS_EXPRESS_OUTPUT\" value=\"0\" />\r\n      <option name=\"SEND_DEBUG_REQUEST\" value=\"1\" />\r\n      <option name=\"ADDITIONAL_IIS_EXPRESS_ARGUMENTS\" value=\"\" />\r\n      <method v=\"2\">\r\n        <option name=\"Build\" />\r\n      </method>\r\n    </configuration>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"127580c2-9f7f-400b-aee5-ece84f8cad4a\" name=\"Changes\" comment=\"\" />\r\n      <created>1639160557619</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1639160557619</updated>\r\n      <workItem from=\"1639160561656\" duration=\"61000\" />\r\n      <workItem from=\"1639160640846\" duration=\"16821000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"Add Actions enum\">\r\n      <created>1639161431948</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1639161431948</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"add handleaction\">\r\n      <created>1639163579312</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1639163579312</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"hotfix for HandleAction.cs\">\r\n      <created>1639165245706</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1639165245706</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"add some endpoints to DeveloperController.cs\">\r\n      <created>1639167158622</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1639167158622</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00005\" summary=\"add some endpoints\">\r\n      <created>1639169523350</created>\r\n      <option name=\"number\" value=\"00005\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1639169523350</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00006\" summary=\"fixes for User and UserMethods\">\r\n      <created>1639172312577</created>\r\n      <option name=\"number\" value=\"00006\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1639172312577</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00007\" summary=\"news\">\r\n      <created>1639174681551</created>\r\n      <option name=\"number\" value=\"00007\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00007\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1639174681551</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"8\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"UnityCheckinConfiguration\" checkUnsavedScenes=\"true\" />\r\n  <component name=\"UnityProjectConfiguration\" hasMinimizedUI=\"false\" />\r\n  <component name=\"UnityUnitTestConfiguration\" currentTestLauncher=\"NUnit\" />\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <option name=\"CLEAR_INITIAL_COMMIT_MESSAGE\" value=\"true\" />\r\n    <MESSAGE value=\"Add Actions enum\" />\r\n    <MESSAGE value=\"add handleaction\" />\r\n    <MESSAGE value=\"hotfix for HandleAction.cs\" />\r\n    <MESSAGE value=\"add some endpoints to DeveloperController.cs\" />\r\n    <MESSAGE value=\"add some endpoints\" />\r\n    <MESSAGE value=\"fixes for User and UserMethods\" />\r\n    <MESSAGE value=\"news\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"news\" />\r\n  </component>\r\n  <component name=\"XDebuggerManager\">\r\n    <breakpoint-manager>\r\n      <breakpoints>\r\n        <line-breakpoint enabled=\"true\" type=\"DotNet Breakpoints\">\r\n          <url>file://$PROJECT_DIR$/User/UserMethod.cs</url>\r\n          <line>141</line>\r\n          <properties documentPath=\"C:\\Users\\krzys\\Documents\\programing\\.hc\\User\\UserMethod.cs\" initialLine=\"141\" containingFunctionPresentation=\"method 'CreateUser'\">\r\n            <startOffsets>\r\n              <option value=\"4478\" />\r\n            </startOffsets>\r\n            <endOffsets>\r\n              <option value=\"4529\" />\r\n            </endOffsets>\r\n          </properties>\r\n          <option name=\"timeStamp\" value=\"6\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"DotNet Breakpoints\">\r\n          <url>file://$PROJECT_DIR$/User/UserMethod.cs</url>\r\n          <line>144</line>\r\n          <properties documentPath=\"C:\\Users\\krzys\\Documents\\programing\\.hc\\User\\UserMethod.cs\" initialLine=\"144\" containingFunctionPresentation=\"method 'CreateUser'\">\r\n            <startOffsets>\r\n              <option value=\"4617\" />\r\n            </startOffsets>\r\n            <endOffsets>\r\n              <option value=\"4694\" />\r\n            </endOffsets>\r\n          </properties>\r\n          <option name=\"timeStamp\" value=\"7\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"DotNet Breakpoints\">\r\n          <url>file://$PROJECT_DIR$/User/UserMethod.cs</url>\r\n          <line>148</line>\r\n          <properties documentPath=\"C:\\Users\\krzys\\Documents\\programing\\.hc\\User\\UserMethod.cs\" initialLine=\"148\" containingFunctionPresentation=\"method 'CreateUser'\">\r\n            <startOffsets>\r\n              <option value=\"4790\" />\r\n            </startOffsets>\r\n            <endOffsets>\r\n              <option value=\"4849\" />\r\n            </endOffsets>\r\n          </properties>\r\n          <option name=\"timeStamp\" value=\"8\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"DotNet Breakpoints\">\r\n          <url>file://$PROJECT_DIR$/User/UserMethod.cs</url>\r\n          <line>153</line>\r\n          <properties documentPath=\"C:\\Users\\krzys\\Documents\\programing\\.hc\\User\\UserMethod.cs\" initialLine=\"153\" containingFunctionPresentation=\"method 'CreateUser'\">\r\n            <startOffsets>\r\n              <option value=\"4945\" />\r\n            </startOffsets>\r\n            <endOffsets>\r\n              <option value=\"5004\" />\r\n            </endOffsets>\r\n          </properties>\r\n          <option name=\"timeStamp\" value=\"9\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"DotNet Breakpoints\">\r\n          <url>file://$PROJECT_DIR$/User/UserMethod.cs</url>\r\n          <line>155</line>\r\n          <properties documentPath=\"C:\\Users\\krzys\\Documents\\programing\\.hc\\User\\UserMethod.cs\" initialLine=\"155\" containingFunctionPresentation=\"method 'CreateUser'\">\r\n            <startOffsets>\r\n              <option value=\"5018\" />\r\n            </startOffsets>\r\n            <endOffsets>\r\n              <option value=\"5030\" />\r\n            </endOffsets>\r\n          </properties>\r\n          <option name=\"timeStamp\" value=\"10\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"DotNet Breakpoints\">\r\n          <url>file://$PROJECT_DIR$/User/UserMethod.cs</url>\r\n          <line>247</line>\r\n          <properties documentPath=\"C:\\Users\\krzys\\Documents\\programing\\.hc\\User\\UserMethod.cs\" initialLine=\"261\" containingFunctionPresentation=\"method 'ValidateLogin'\">\r\n            <startOffsets>\r\n              <option value=\"9049\" />\r\n            </startOffsets>\r\n            <endOffsets>\r\n              <option value=\"9062\" />\r\n            </endOffsets>\r\n          </properties>\r\n          <option name=\"timeStamp\" value=\"18\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"DotNet Breakpoints\">\r\n          <url>file://$PROJECT_DIR$/User/UserMethod.cs</url>\r\n          <line>249</line>\r\n          <properties documentPath=\"C:\\Users\\krzys\\Documents\\programing\\.hc\\User\\UserMethod.cs\" initialLine=\"263\" containingFunctionPresentation=\"method 'ValidateLogin'\">\r\n            <startOffsets>\r\n              <option value=\"9132\" />\r\n            </startOffsets>\r\n            <endOffsets>\r\n              <option value=\"9145\" />\r\n            </endOffsets>\r\n          </properties>\r\n          <option name=\"timeStamp\" value=\"19\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"DotNet Breakpoints\">\r\n          <url>file://$PROJECT_DIR$/User/UserMethod.cs</url>\r\n          <line>251</line>\r\n          <properties documentPath=\"C:\\Users\\krzys\\Documents\\programing\\.hc\\User\\UserMethod.cs\" initialLine=\"265\" containingFunctionPresentation=\"method 'ValidateLogin'\">\r\n            <startOffsets>\r\n              <option value=\"9208\" />\r\n            </startOffsets>\r\n            <endOffsets>\r\n              <option value=\"9221\" />\r\n            </endOffsets>\r\n          </properties>\r\n          <option name=\"timeStamp\" value=\"20\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"DotNet Breakpoints\">\r\n          <url>file://$PROJECT_DIR$/User/UserMethod.cs</url>\r\n          <line>253</line>\r\n          <properties documentPath=\"C:\\Users\\krzys\\Documents\\programing\\.hc\\User\\UserMethod.cs\" initialLine=\"267\" containingFunctionPresentation=\"method 'ValidateLogin'\">\r\n            <startOffsets>\r\n              <option value=\"9284\" />\r\n            </startOffsets>\r\n            <endOffsets>\r\n              <option value=\"9297\" />\r\n            </endOffsets>\r\n          </properties>\r\n          <option name=\"timeStamp\" value=\"21\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"DotNet Breakpoints\">\r\n          <url>file://$PROJECT_DIR$/User/UserMethod.cs</url>\r\n          <line>255</line>\r\n          <properties documentPath=\"C:\\Users\\krzys\\Documents\\programing\\.hc\\User\\UserMethod.cs\" initialLine=\"269\" containingFunctionPresentation=\"method 'ValidateLogin'\">\r\n            <startOffsets>\r\n              <option value=\"9367\" />\r\n            </startOffsets>\r\n            <endOffsets>\r\n              <option value=\"9380\" />\r\n            </endOffsets>\r\n          </properties>\r\n          <option name=\"timeStamp\" value=\"22\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"DotNet Breakpoints\">\r\n          <url>file://$PROJECT_DIR$/User/UserMethod.cs</url>\r\n          <line>68</line>\r\n          <properties documentPath=\"C:\\Users\\krzys\\Documents\\programing\\.hc\\User\\UserMethod.cs\" initialLine=\"67\" containingFunctionPresentation=\"method 'Login'\">\r\n            <startOffsets>\r\n              <option value=\"2039\" />\r\n            </startOffsets>\r\n            <endOffsets>\r\n              <option value=\"2051\" />\r\n            </endOffsets>\r\n          </properties>\r\n          <option name=\"timeStamp\" value=\"31\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"DotNet Breakpoints\">\r\n          <url>file://$PROJECT_DIR$/Utilities/HandleAction.cs</url>\r\n          <line>74</line>\r\n          <properties documentPath=\"C:\\Users\\krzys\\Documents\\programing\\.hc\\Utilities\\HandleAction.cs\" initialLine=\"74\" containingFunctionPresentation=\"method 'SetResponse'\">\r\n            <startOffsets>\r\n              <option value=\"2373\" />\r\n            </startOffsets>\r\n            <endOffsets>\r\n              <option value=\"2411\" />\r\n            </endOffsets>\r\n          </properties>\r\n          <option name=\"timeStamp\" value=\"32\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"DotNet Breakpoints\">\r\n          <url>file://$PROJECT_DIR$/Utilities/HandleAction.cs</url>\r\n          <line>61</line>\r\n          <properties documentPath=\"C:\\Users\\krzys\\Documents\\programing\\.hc\\Utilities\\HandleAction.cs\" initialLine=\"61\" containingFunctionPresentation=\"method 'SetResponse'\">\r\n            <startOffsets>\r\n              <option value=\"1933\" />\r\n            </startOffsets>\r\n            <endOffsets>\r\n              <option value=\"1979\" />\r\n            </endOffsets>\r\n          </properties>\r\n          <option name=\"timeStamp\" value=\"33\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"DotNet Breakpoints\">\r\n          <url>file://$PROJECT_DIR$/Utilities/HandleAction.cs</url>\r\n          <line>57</line>\r\n          <properties documentPath=\"C:\\Users\\krzys\\Documents\\programing\\.hc\\Utilities\\HandleAction.cs\" initialLine=\"57\" containingFunctionPresentation=\"method 'SetResponse'\">\r\n            <startOffsets>\r\n              <option value=\"1806\" />\r\n            </startOffsets>\r\n            <endOffsets>\r\n              <option value=\"1853\" />\r\n            </endOffsets>\r\n          </properties>\r\n          <option name=\"timeStamp\" value=\"36\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"DotNet Breakpoints\">\r\n          <url>file://$PROJECT_DIR$/Utilities/HandleAction.cs</url>\r\n          <line>53</line>\r\n          <properties documentPath=\"C:\\Users\\krzys\\Documents\\programing\\.hc\\Utilities\\HandleAction.cs\" initialLine=\"53\" containingFunctionPresentation=\"method 'SetResponse'\">\r\n            <startOffsets>\r\n              <option value=\"1701\" />\r\n            </startOffsets>\r\n            <endOffsets>\r\n              <option value=\"1724\" />\r\n            </endOffsets>\r\n          </properties>\r\n          <option name=\"timeStamp\" value=\"37\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"DotNet Breakpoints\">\r\n          <url>file://$PROJECT_DIR$/User/UserMethod.cs</url>\r\n          <line>63</line>\r\n          <properties documentPath=\"C:\\Users\\krzys\\Documents\\programing\\.hc\\User\\UserMethod.cs\" initialLine=\"62\" containingFunctionPresentation=\"method 'Login'\">\r\n            <startOffsets>\r\n              <option value=\"1917\" />\r\n            </startOffsets>\r\n            <endOffsets>\r\n              <option value=\"1955\" />\r\n            </endOffsets>\r\n          </properties>\r\n          <option name=\"timeStamp\" value=\"39\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"DotNet Breakpoints\">\r\n          <url>file://$PROJECT_DIR$/User/UserMethod.cs</url>\r\n          <line>55</line>\r\n          <properties documentPath=\"C:\\Users\\krzys\\Documents\\programing\\.hc\\User\\UserMethod.cs\" initialLine=\"55\" containingFunctionPresentation=\"method 'Login'\">\r\n            <startOffsets>\r\n              <option value=\"1683\" />\r\n            </startOffsets>\r\n            <endOffsets>\r\n              <option value=\"1721\" />\r\n            </endOffsets>\r\n          </properties>\r\n          <option name=\"timeStamp\" value=\"40\" />\r\n        </line-breakpoint>\r\n      </breakpoints>\r\n    </breakpoint-manager>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/.idea.backend/.idea/workspace.xml b/.idea/.idea.backend/.idea/workspace.xml
+--- a/.idea/.idea.backend/.idea/workspace.xml	(revision 1d5b358705326e4caf7b01e9595e78df6607ae79)
++++ b/.idea/.idea.backend/.idea/workspace.xml	(date 1639182022403)
+@@ -5,15 +5,13 @@
+     <projectFile profileName="IIS Express">backend.csproj</projectFile>
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="127580c2-9f7f-400b-aee5-ece84f8cad4a" name="Changes" comment="news">
++    <list default="true" id="127580c2-9f7f-400b-aee5-ece84f8cad4a" name="Changes" comment="many fixes">
+       <change beforePath="$PROJECT_DIR$/.idea/.idea.backend/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.backend/.idea/workspace.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/Companies/CompaniesMethod.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Companies/CompaniesMethod.cs" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/Companies/Company.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Companies/Company.cs" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/Controllers/DeveloperController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/DeveloperController.cs" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/Controllers/MainController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/MainController.cs" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/Structure/Actions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Structure/Actions.cs" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/User/User.cs" beforeDir="false" afterPath="$PROJECT_DIR$/User/User.cs" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/Utilities/HandleAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Utilities/HandleAction.cs" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -24,6 +22,7 @@
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+   </component>
+   <component name="HighlightingSettingsPerFile">
++    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
+     <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
+     <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Controllers/DeveloperController.cs" root0="SKIP_HIGHLIGHTING" />
+     <setting file="mock://C:/Users/krzys/Documents/programing/.hc/structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
+@@ -85,7 +84,7 @@
+       <option name="presentableId" value="Default" />
+       <updated>1639160557619</updated>
+       <workItem from="1639160561656" duration="61000" />
+-      <workItem from="1639160640846" duration="16821000" />
++      <workItem from="1639160640846" duration="18352000" />
+     </task>
+     <task id="LOCAL-00001" summary="Add Actions enum">
+       <created>1639161431948</created>
+@@ -136,7 +135,14 @@
+       <option name="project" value="LOCAL" />
+       <updated>1639174681551</updated>
+     </task>
+-    <option name="localTasksCounter" value="8" />
++    <task id="LOCAL-00008" summary="many fixes">
++      <created>1639180745395</created>
++      <option name="number" value="00008" />
++      <option name="presentableId" value="LOCAL-00008" />
++      <option name="project" value="LOCAL" />
++      <updated>1639180745395</updated>
++    </task>
++    <option name="localTasksCounter" value="9" />
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+@@ -165,7 +171,8 @@
+     <MESSAGE value="add some endpoints" />
+     <MESSAGE value="fixes for User and UserMethods" />
+     <MESSAGE value="news" />
+-    <option name="LAST_COMMIT_MESSAGE" value="news" />
++    <MESSAGE value="many fixes" />
++    <option name="LAST_COMMIT_MESSAGE" value="many fixes" />
+   </component>
+   <component name="XDebuggerManager">
+     <breakpoint-manager>
+@@ -299,19 +306,6 @@
+             </endOffsets>
+           </properties>
+           <option name="timeStamp" value="22" />
+-        </line-breakpoint>
+-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+-          <url>file://$PROJECT_DIR$/User/UserMethod.cs</url>
+-          <line>68</line>
+-          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\User\UserMethod.cs" initialLine="67" containingFunctionPresentation="method 'Login'">
+-            <startOffsets>
+-              <option value="2039" />
+-            </startOffsets>
+-            <endOffsets>
+-              <option value="2051" />
+-            </endOffsets>
+-          </properties>
+-          <option name="timeStamp" value="31" />
+         </line-breakpoint>
+         <line-breakpoint enabled="true" type="DotNet Breakpoints">
+           <url>file://$PROJECT_DIR$/Utilities/HandleAction.cs</url>
+@@ -325,58 +319,6 @@
+             </endOffsets>
+           </properties>
+           <option name="timeStamp" value="32" />
+-        </line-breakpoint>
+-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+-          <url>file://$PROJECT_DIR$/Utilities/HandleAction.cs</url>
+-          <line>61</line>
+-          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\Utilities\HandleAction.cs" initialLine="61" containingFunctionPresentation="method 'SetResponse'">
+-            <startOffsets>
+-              <option value="1933" />
+-            </startOffsets>
+-            <endOffsets>
+-              <option value="1979" />
+-            </endOffsets>
+-          </properties>
+-          <option name="timeStamp" value="33" />
+-        </line-breakpoint>
+-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+-          <url>file://$PROJECT_DIR$/Utilities/HandleAction.cs</url>
+-          <line>57</line>
+-          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\Utilities\HandleAction.cs" initialLine="57" containingFunctionPresentation="method 'SetResponse'">
+-            <startOffsets>
+-              <option value="1806" />
+-            </startOffsets>
+-            <endOffsets>
+-              <option value="1853" />
+-            </endOffsets>
+-          </properties>
+-          <option name="timeStamp" value="36" />
+-        </line-breakpoint>
+-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+-          <url>file://$PROJECT_DIR$/Utilities/HandleAction.cs</url>
+-          <line>53</line>
+-          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\Utilities\HandleAction.cs" initialLine="53" containingFunctionPresentation="method 'SetResponse'">
+-            <startOffsets>
+-              <option value="1701" />
+-            </startOffsets>
+-            <endOffsets>
+-              <option value="1724" />
+-            </endOffsets>
+-          </properties>
+-          <option name="timeStamp" value="37" />
+-        </line-breakpoint>
+-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+-          <url>file://$PROJECT_DIR$/User/UserMethod.cs</url>
+-          <line>63</line>
+-          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\User\UserMethod.cs" initialLine="62" containingFunctionPresentation="method 'Login'">
+-            <startOffsets>
+-              <option value="1917" />
+-            </startOffsets>
+-            <endOffsets>
+-              <option value="1955" />
+-            </endOffsets>
+-          </properties>
+-          <option name="timeStamp" value="39" />
+         </line-breakpoint>
+         <line-breakpoint enabled="true" type="DotNet Breakpoints">
+           <url>file://$PROJECT_DIR$/User/UserMethod.cs</url>

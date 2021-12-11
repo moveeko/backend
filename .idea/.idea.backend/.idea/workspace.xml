@@ -5,15 +5,13 @@
     <projectFile profileName="IIS Express">backend.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="127580c2-9f7f-400b-aee5-ece84f8cad4a" name="Changes" comment="news">
+    <list default="true" id="127580c2-9f7f-400b-aee5-ece84f8cad4a" name="Changes" comment="many fixes">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.backend/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.backend/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Companies/CompaniesMethod.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Companies/CompaniesMethod.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Companies/Company.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Companies/Company.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controllers/DeveloperController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/DeveloperController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controllers/MainController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/MainController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Structure/Actions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Structure/Actions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/User/User.cs" beforeDir="false" afterPath="$PROJECT_DIR$/User/User.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Utilities/HandleAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Utilities/HandleAction.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,6 +22,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Controllers/DeveloperController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/krzys/Documents/programing/.hc/structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
@@ -85,7 +84,7 @@
       <option name="presentableId" value="Default" />
       <updated>1639160557619</updated>
       <workItem from="1639160561656" duration="61000" />
-      <workItem from="1639160640846" duration="16821000" />
+      <workItem from="1639160640846" duration="18352000" />
     </task>
     <task id="LOCAL-00001" summary="Add Actions enum">
       <created>1639161431948</created>
@@ -136,7 +135,14 @@
       <option name="project" value="LOCAL" />
       <updated>1639174681551</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="many fixes">
+      <created>1639180745395</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1639180745395</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -165,7 +171,8 @@
     <MESSAGE value="add some endpoints" />
     <MESSAGE value="fixes for User and UserMethods" />
     <MESSAGE value="news" />
-    <option name="LAST_COMMIT_MESSAGE" value="news" />
+    <MESSAGE value="many fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="many fixes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -301,19 +308,6 @@
           <option name="timeStamp" value="22" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/User/UserMethod.cs</url>
-          <line>68</line>
-          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\User\UserMethod.cs" initialLine="67" containingFunctionPresentation="method 'Login'">
-            <startOffsets>
-              <option value="2039" />
-            </startOffsets>
-            <endOffsets>
-              <option value="2051" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="31" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Utilities/HandleAction.cs</url>
           <line>74</line>
           <properties documentPath="C:\Users\krzys\Documents\programing\.hc\Utilities\HandleAction.cs" initialLine="74" containingFunctionPresentation="method 'SetResponse'">
@@ -325,58 +319,6 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="32" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Utilities/HandleAction.cs</url>
-          <line>61</line>
-          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\Utilities\HandleAction.cs" initialLine="61" containingFunctionPresentation="method 'SetResponse'">
-            <startOffsets>
-              <option value="1933" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1979" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="33" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Utilities/HandleAction.cs</url>
-          <line>57</line>
-          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\Utilities\HandleAction.cs" initialLine="57" containingFunctionPresentation="method 'SetResponse'">
-            <startOffsets>
-              <option value="1806" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1853" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="36" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Utilities/HandleAction.cs</url>
-          <line>53</line>
-          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\Utilities\HandleAction.cs" initialLine="53" containingFunctionPresentation="method 'SetResponse'">
-            <startOffsets>
-              <option value="1701" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1724" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="37" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/User/UserMethod.cs</url>
-          <line>63</line>
-          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\User\UserMethod.cs" initialLine="62" containingFunctionPresentation="method 'Login'">
-            <startOffsets>
-              <option value="1917" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1955" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="39" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/User/UserMethod.cs</url>

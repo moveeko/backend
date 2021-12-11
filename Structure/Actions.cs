@@ -39,6 +39,10 @@ namespace backend.structure
                 Actions.JoinCompany => (await CompaniesMethod.GetCompany(args["id"].ToString(), false)).AddWorkers((int)args["workersId"]),
                 Actions.GetAllCompanies => await CompaniesMethod.GetAllCompany(),
                 _ => throw new CustomError("UnknowAction", 500)
+                Actions.JoinCompany => await CompaniesMethod.GetCompany(args["token"].ToString(), false).Result.AddWorkers((int)args["id"]),
+                Actions.GetCompanyWorkers => await CompaniesMethod.GetCompany(args["token"].ToString(), false).Result.GetWorkers(),
+                
+                _ => throw new CustomError("UnknownAction", 500)
             };
         }
     }

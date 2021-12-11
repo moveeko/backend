@@ -13,10 +13,10 @@ namespace backend.Companies
 
         public List<int> workers;
 
-        public Company(string? id, string? companyEmail)
-        {
+        public Company(string? id, string? companyEmail, string? name){
             CompanyId = id;
             CompanyEmail = companyEmail;
+            CompanyName = name;
         }
 
         public Company(string? id, string? companyEmail, string companyName, List<int> ids)

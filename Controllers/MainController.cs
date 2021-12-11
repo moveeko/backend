@@ -155,24 +155,24 @@ namespace backend.Controllers
             return data;
         }
         
-        [HttpPost("/api/v1/company/loginCompany")]
-        public async Task<ActionResult<object>> LoginCompany([FromBody] JObject json)
-        {
-            Task<dynamic> task = Task.Run(async () =>
-            {
-                HandleAction action = new(_config);
-
-                await action.SetResponse(json, "email, password", Actions.LoginCompany);
-
-                return action.Response;
-            })!;
-
-            await task.WaitAsync(TimeSpan.FromSeconds(999));
-
-            dynamic data = task.Result;
-
-            return data;
-        }
+        // [HttpPost("/api/v1/company/loginCompany")]
+        // public async Task<ActionResult<object>> LoginCompany([FromBody] JObject json)
+        // {
+        //     Task<dynamic> task = Task.Run(async () =>
+        //     {
+        //         HandleAction action = new(_config);
+        //
+        //         await action.SetResponse(json, "email, password", Actions.LoginCompany);
+        //
+        //         return action.Response;
+        //     })!;
+        //
+        //     await task.WaitAsync(TimeSpan.FromSeconds(999));
+        //
+        //     dynamic data = task.Result;
+        //
+        //     return data;
+        // }
         
         [HttpPost("/api/v1/company/joinCompany")]
         public async Task<ActionResult<object>> JoinCompany([FromBody] JObject json)
