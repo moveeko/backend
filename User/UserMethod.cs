@@ -214,14 +214,25 @@ namespace backend.UserManager
                     command.CommandText = sql;
                     await command.ExecuteNonQueryAsync();
 
+                    sql = $"create table user_{user.Id}.activity(" +
+                          $"data varchar," +
+                          $"type int," +
+                          $"GoOffice varchar" +
+                          $"BackOffice varchar);";
+                    command.CommandText = sql;
+                    await command.ExecuteNonQueryAsync();
+                    
                     
                     command.CommandText =
                         $"Insert into base.base (id, email)  VALUES({user.Id},'{user.Email}');";
                     await command.ExecuteNonQueryAsync();
                     
+                    string baseImage =
+                        "data:image/png;base64,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";
+
                     command.CommandText =
                         $"Insert into user_{user.Id}.user (id, firstName, lastName, email, password, avatar, companyToken)" +
-                        $" VALUES({user.Id},'{user.FirstName}','{user.LastName}','{user.Email}','{Convert.ToBase64String(Encoding.UTF8.GetBytes(password))}', '{"defult"}', '0');";
+                        $" VALUES({user.Id},'{user.FirstName}','{user.LastName}','{user.Email}','{Convert.ToBase64String(Encoding.UTF8.GetBytes(password))}', '{baseImage}', '0');";
                     await command.ExecuteNonQueryAsync();
                     
                     await con.CloseAsync();

@@ -4,6 +4,9 @@
     <projectFile profileName="backend">backend.csproj</projectFile>
     <projectFile profileName="IIS Express">backend.csproj</projectFile>
   </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="127580c2-9f7f-400b-aee5-ece84f8cad4a" name="Changes" comment="add removeWorker endpoint">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.backend/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.backend/.idea/workspace.xml" afterDir="false" />
@@ -20,20 +23,8 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="HighlightingSettingsPerFile">
-    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Utilities/HandleAction.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Controllers/DeveloperController.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Controllers/DeveloperController.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Controllers/DeveloperController.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="226aaySvnEbzlnO3mKTZSsdOHy0" />
   <component name="ProjectViewState">
@@ -46,6 +37,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -203,154 +195,5 @@
     <MESSAGE value="chages for Controllers" />
     <MESSAGE value="add removeWorker endpoint" />
     <option name="LAST_COMMIT_MESSAGE" value="add removeWorker endpoint" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/User/UserMethod.cs</url>
-          <line>141</line>
-          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\User\UserMethod.cs" initialLine="141" containingFunctionPresentation="method 'CreateUser'">
-            <startOffsets>
-              <option value="4478" />
-            </startOffsets>
-            <endOffsets>
-              <option value="4529" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/User/UserMethod.cs</url>
-          <line>144</line>
-          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\User\UserMethod.cs" initialLine="144" containingFunctionPresentation="method 'CreateUser'">
-            <startOffsets>
-              <option value="4617" />
-            </startOffsets>
-            <endOffsets>
-              <option value="4694" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/User/UserMethod.cs</url>
-          <line>148</line>
-          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\User\UserMethod.cs" initialLine="148" containingFunctionPresentation="method 'CreateUser'">
-            <startOffsets>
-              <option value="4790" />
-            </startOffsets>
-            <endOffsets>
-              <option value="4849" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/User/UserMethod.cs</url>
-          <line>153</line>
-          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\User\UserMethod.cs" initialLine="153" containingFunctionPresentation="method 'CreateUser'">
-            <startOffsets>
-              <option value="4945" />
-            </startOffsets>
-            <endOffsets>
-              <option value="5004" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/User/UserMethod.cs</url>
-          <line>155</line>
-          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\User\UserMethod.cs" initialLine="155" containingFunctionPresentation="method 'CreateUser'">
-            <startOffsets>
-              <option value="5018" />
-            </startOffsets>
-            <endOffsets>
-              <option value="5030" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="10" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/User/UserMethod.cs</url>
-          <line>247</line>
-          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\User\UserMethod.cs" initialLine="261" containingFunctionPresentation="method 'ValidateLogin'">
-            <startOffsets>
-              <option value="9049" />
-            </startOffsets>
-            <endOffsets>
-              <option value="9062" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="18" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/User/UserMethod.cs</url>
-          <line>249</line>
-          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\User\UserMethod.cs" initialLine="263" containingFunctionPresentation="method 'ValidateLogin'">
-            <startOffsets>
-              <option value="9132" />
-            </startOffsets>
-            <endOffsets>
-              <option value="9145" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="19" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/User/UserMethod.cs</url>
-          <line>251</line>
-          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\User\UserMethod.cs" initialLine="265" containingFunctionPresentation="method 'ValidateLogin'">
-            <startOffsets>
-              <option value="9208" />
-            </startOffsets>
-            <endOffsets>
-              <option value="9221" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="20" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/User/UserMethod.cs</url>
-          <line>253</line>
-          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\User\UserMethod.cs" initialLine="267" containingFunctionPresentation="method 'ValidateLogin'">
-            <startOffsets>
-              <option value="9284" />
-            </startOffsets>
-            <endOffsets>
-              <option value="9297" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="21" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/User/UserMethod.cs</url>
-          <line>255</line>
-          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\User\UserMethod.cs" initialLine="269" containingFunctionPresentation="method 'ValidateLogin'">
-            <startOffsets>
-              <option value="9367" />
-            </startOffsets>
-            <endOffsets>
-              <option value="9380" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="22" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/User/UserMethod.cs</url>
-          <line>55</line>
-          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\User\UserMethod.cs" initialLine="55" containingFunctionPresentation="method 'Login'">
-            <startOffsets>
-              <option value="1683" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1721" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="40" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
