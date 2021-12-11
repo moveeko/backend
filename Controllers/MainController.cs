@@ -17,8 +17,7 @@ namespace backend.Controllers
             _config = config;
         }
 
-        //Actions
-        [HttpPost("/api/v1/action/login")]
+       [HttpPost("/api/v1/action/login")]
         public async Task<ActionResult<object>> Login([FromBody] JObject json)
         {
             Task<dynamic> task = Task.Run(async () =>
@@ -55,7 +54,7 @@ namespace backend.Controllers
 
             return data;
         }
-
+        
         [HttpPost("/api/v1/action/getUserData")]
         public async Task<ActionResult<object>> GetUserData([FromBody] JObject json)
         {
@@ -93,6 +92,7 @@ namespace backend.Controllers
 
             return data;
         }
+    
 
         //Company Functions
         [HttpGet("/api/v1/company/getCompanyRanking")]
@@ -102,7 +102,7 @@ namespace backend.Controllers
             {
                 HandleAction action = new(_config);
 
-                await action.SetResponse(null, Actions.GetCompanyRanking);
+                await action.SetResponse(new JObject(), "", Actions.GetCompanyRanking);
 
                 return action.Response;
             })!;
@@ -121,7 +121,7 @@ namespace backend.Controllers
             {
                 HandleAction action = new(_config);
 
-                await action.SetResponse(null, Actions.GetAllCompanies);
+                await action.SetResponse(new JObject(), "", Actions.GetAllCompanies);
 
                 return action.Response;
             })!;
@@ -140,7 +140,7 @@ namespace backend.Controllers
             {
                 HandleAction action = new(_config);
 
-                await action.SetResponse(json, "name, email, password", Actions.RegisterCompany);
+                await action.SetResponse(json, "companyName, companyEmail, companyPassword", Actions.RegisterCompany);
 
                 return action.Response;
             })!;
@@ -158,16 +158,17 @@ namespace backend.Controllers
             Task<dynamic> task = Task.Run(async () =>
             {
                 HandleAction action = new(_config);
-        
-                await action.SetResponse(json, "email, password", Actions.LoginCompany);
-        
+
+                await action.SetResponse(json, "companyEmail, companyPassword", Actions.LoginCompany);
+
+
                 return action.Response;
             })!;
-        
+
             await task.WaitAsync(TimeSpan.FromSeconds(999));
-        
+
             dynamic data = task.Result;
-        
+
             return data;
         }
         
@@ -178,7 +179,7 @@ namespace backend.Controllers
             {
                 HandleAction action = new(_config);
 
-                await action.SetResponse(json, "token, id", Actions.JoinCompany);
+                await action.SetResponse(json, "companyToken, id", Actions.JoinCompany);
 
                 return action.Response;
             })!;
@@ -190,7 +191,7 @@ namespace backend.Controllers
             return data;
         }
         
-        [HttpPost("api/v1/company/returnWorkers")]
+        [HttpPost("/api/v1/company/returnWorkers")]
         public async Task<ActionResult<object>> ReturnWorkers([FromBody] JObject json)
         {
             Task<dynamic> task = Task.Run(async () =>
@@ -209,7 +210,7 @@ namespace backend.Controllers
             return data;
         }
         
-        [HttpPost("api/v1/company/removeWorker")]
+        [HttpPost("/api/v1/company/removeWorker")]
         public async Task<ActionResult<object>> RemoveWorker([FromBody] JObject json)
         {
             Task<dynamic> task = Task.Run(async () =>
@@ -228,16 +229,35 @@ namespace backend.Controllers
             return data;
         }
         
-        //User actions
-        
-        [HttpPost("/api/v1/user/setNewEmail")]
-        public async Task<ActionResult<object>> SetNewEmail([FromBody] JObject json)
+        [HttpPost("/api/v1/company/setNewAvatar")]
+        public async Task<ActionResult<object>> SetNewAvatar([FromBody] JObject json)
         {
             Task<dynamic> task = Task.Run(async () =>
             {
                 HandleAction action = new(_config);
 
-                await action.SetResponse(json, "id, newEmail", Actions.SetNewEmail);
+                await action.SetResponse(json, "token, avatar", Actions.SetNewAvatarCompany);
+
+                return action.Response;
+            })!;
+
+            await task.WaitAsync(TimeSpan.FromSeconds(999));
+
+            dynamic data = task.Result;
+
+            return data;
+        }
+        
+        //User actions
+
+        [HttpPost("/api/v1/user/setNewEmail")]
+        public async Task<ActionResult<object>> NewEmail([FromBody] JObject json)
+        {
+            Task<dynamic> task = Task.Run(async () =>
+            {
+                HandleAction action = new(_config);
+
+                await action.SetResponse(json, "id, newEmail", Actions.SetNewEmailCompany);
 
                 return action.Response;
             })!;
@@ -250,13 +270,13 @@ namespace backend.Controllers
         }
         
         [HttpPost("/api/v1/user/setNewPassword")]
-        public async Task<ActionResult<object>> SetNewPassword([FromBody] JObject json)
+        public async Task<ActionResult<object>> NewPassword([FromBody] JObject json)
         {
             Task<dynamic> task = Task.Run(async () =>
             {
                 HandleAction action = new(_config);
 
-                await action.SetResponse(json, "id, newPassword", Actions.SetNewPassword);
+                await action.SetResponse(json, "id, newPassword", Actions.SetNewPasswordCompany);
 
                 return action.Response;
             })!;
@@ -269,13 +289,13 @@ namespace backend.Controllers
         }
         
         [HttpPost("/api/v1/user/setNewAvatar")]
-        public async Task<ActionResult<object>> SetNewAvatar([FromBody] JObject json)
+        public async Task<ActionResult<object>> NewAvatar([FromBody] JObject json)
         {
             Task<dynamic> task = Task.Run(async () =>
             {
                 HandleAction action = new(_config);
 
-                await action.SetResponse(json, "id, newAvatar", Actions.SetNewAvatar);
+                await action.SetResponse(json, "id, newAvatar", Actions.SetNewAvatarCompany);
 
                 return action.Response;
             })!;
@@ -294,7 +314,7 @@ namespace backend.Controllers
             {
                 HandleAction action = new(_config);
 
-                await action.SetResponse(json, "id, type", Actions.AddActivity);
+                await action.SetResponse(json, "id, activityType", Actions.AddActivity);
 
                 return action.Response;
             })!;
@@ -305,7 +325,7 @@ namespace backend.Controllers
 
             return data;
         }
-        
+    
         [HttpPost("/api/v1/user/ReturnActivity")]
         public async Task<ActionResult<object>> ReturnActivity([FromBody] JObject json)
         {
@@ -313,7 +333,7 @@ namespace backend.Controllers
             {
                 HandleAction action = new(_config);
 
-                await action.SetResponse(json, "id, limit", Actions.ReturnActivity);
+                await action.SetResponse(json, "id, limit", Actions.AddActivity);
 
                 return action.Response;
             })!;

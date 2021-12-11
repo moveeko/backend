@@ -78,6 +78,12 @@ namespace backend.Utilities
         
         public async Task SetResponse(JObject json, string reqArgs, Actions action)
         {
+            if(reqArgs.Length == 0)
+            {
+                await SetResponse(null, action);
+                return;
+            }
+            
             Dictionary<string, object> formData = 
                 json.ToObject<Dictionary<string, object>>() ?? 
                 throw new InvalidOperationException("data form json was null");
