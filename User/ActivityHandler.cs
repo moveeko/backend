@@ -51,6 +51,9 @@ namespace backend.UserManager
             command.CommandText =
                 $"Insert into user_{user.Id}.activity (data, type)  VALUES('{today.Data.ToString()}', {(int) today.Type});";
             await command.ExecuteNonQueryAsync();
+
+
+            await con.CloseAsync();
             
             return today; 
         }
@@ -74,6 +77,9 @@ namespace backend.UserManager
                  var stop = "";
              }
 
+             await con.CloseAsync();
+
+             
              return list;
          }
     }   

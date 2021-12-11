@@ -245,16 +245,4 @@
     <MESSAGE value="fix MainController.cs" />
     <option name="LAST_COMMIT_MESSAGE" value="fix MainController.cs" />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/User/ActivityHandler.cs</url>
-          <line>73</line>
-          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\User\ActivityHandler.cs" initialLine="73" containingFunctionPresentation="method 'ReturnActivity'" />
-          <option name="timeStamp" value="56" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-  </component>
 </project>
