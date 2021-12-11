@@ -215,7 +215,7 @@ namespace backend.UserManager
                     await command.ExecuteNonQueryAsync();
 
                     sql = $"create table user_{user.Id}.activity(" +
-                          $"data varchar," +
+                          $"data varchar(255)," +
                           $"type int," +
                           $"index serial);";
                     command.CommandText = sql;
@@ -241,6 +241,7 @@ namespace backend.UserManager
             {
                 string sql = $"SELECT * FROM base.base WHERE email = '{user.Email}';";
                 NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
+                
 
                 using (NpgsqlCommand command = new NpgsqlCommand(sql, con))
                 {
