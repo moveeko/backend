@@ -35,29 +35,9 @@ namespace backend.UserManager
         
         
         
-        //settings
-        public async Task<bool> SetNewLogin(string? newLogin) 
-        {               
-            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("Main"));
-            NpgsqlCommand command = new NpgsqlCommand();
-            command.Connection = con;
-            await con.OpenAsync();
-            //
-            command.CommandText =
-                $"UPDATE user_{this.Id}.user SET login = '{newLogin}';";
-            await command.ExecuteNonQueryAsync();            
-            command.CommandText =
-                $"UPDATE base.base SET login = '{newLogin}' WHERE id = {this.Id};";
-            await command.ExecuteNonQueryAsync();
-            
-            
-            await con.CloseAsync();
-
-            return true;
-        }
         public async Task<bool> SetNewEmail(string? newEmail) //Async
         {
-            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("Main"));
+            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
             NpgsqlCommand command = new NpgsqlCommand();
             command.Connection = con;
             await con.OpenAsync();
@@ -75,7 +55,7 @@ namespace backend.UserManager
         }
         public async Task<bool> SetNewAvatar(string? newAvatar) //Async
         {
-            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("Main"));
+            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
             NpgsqlCommand command = new NpgsqlCommand();
             command.Connection = con;
             await con.OpenAsync();
@@ -90,7 +70,7 @@ namespace backend.UserManager
         
         public async Task<bool> SetNewPassword(string? newPassword) //Async
         {
-            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("Main"));
+            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
             NpgsqlCommand command = new NpgsqlCommand();
             command.Connection = con;
             await con.OpenAsync();
