@@ -158,8 +158,7 @@ namespace backend.Companies
                 return false;
 
             return true;
-        }
-
+        } 
         public static async Task<List<Company>> GetAllCompany()
         {
             List<Company> companies = new List<Company>();
