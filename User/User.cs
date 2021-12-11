@@ -17,6 +17,7 @@ namespace backend.UserManager
             LastName = lastName;
             Email = email;
             Avatar = avatar == null ? "None" : avatar;
+            CompanyToken = token;
         }
 
         public User(int id, string? firstName, string? lastName, string? email)
@@ -32,8 +33,7 @@ namespace backend.UserManager
         public string? LastName { get ; set; }
         public string? Email { get ; set; }
         public string? Avatar { get; set; }
-        
-        
+        public string CompanyToken;
         
         public async Task<bool> SetNewEmail(string? newEmail) //Async
         {
