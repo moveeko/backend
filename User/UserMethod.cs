@@ -106,7 +106,7 @@ namespace backend.UserManager
                     id,
                     firstName,
                     lastName,
-                    email, avatar);
+                    email, reader.GetString(5),avatar);
             }
             
             await con.CloseAsync();
