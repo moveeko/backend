@@ -24,7 +24,7 @@ public class ActivityHandler
         }
     }
 
-    public static async Task<object> AddActivityBeforeWork(User user, TransportType type)
+    public static async Task<object> AddActivity(User user, TransportType type)
     {
         OneDay today = new OneDay(DateTime.Today, type);
         
