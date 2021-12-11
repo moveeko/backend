@@ -221,7 +221,7 @@ namespace backend.Controllers
         }
         
         [HttpPost("/api/v0/company/returnWorkers")]
-        public async Task<ActionResult<object>> ReturnWorkers(string companyToken)
+        public async Task<ActionResult<object>> ReturnWorkers(string token)
         {
             Task<dynamic> task = Task.Run(async () =>
             {
@@ -229,7 +229,7 @@ namespace backend.Controllers
 
                 await action.SetResponse(new[]
                 {
-                    new HandleAction.Arg("token", companyToken)
+                    new HandleAction.Arg("token", token)
                 }, Actions.GetCompanyWorkers);
 
                 return action.Response;

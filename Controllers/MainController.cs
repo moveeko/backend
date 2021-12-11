@@ -200,7 +200,7 @@ namespace backend.Controllers
             {
                 HandleAction action = new(_config);
 
-                await action.SetResponse(json, "token, id", Actions.GetCompanyWorkers);
+                await action.SetResponse(json, "token", Actions.GetCompanyWorkers);
 
                 return action.Response;
             })!;
