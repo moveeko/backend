@@ -41,17 +41,17 @@ public class ActivityHandler
         return today; 
     }
 
-    public static async Task<object> ReturnActivity(User user, int limit)
-    {
-        NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
-        await con.OpenAsync();
-        NpgsqlCommand command = new NpgsqlCommand();
-        command.Connection = con;
-        
-        command.CommandText =
-            $"SELECT * FROM user_{user.Id}.activity ORDER BY index DESC LIMIT {limit});";
-        await command.ExecuteNonQueryAsync();
-
-        return null;
-    }
+     public static async Task<object> ReturnActivity(User user, int limit)
+     {
+         NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
+         await con.OpenAsync();
+         NpgsqlCommand command = new NpgsqlCommand();
+         command.Connection = con;
+         
+         command.CommandText =
+             $"SELECT * FROM user_{user.Id}.activity ORDER BY index DESC LIMIT {limit});";
+         await command.ExecuteNonQueryAsync();
+ 
+         return null;
+     }
 }
