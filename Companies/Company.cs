@@ -13,6 +13,7 @@ namespace backend.Companies
         public string? CompanyId;
         public string CompanyName;
         public string? CompanyEmail;
+        public string? CompanyAvatar;
         public User[]? CompanyUsers;
 
         public List<int> workers;
@@ -24,12 +25,12 @@ namespace backend.Companies
             CompanyName = name;
         }
 
-        public Company(string? id, string? companyEmail, string companyName, List<int> ids)
+        public Company(string? id, string? companyEmail, string companyName,string companyAvatar, List<int> ids)
         {
             CompanyId = id;
             CompanyEmail = companyEmail;
             CompanyName = companyName;
-            //CompanyName = companyAvatar;
+            CompanyAvatar = companyAvatar;
             workers = ids;
         }
 

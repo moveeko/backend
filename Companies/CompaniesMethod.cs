@@ -114,7 +114,7 @@ namespace backend.Companies
                 string email = reader.GetString(3);
                 string avatar = reader.GetString(4);
 
-                company = new Company(id, email, name, ReturnWorkers(companyid).Result);
+                company = new Company(id, email, name, avatar, ReturnWorkers(companyid).Result);
             }
                 
             await con.CloseAsync();
