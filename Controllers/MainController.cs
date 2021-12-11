@@ -212,5 +212,24 @@ namespace backend.Controllers
             return data;
         }
         
+        [HttpPost("api/v1/company/removeWorker")]
+        public async Task<ActionResult<object>> RemoveWorker([FromBody] JObject json)
+        {
+            Task<dynamic> task = Task.Run(async () =>
+            {
+                HandleAction action = new(_config);
+
+                await action.SetResponse(json, "token, id", Actions.DeleteWorkerFromCompany);
+
+                return action.Response;
+            })!;
+
+            await task.WaitAsync(TimeSpan.FromSeconds(999));
+
+            dynamic data = task.Result;
+
+            return data;
+        }
+        
     }
 }

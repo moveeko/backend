@@ -241,5 +241,29 @@ namespace backend.Controllers
 
             return data;
         }
+        
+        [HttpPost("/api/v0/company/removeWorker")]
+        public async Task<ActionResult<object>> RemoveWorker(string token, int id)
+        {
+            Task<dynamic> task = Task.Run(async () =>
+            {
+                HandleAction action = new(_config);
+
+                await action.SetResponse(new[]
+                {
+                    new HandleAction.Arg("token", token),
+                    new HandleAction.Arg("id", id)
+                }, Actions.DeleteWorkerFromCompany);
+
+                return action.Response;
+            })!;
+
+            await task.WaitAsync(TimeSpan.FromSeconds(999));
+
+            dynamic data = task.Result;
+
+            return data;
+        }
+        
     }
 }

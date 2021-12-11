@@ -5,7 +5,7 @@
     <projectFile profileName="IIS Express">backend.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="127580c2-9f7f-400b-aee5-ece84f8cad4a" name="Changes" comment="more fixes">
+    <list default="true" id="127580c2-9f7f-400b-aee5-ece84f8cad4a" name="Changes" comment="chages for Controllers">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.backend/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.backend/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controllers/DeveloperController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/DeveloperController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controllers/MainController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/MainController.cs" afterDir="false" />
@@ -28,6 +28,7 @@
     <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Utilities/HandleAction.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Controllers/DeveloperController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
@@ -86,7 +87,7 @@
       <option name="presentableId" value="Default" />
       <updated>1639160557619</updated>
       <workItem from="1639160561656" duration="61000" />
-      <workItem from="1639160640846" duration="22647000" />
+      <workItem from="1639160640846" duration="23538000" />
     </task>
     <task id="LOCAL-00001" summary="Add Actions enum">
       <created>1639161431948</created>
@@ -151,7 +152,14 @@
       <option name="project" value="LOCAL" />
       <updated>1639186444873</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="chages for Controllers">
+      <created>1639187721062</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1639187721062</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -182,7 +190,8 @@
     <MESSAGE value="news" />
     <MESSAGE value="many fixes" />
     <MESSAGE value="more fixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="more fixes" />
+    <MESSAGE value="chages for Controllers" />
+    <option name="LAST_COMMIT_MESSAGE" value="chages for Controllers" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
