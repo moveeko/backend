@@ -290,6 +290,44 @@ namespace backend.Controllers
             return data;
         }
         
+        [HttpPost("/api/v1/user/AddActivity")]
+        public async Task<ActionResult<object>> AddActivity([FromBody] JObject json)
+        {
+            Task<dynamic> task = Task.Run(async () =>
+            {
+                HandleAction action = new(_config);
+
+                await action.SetResponse(json, "id, type", Actions.AddActivity);
+
+                return action.Response;
+            })!;
+
+            await task.WaitAsync(TimeSpan.FromSeconds(999));
+
+            dynamic data = task.Result;
+
+            return data;
+        }
+        
+        [HttpPost("/api/v1/user/ReturnActivity")]
+        public async Task<ActionResult<object>> ReturnActivity([FromBody] JObject json)
+        {
+            Task<dynamic> task = Task.Run(async () =>
+            {
+                HandleAction action = new(_config);
+
+                await action.SetResponse(json, "id, limit", Actions.ReturnActivity);
+
+                return action.Response;
+            })!;
+
+            await task.WaitAsync(TimeSpan.FromSeconds(999));
+
+            dynamic data = task.Result;
+
+            return data;
+        }
+        
         
     }
 }

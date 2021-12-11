@@ -8,12 +8,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="127580c2-9f7f-400b-aee5-ece84f8cad4a" name="Changes" comment="add removeWorker endpoint">
+    <list default="true" id="127580c2-9f7f-400b-aee5-ece84f8cad4a" name="Changes" comment="somefixes">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.backend/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.backend/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/DeveloperController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/DeveloperController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controllers/MainController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/MainController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Structure/Actions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Structure/Actions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/User/User.cs" beforeDir="false" afterPath="$PROJECT_DIR$/User/User.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/User/ActivityHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/User/ActivityHandler.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,7 +23,31 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/575c31ecc35a636b6f962cb71d53992552941a18982aae1c8e6c16305cc3761b/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/User/ActivityHandler.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Utilities/HandleAction.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Controllers/DeveloperController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Controllers/DeveloperController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/IL/99af41e51f8f4e4fac04f388c69639ea19400/12/18a502c8/0200000Cpdb.il" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Controllers/DeveloperController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/User/ActivityHandler.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -35,7 +58,8 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.3502052" />
+    <property name="DatabaseDriversLRU" value="postgresql" />
+    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.3498965" />
     <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.0" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
@@ -166,7 +190,21 @@
       <option name="project" value="LOCAL" />
       <updated>1639188548897</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="add chage ip help">
+      <created>1639198675057</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1639198675058</updated>
+    </task>
+    <task id="LOCAL-00013" summary="somefixes">
+      <created>1639200997822</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1639200997822</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -199,6 +237,27 @@
     <MESSAGE value="more fixes" />
     <MESSAGE value="chages for Controllers" />
     <MESSAGE value="add removeWorker endpoint" />
-    <option name="LAST_COMMIT_MESSAGE" value="add removeWorker endpoint" />
+    <MESSAGE value="add chage ip help" />
+    <MESSAGE value="somefixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="somefixes" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/User/ActivityHandler.cs</url>
+          <line>73</line>
+          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\User\ActivityHandler.cs" initialLine="73" containingFunctionPresentation="method 'ReturnActivity'">
+            <startOffsets>
+              <option value="2301" />
+            </startOffsets>
+            <endOffsets>
+              <option value="2315" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="56" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
