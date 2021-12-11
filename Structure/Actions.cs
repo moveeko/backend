@@ -17,6 +17,10 @@ namespace backend.structure
         GetAllCompanies,
         RegisterCompany,
         DeleteWorkerFromCompany,
+        SetNewLogin,
+        SetNewAvatar,
+        SetNewEmail,
+        SetNewPassword,
         ChangeCompanyPrivacy,
         GetTodayActivity,
         SetStartActivity,
@@ -37,6 +41,11 @@ namespace backend.structure
                 Actions.CreateUser => UserMethod.CreateUser(args["firstName"].ToString(), args["lastName"].ToString(), args["email"].ToString(), args["password"].ToString()).Result,
                 Actions.IsUserExist => await UserMethod.IsUserExist((int)args["id"]),
                 Actions.GetUserData => await UserMethod.GetUserData((int)args["id"]),
+                
+                Actions.SetNewLogin  => UserMethod.GetUserData((int)args["int"]).Result.SetNewLogin(args["newLogin"].ToString()),
+                Actions.SetNewEmail  => UserMethod.GetUserData((int)args["int"]).Result.SetNewEmail(args["newEmail"].ToString()),
+                Actions.SetNewAvatar  => UserMethod.GetUserData((int)args["int"]).Result.SetNewAvatar(args["newAvatar"].ToString()),
+                Actions.SetNewPassword  => UserMethod.GetUserData((int)args["int"]).Result.SetNewPassword(args["newPassword"].ToString()),
                 
                 Actions.RegisterCompany => await CompaniesMethod.CreateCompany(args["name"].ToString(), args["email"].ToString(), args["password"].ToString()),
                 Actions.GetAllCompanies => await CompaniesMethod.GetAllCompany(),
