@@ -16,7 +16,7 @@ namespace backend.Companies
     {
         public static async Task<object> IsCompanyExist(string? id)
         {
-            string sql = $"SELECT * FROM base.base WHERE id = {id};";
+            string sql = $"SELECT * FROM base.company WHERE idtoken = '{id}';";
 
             NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
             NpgsqlCommand command = new NpgsqlCommand(sql, con);
@@ -34,7 +34,7 @@ namespace backend.Companies
             }
             else
             {
-                throw new CustomError("UserNotExist");
+                throw new CustomError("CompanyNotExist");
             }
         }
         public static async Task<object> CreateCompany(string? name, string? email, string? password)
@@ -81,7 +81,7 @@ namespace backend.Companies
                 return "";
             }
         }
-        public static async Task<Company> GetCompany(string? id, bool reqCheckId)
+        public static async Task<Company> GetCompany(string? id, bool reqCheckId = true)
         {
             if (reqCheckId)
             {
@@ -93,9 +93,8 @@ namespace backend.Companies
                 catch (CustomError cf)
                 {
                     name = cf.Name;
+                    throw new CustomError(name);
                 }
-
-                throw new CustomError(name);
             }
 
             string sql = $"SELECT * FROM company_{id}.data;";

@@ -11,7 +11,7 @@ namespace backend.Controllers
 {
     [EnableCors]
     [ApiController]
-    public class  +MainController : Controller
+    public class MainController : Controller
     {
         private readonly IWebHostEnvironment _config;
 
