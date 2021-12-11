@@ -110,7 +110,7 @@ namespace backend.Companies
                 await reader.ReadAsync();
                 string companyid = reader.GetString(0);
                 string name = reader.GetString(1);
-                string email = reader.GetString(3);
+                string email = reader.GetString(2);
                 string avatar = reader.GetString(4);
 
                 company = new Company(id, email, name, avatar, ReturnWorkers(companyid).Result);
