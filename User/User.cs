@@ -60,6 +60,9 @@ namespace backend.UserManager
 
             return true;
         }
+        
+        
+
         public async Task<object> SetNewEmail(string? newEmail) //Async
         {
             NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("Main"));

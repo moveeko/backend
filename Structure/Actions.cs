@@ -9,7 +9,7 @@ namespace backend.structure
 {
     public enum Actions
     {
-        Login,
+        LoginUser,
         IsUserExist,
         GetUserData,
         CreateUser,
@@ -20,7 +20,9 @@ namespace backend.structure
         GetTodayActivity,
         SetStartActivity,
         SetEndActivity,
+        GetCompanyWorkers,
         JoinCompany,
+        LoginCompany,
         Empty
     }
 
@@ -30,17 +32,16 @@ namespace backend.structure
         {
             return action switch
             {
-                Actions.Login => UserMethod.Login(args["email"].ToString(), args["password"].ToString()).Result,
+                Actions.LoginUser => UserMethod.Login(args["email"].ToString(), args["password"].ToString()).Result,
                 Actions.CreateUser => UserMethod.CreateUser(args["firstName"].ToString(), args["lastName"].ToString(), args["email"].ToString(), args["password"].ToString()).Result,
                 Actions.IsUserExist => await UserMethod.IsUserExist((int)args["id"]),
                 Actions.GetUserData => await UserMethod.GetUserData((int)args["id"]),
                 
                 Actions.RegisterCompany => await CompaniesMethod.CreateCompany(args["name"].ToString(), args["email"].ToString(), args["password"].ToString()),
-                Actions.JoinCompany => (await CompaniesMethod.GetCompany(args["id"].ToString(), false)).AddWorkers((int)args["workersId"]),
                 Actions.GetAllCompanies => await CompaniesMethod.GetAllCompany(),
-                _ => throw new CustomError("UnknowAction", 500)
                 Actions.JoinCompany => await CompaniesMethod.GetCompany(args["token"].ToString(), false).Result.AddWorkers((int)args["id"]),
-                Actions.GetCompanyWorkers => await CompaniesMethod.GetCompany(args["token"].ToString(), false).Result.GetWorkers(),
+                Actions.GetCompanyWorkers => await CompaniesMethod.GetCompany(args["token"].ToString(), false).Result.ReturnWorkers(),
+                Actions.LoginCompany => await CompaniesMethod.Login(args["email"].ToString(), args["password"].ToString()),
                 
                 _ => throw new CustomError("UnknownAction", 500)
             };

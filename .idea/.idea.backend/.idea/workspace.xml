@@ -12,6 +12,7 @@
       <change beforePath="$PROJECT_DIR$/Controllers/DeveloperController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/DeveloperController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controllers/MainController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/MainController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Structure/Actions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Structure/Actions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/User/User.cs" beforeDir="false" afterPath="$PROJECT_DIR$/User/User.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,12 +23,16 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Controllers/DeveloperController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/krzys/Documents/programing/.hc/structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Utilities/HandleAction.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="226aaySvnEbzlnO3mKTZSsdOHy0" />
   <component name="ProjectViewState">
@@ -84,7 +89,7 @@
       <option name="presentableId" value="Default" />
       <updated>1639160557619</updated>
       <workItem from="1639160561656" duration="61000" />
-      <workItem from="1639160640846" duration="18352000" />
+      <workItem from="1639160640846" duration="21978000" />
     </task>
     <task id="LOCAL-00001" summary="Add Actions enum">
       <created>1639161431948</created>
@@ -306,19 +311,6 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="22" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Utilities/HandleAction.cs</url>
-          <line>74</line>
-          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\Utilities\HandleAction.cs" initialLine="74" containingFunctionPresentation="method 'SetResponse'">
-            <startOffsets>
-              <option value="2373" />
-            </startOffsets>
-            <endOffsets>
-              <option value="2411" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="32" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/User/UserMethod.cs</url>

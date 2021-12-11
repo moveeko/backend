@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using backend.UserManager;
 using backend.Utilities;
 using backend.Utilitis;
 using Npgsql;
@@ -13,7 +16,8 @@ namespace backend.Companies
 
         public List<int> workers;
 
-        public Company(string? id, string? companyEmail, string? name){
+        public Company(string? id, string? companyEmail, string? name)
+        {
             CompanyId = id;
             CompanyEmail = companyEmail;
             CompanyName = name;
@@ -40,27 +44,70 @@ namespace backend.Companies
                 await command.ExecuteNonQueryAsync();
                 await con.CloseAsync();
             }
-            
+
             await con.CloseAsync();
             return true;
         }
-    }
-    
-    private static async Task<bool> IsUserInCompany(int id)
-    {
-        string sql = $"SELECT * FROM base.company WHERE idtoken = {id};";
-        NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
-        bool hasRows;
-        using (NpgsqlCommand command = new NpgsqlCommand(sql, con))
+        
+        public async Task<bool> RemoveWorkers(int userid)
         {
-            await con.OpenAsync();
-            NpgsqlDataReader reader = await command.ExecuteReaderAsync();
-            hasRows = reader.HasRows;
+            string sql = $"DELETE FROM company_{CompanyId}.workers WHERE id = {userid};";
+
+            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
+            Company company;
+
+            await using (NpgsqlCommand command = new NpgsqlCommand(sql, con))
+            {
+                await con.OpenAsync();
+                await command.ExecuteNonQueryAsync();
+                await con.CloseAsync();
+            }
 
             await con.CloseAsync();
+            return true;
         }
-        return !hasRows;
+        
+        public async Task<List<User>> ReturnWorkers()
+        {
+            string sql = $"SELECT * FROM company_{CompanyId}.workers;";
 
+            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
+            Company company;
+
+            List<User> workers = new List<User>();
+
+            await using (NpgsqlCommand command = new NpgsqlCommand(sql, con))
+            {
+                await con.OpenAsync();
+                NpgsqlDataReader reader = await command.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
+                {
+                    workers.Add(UserMethod.GetUserData(reader.GetInt32(0), false).Result);
+                }
+                await con.CloseAsync();
+            }
+
+            await con.CloseAsync();
+            return workers;
+        }  
+
+        private static async Task<bool> IsUserInCompany(int id)
+        {
+            string sql = $"SELECT * FROM base.company WHERE idtoken = {id};";
+            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
+            bool hasRows;
+            await using (NpgsqlCommand command = new NpgsqlCommand(sql, con))
+            {
+                await con.OpenAsync();
+                NpgsqlDataReader reader = await command.ExecuteReaderAsync();
+                hasRows = reader.HasRows;
+
+                await con.CloseAsync();
+            }
+
+            return !hasRows;
+
+        }
     }
 }
 

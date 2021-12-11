@@ -29,7 +29,7 @@ namespace backend.Controllers
                 {
                     new HandleAction.Arg("email", email),
                     new HandleAction.Arg("password", password)
-                }, Actions.Login);
+                }, Actions.LoginUser);
 
                 return action.Response;
             })!;
@@ -174,6 +174,29 @@ namespace backend.Controllers
             return data;
         }
         
+        [HttpPost("/api/v0/company/loginCompany")]
+        public async Task<ActionResult<object>> LoginCompany(string companyEmail, string companyPassword)
+        {
+            Task<dynamic> task = Task.Run(async () =>
+            {
+                HandleAction action = new(_config);
+
+                await action.SetResponse(new[]
+                {
+                    new HandleAction.Arg("email", companyEmail),
+                    new HandleAction.Arg("password", companyPassword)
+                }, Actions.LoginCompany);
+
+                return action.Response;
+            })!;
+
+            await task.WaitAsync(TimeSpan.FromSeconds(999));
+
+            dynamic data = task.Result;
+
+            return data;
+        }
+        
         [HttpPost("/api/v0/company/joinCompany")]
         public async Task<ActionResult<object>> JoinCompany(string companyToken, int id)
         {
@@ -198,7 +221,7 @@ namespace backend.Controllers
         }
         
         [HttpPost("/api/v0/company/returnWorkers")]
-        public async Task<ActionResult<object>> ReturnWorkers(string companyToken, int id)
+        public async Task<ActionResult<object>> ReturnWorkers(string companyToken)
         {
             Task<dynamic> task = Task.Run(async () =>
             {
@@ -206,9 +229,8 @@ namespace backend.Controllers
 
                 await action.SetResponse(new[]
                 {
-                    new HandleAction.Arg("token", companyToken),
-                    new HandleAction.Arg("id", id)
-                }, Actions.ReturnWorkers);
+                    new HandleAction.Arg("token", companyToken)
+                }, Actions.GetCompanyWorkers);
 
                 return action.Response;
             })!;
