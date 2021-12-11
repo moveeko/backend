@@ -1,10 +1,7 @@
-using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
-using System.Threading.Tasks;
-using backend.Utilities;
+using System.Text;
 using Npgsql;
-using backend.structure;
 using backend.Utilitis;
 
 namespace backend.UserManager
@@ -15,7 +12,7 @@ namespace backend.UserManager
         {
             Id = id;
             FirstName = firstName;
-            LastName = firstName;
+            LastName = lastName;
             Email = email;
             Avatar = avatar == null ? "None" : avatar;
         }
@@ -32,17 +29,13 @@ namespace backend.UserManager
         public string? FirstName { get ; set; }
         public string? LastName { get ; set; }
         public string? Email { get ; set; }
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
-        public int PlaceInRanging { get ; set; }
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public string? Avatar { get; set; }
         
         
         
         //settings
-        public async Task<object> SetNewLogin(string? newLogin) //Async
-        {                // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-
+        public async Task<bool> SetNewLogin(string? newLogin) 
+        {               
             NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("Main"));
             NpgsqlCommand command = new NpgsqlCommand();
             command.Connection = con;
@@ -60,10 +53,7 @@ namespace backend.UserManager
 
             return true;
         }
-        
-        
-
-        public async Task<object> SetNewEmail(string? newEmail) //Async
+        public async Task<bool> SetNewEmail(string? newEmail) //Async
         {
             NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("Main"));
             NpgsqlCommand command = new NpgsqlCommand();
@@ -81,7 +71,7 @@ namespace backend.UserManager
             await con.CloseAsync();
             return true;
         }
-        public async Task<object> SetNewAvatar(string? newAvatar) //Async
+        public async Task<bool> SetNewAvatar(string? newAvatar) //Async
         {
             NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("Main"));
             NpgsqlCommand command = new NpgsqlCommand();
@@ -94,29 +84,22 @@ namespace backend.UserManager
             
             await con.CloseAsync();
             return true;
-        }
-        public async Task ResetPasswordSendEmail()
+        }        
+        
+        public async Task<bool> SetNewPassword(string? newPassword) //Async
         {
-            MailMessage msg = new MailMessage();
-                
-            msg.From = new MailAddress("walkwardsdev@gmail.com");
-            if (Email != null) msg.To.Add(Email);
-            msg.Subject = "Aktywuj konto";
-            msg.Body = $"<a href='https://backend.walkwards.pl/User/ActivateAccount?id={this.Id}'>Aktywuj konto</a>";
-            msg.Priority = MailPriority.High;
-            msg.IsBodyHtml = true;
-                
-            using (SmtpClient client = new SmtpClient())
-            {
-                client.EnableSsl = true;
-                client.UseDefaultCredentials = false;
-                client.Credentials = new NetworkCredential("walkwardsdev@gmail.com", "uK8ujw@vH@qh2e6g!V_phWu*P!");
-                client.Host = "smtp.gmail.com";
-                client.Port = 587;
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                
-                await client.SendMailAsync(msg);
-            }
+            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("Main"));
+            NpgsqlCommand command = new NpgsqlCommand();
+            command.Connection = con;
+            await con.OpenAsync();
+            //
+            if (newPassword != null)
+                command.CommandText =
+                    $"UPDATE user_{this.Id}.user SET password = '{Convert.ToBase64String(Encoding.UTF8.GetBytes(newPassword))}';";
+            await command.ExecuteNonQueryAsync();
+            
+            await con.CloseAsync();
+            return true;
         }
     }
 }
