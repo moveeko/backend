@@ -29,6 +29,7 @@ namespace backend.Utilities
         public HandleAction(IWebHostEnvironment config)
         {
             _config = config;
+            Response = new CustomError("UnKnownError", 500);
         }
         
         public new dynamic? Response;
@@ -38,17 +39,14 @@ namespace backend.Utilities
             return StatusCode(500, _config.IsDevelopment() ? ex.Message : "please contact support");
         }
         
-         public async Task SetResponse(Arg[] args, bool reqToken, Actions action)
+         public async Task SetResponse(Arg[]? args, Actions action)
         {
             try
             {
-                Dictionary<string, object> data = args.ToDictionary(item => item.Name, item => item.Value);
-
-                if (reqToken)
-                {
-                    //check token here
-                }
-
+                Dictionary<string, object> data = args is null ? 
+                    new Dictionary<string, object>() : 
+                    args.ToDictionary(item => item.Name, item => item.Value);
+                
                 var task = Task.Run(async () => await ActionHandler.GetAction(action, data));
 
                 //TimeoutException if too long (10 sec)
@@ -78,7 +76,7 @@ namespace backend.Utilities
             }
         }
         
-        public async Task SetResponse(JObject json, string reqArgs ,bool reqToken, Actions action)
+        public async Task SetResponse(JObject json, string reqArgs, Actions action)
         {
             Dictionary<string, object> formData = 
                 json.ToObject<Dictionary<string, object>>() ?? 
@@ -103,9 +101,8 @@ namespace backend.Utilities
 
             if (!error)
             {
-                await SetResponse(args.ToArray(), reqToken, action);
+                await SetResponse(args.ToArray(), action);
             }
         }
-    }
     }
 }
