@@ -16,6 +16,100 @@ namespace backend.Controllers
         {
             _config = config;
         }
+        
+        //Actions
+        [HttpPost("/api/v0/action/login")]
+        public async Task<ActionResult<object>> Login(string email, string password)
+        {
+            Task<dynamic> task = Task.Run(async () =>
+            {
+                HandleAction action = new(_config);
+
+                await action.SetResponse(new []
+                {
+                    new HandleAction.Arg("email", email),
+                    new HandleAction.Arg("password", password)
+                }, Actions.Login);
+
+                return action.Response;
+            })!;
+
+            await task.WaitAsync(TimeSpan.FromSeconds(999));
+
+            dynamic data = task.Result;
+
+            return data;
+        }
+        
+        [HttpPost("/api/v0/action/isUserExist")]
+        public async Task<ActionResult<object>> IsUserExist(int id)
+        {
+            Task<dynamic> task = Task.Run(async () =>
+            {
+                HandleAction action = new(_config);
+
+                await action.SetResponse(new []
+                {
+                    new HandleAction.Arg("id", id)
+                }, Actions.IsUserExist);
+
+                return action.Response;
+            })!;
+
+            await task.WaitAsync(TimeSpan.FromSeconds(999));
+
+            dynamic data = task.Result;
+
+            return data;
+        }
+        
+        [HttpPost("/api/v0/action/getUserData")]
+        public async Task<ActionResult<object>> GetUserData(int id)
+        {
+            Task<dynamic> task = Task.Run(async () =>
+            {
+                HandleAction action = new(_config);
+
+                await action.SetResponse(new []
+                {
+                    new HandleAction.Arg("id", id)
+                }, Actions.GetUserData);
+
+                return action.Response;
+            })!;
+
+            await task.WaitAsync(TimeSpan.FromSeconds(999));
+
+            dynamic data = task.Result;
+
+            return data;
+        }
+        
+        [HttpPost("/api/v0/action/createUser")]
+        public async Task<ActionResult<object>> CreateUser(string firstName, string lastName, string email, string password)
+        {
+            Task<dynamic> task = Task.Run(async () =>
+            {
+                HandleAction action = new(_config);
+
+                await action.SetResponse(new[]
+                {
+                    new HandleAction.Arg("firstName", firstName),
+                    new HandleAction.Arg("lastName", lastName),
+                    new HandleAction.Arg("email", email),
+                    new HandleAction.Arg("password", password)
+                }, Actions.CreateUser);
+
+                return action.Response;
+            })!;
+
+            await task.WaitAsync(TimeSpan.FromSeconds(999));
+
+            dynamic data = task.Result;
+
+            return data;
+        }
+    
 
         //Company Functions
         [HttpGet("/api/v0/company/getCompanyRanking")]
@@ -69,6 +163,52 @@ namespace backend.Controllers
                     new HandleAction.Arg("email", companyEmail),
                     new HandleAction.Arg("password", companyPassword)
                 }, Actions.RegisterCompany);
+
+                return action.Response;
+            })!;
+
+            await task.WaitAsync(TimeSpan.FromSeconds(999));
+
+            dynamic data = task.Result;
+
+            return data;
+        }
+        
+        [HttpPost("/api/v0/company/joinCompany")]
+        public async Task<ActionResult<object>> JoinCompany(string companyToken, int id)
+        {
+            Task<dynamic> task = Task.Run(async () =>
+            {
+                HandleAction action = new(_config);
+
+                await action.SetResponse(new[]
+                {
+                    new HandleAction.Arg("token", companyToken),
+                    new HandleAction.Arg("id", id)
+                }, Actions.JoinCompany);
+
+                return action.Response;
+            })!;
+
+            await task.WaitAsync(TimeSpan.FromSeconds(999));
+
+            dynamic data = task.Result;
+
+            return data;
+        }
+        
+        [HttpPost("/api/v0/company/returnWorkers")]
+        public async Task<ActionResult<object>> ReturnWorkers(string companyToken, int id)
+        {
+            Task<dynamic> task = Task.Run(async () =>
+            {
+                HandleAction action = new(_config);
+
+                await action.SetResponse(new[]
+                {
+                    new HandleAction.Arg("token", companyToken),
+                    new HandleAction.Arg("id", id)
+                }, Actions.CreateUser);
 
                 return action.Response;
             })!;

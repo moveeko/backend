@@ -2,49 +2,48 @@ using backend.Utilities;
 using backend.Utilitis;
 using Npgsql;
 
-namespace backend.Companies;
-
-public class Company
+namespace backend.Companies
 {
-    public string? CompanyId;
-    public string CompanyName;
-    public string? CompanyEmail;
-
-    public List<int> workers;
-
-    public Company(string? id, string? companyEmail)
+    public class Company
     {
-        CompanyId = id;
-        CompanyEmail = companyEmail;
-    }
+        public string? CompanyId;
+        public string CompanyName;
+        public string? CompanyEmail;
+        public User[]? CompanyUsers;
 
-    public Company(string? id, string? companyEmail, string companyName, List<int> ids)
-    {
-        CompanyId = id;
-        CompanyEmail = companyEmail;
-        CompanyName = companyName;
-        workers = ids;
-    }
+        public List<int> workers;
 
-
-    public async Task<bool> AddWorkers(int userid)
-    {
-        if (IsUserInCompany(userid).Result) throw new CustomError("user is in company");
-        
-        string sql = $"INSERT INTO company_{CompanyId}.workers VALUES({userid});";
-
-        NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
-        Company company;
-
-        await using (NpgsqlCommand command = new NpgsqlCommand(sql, con))
+        public Company(string? id, string? companyEmail)
         {
-            await con.OpenAsync();
-            await command.ExecuteNonQueryAsync();
-            await con.CloseAsync();
+            CompanyId = id;
+            CompanyEmail = companyEmail;
         }
+
+        public Company(string? id, string? companyEmail, string companyName, List<int> ids)
+        {
+            CompanyId = id;
+            CompanyEmail = companyEmail;
+            CompanyName = companyName;
+            workers = ids;
+        }
+
+        public async Task<bool> AddWorkers(int userid)
+        {
+            string sql = $"INSERT INTO company_{CompanyId}.workers VALUES({userid});";
+
+            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
+            Company company;
+
+            await using (NpgsqlCommand command = new NpgsqlCommand(sql, con))
+            {
+                await con.OpenAsync();
+                await command.ExecuteNonQueryAsync();
+                await con.CloseAsync();
+            }
             
-        await con.CloseAsync();
-        return true;
+            await con.CloseAsync();
+            return true;
+        }
     }
     
     private static async Task<bool> IsUserInCompany(int id)
@@ -64,3 +63,4 @@ public class Company
 
     }
 }
+

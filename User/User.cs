@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
+using System.Threading.Tasks;
 using backend.Utilities;
 using Npgsql;
 using backend.structure;
@@ -10,7 +11,7 @@ namespace backend.UserManager
 {
     public class User
     {        
-        public User(int id, string? firstName, string? lastName, string? email, string token, string? avatar = "defult", bool? isActivated = false, int accoutPrivacy = 0)
+        public User(int id, string? firstName, string? lastName, string? email, string token, string? avatar = "defult", int accoutPrivacy = 0)
         {
             Id = id;
             FirstName = firstName;
