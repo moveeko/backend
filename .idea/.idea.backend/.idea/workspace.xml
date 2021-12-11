@@ -8,10 +8,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="127580c2-9f7f-400b-aee5-ece84f8cad4a" name="Changes" comment="fix MainController.cs">
+    <list default="true" id="127580c2-9f7f-400b-aee5-ece84f8cad4a" name="Changes" comment="try fix controlers">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.backend/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.backend/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controllers/MainController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/MainController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Structure/Actions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Structure/Actions.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,9 +21,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-<<<<<<< HEAD
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/575c31ecc35a636b6f962cb71d53992552941a18982aae1c8e6c16305cc3761b/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
-=======
+    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
@@ -56,9 +53,9 @@
     <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Controllers/MainController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
->>>>>>> 09421ff1f8cf699c20178ac9d1c4243bb039a2ed
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -76,6 +73,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="XThreadsFramesViewSplitterKey" value="0.3710145" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
@@ -288,24 +286,17 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-<<<<<<< HEAD
-          <url>file://$PROJECT_DIR$/Companies/CompaniesMethod.cs</url>
-          <line>90</line>
-          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\Companies\CompaniesMethod.cs" initialLine="90" containingFunctionPresentation="method 'GetCompany'" />
-          <option name="timeStamp" value="62" />
-=======
           <url>file://$PROJECT_DIR$/User/ActivityHandler.cs</url>
           <line>73</line>
           <properties documentPath="C:\Users\krzys\Documents\programing\.hc\User\ActivityHandler.cs" initialLine="73" containingFunctionPresentation="method 'ReturnActivity'">
             <startOffsets>
-              <option value="2301" />
+              <option value="2295" />
             </startOffsets>
             <endOffsets>
-              <option value="2315" />
+              <option value="2309" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="56" />
->>>>>>> 09421ff1f8cf699c20178ac9d1c4243bb039a2ed
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
