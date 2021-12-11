@@ -265,6 +265,29 @@ namespace backend.Controllers
             return data;
         }
         
+        [HttpPost("/api/v0/company/setNewAvatar")]
+        public async Task<ActionResult<object>> SetNewAvatar(string token, string avatar)
+        {
+            Task<dynamic> task = Task.Run(async () =>
+            {
+                HandleAction action = new(_config);
+
+                await action.SetResponse(new[]
+                {
+                    new HandleAction.Arg("companyToken", token),
+                    new HandleAction.Arg("newAvatar", avatar)
+                }, Actions.SetNewAvatarCompany);
+
+                return action.Response;
+            })!;
+
+            await task.WaitAsync(TimeSpan.FromSeconds(999));
+
+            dynamic data = task.Result;
+
+            return data;
+        }
+        
         //User actions
 
         [HttpPost("/api/v0/user/setNewEmail")]

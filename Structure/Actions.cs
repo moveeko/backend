@@ -53,7 +53,7 @@ namespace backend.structure
                 
                 Actions.RegisterCompany => await CompaniesMethod.CreateCompany(args["name"].ToString(), args["email"].ToString(), args["password"].ToString()),
                 Actions.GetAllCompanies => await CompaniesMethod.GetAllCompany(),
-                Actions.JoinCompany => CompaniesMethod.GetCompany(args["token"].ToString(), false).Result.AddWorkers((int)args["id"]),
+                Actions.JoinCompany => await CompaniesMethod.GetCompany(args["token"].ToString(), false).Result.AddWorkers((int)args["id"]),
                 Actions.GetCompanyWorkers => await CompaniesMethod.GetCompany(args["token"].ToString(), false).Result.ReturnWorkers(),
                 Actions.LoginCompany => await CompaniesMethod.Login(args["email"].ToString(), args["password"].ToString()),
                 Actions.DeleteWorkerFromCompany => CompaniesMethod.GetCompany(args["token"].ToString(),  false).Result.DeleteWorker((int)args["id"]),
@@ -61,9 +61,9 @@ namespace backend.structure
                 Actions.AddActivity => await ActivityHandler.AddActivity(await UserMethod.GetUserData((int)args["id"], false), (ActivityHandler.TransportType)args["type"]),
                 Actions.ReturnActivity => await ActivityHandler.ReturnActivity(await UserMethod.GetUserData((int)args["id"], false), (int)args["limit"]),
                 
-                Actions.SetNewEmailCompany  => await CompaniesMethod.GetCompany((int)args["id"]).Result.SetNewEmail(args["newEmail"].ToString()),
-                Actions.SetNewAvatarCompany  => await CompaniesMethod.GetCompany((int)args["id"]).Result.SetNewAvatar(args["newAvatar"].ToString()),
-                Actions.SetNewPasswordCompany  => await CompaniesMethod.GetCompany((int)args["id"]).Result.SetNewPassword(args["newPassword"].ToString()),
+                Actions.SetNewEmailCompany  => await CompaniesMethod.GetCompany(args["companyToken"].ToString()).Result.SetNewEmail(args["newEmail"].ToString()),
+                Actions.SetNewAvatarCompany  => await CompaniesMethod.GetCompany(args["companyToken"].ToString()).Result.SetNewAvatar(args["newAvatar"].ToString()),
+                Actions.SetNewPasswordCompany  => await CompaniesMethod.GetCompany(args["companyToken"].ToString()).Result.SetNewPassword(args["newPassword"].ToString()),
                 
                 _ => throw new CustomError("UnknownAction", 500)
             };
