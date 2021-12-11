@@ -65,7 +65,6 @@ namespace backend.Companies
                 await con.CloseAsync();
             }
 
-            await con.CloseAsync();
             return true;
         }
         
