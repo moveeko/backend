@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using backend.UserManager;
 using backend.Utilities;
@@ -64,7 +65,6 @@ namespace backend.Companies
                 await con.CloseAsync();
             }
 
-            await con.CloseAsync();
             return true;
         }
         
@@ -126,6 +126,55 @@ namespace backend.Companies
 
             return !hasRows;
 
+        }
+        
+                public async Task<bool> SetNewEmail(string? newEmail) //Async
+        {
+            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
+            NpgsqlCommand command = new NpgsqlCommand();
+            command.Connection = con;
+            await con.OpenAsync();
+            //
+            command.CommandText =
+                $"UPDATE company_{this.CompanyId}.data SET email = '{newEmail}';";
+            await command.ExecuteNonQueryAsync();
+            
+            command.CommandText =
+                $"UPDATE base.company SET email = '{newEmail}' WHERE id = {this.CompanyId};";
+            await command.ExecuteNonQueryAsync();
+            
+            await con.CloseAsync();
+            return true;
+        }
+        public async Task<bool> SetNewAvatar(string? newAvatar) //Async
+        {
+            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
+            NpgsqlCommand command = new NpgsqlCommand();
+            command.Connection = con;
+            await con.OpenAsync();
+            //
+            command.CommandText =
+                $"UPDATE company_{this.CompanyId}.data SET avatar = '{newAvatar}';";
+            await command.ExecuteNonQueryAsync();
+            
+            await con.CloseAsync();
+            return true;
+        }        
+        
+        public async Task<bool> SetNewPassword(string? newPassword) //Async
+        {
+            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
+            NpgsqlCommand command = new NpgsqlCommand();
+            command.Connection = con;
+            await con.OpenAsync();
+            //
+            if (newPassword != null)
+                command.CommandText =
+                    $"UPDATE company_{this.CompanyId}.data SET password = '{Convert.ToBase64String(Encoding.UTF8.GetBytes(newPassword))}';";
+            await command.ExecuteNonQueryAsync();
+            
+            await con.CloseAsync();
+            return true;
         }
     }
 }

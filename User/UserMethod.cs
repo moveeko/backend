@@ -53,6 +53,8 @@ namespace backend.UserManager
             }
             else
             {
+                await con.CloseAsync();
+
                 throw new CustomError("InvalidLogin");
             }
 
@@ -136,6 +138,7 @@ namespace backend.UserManager
             {
                 return "";
             }
+            
         }
         public static async Task<User> CreateUser(string? firstName, string? lastName, string? email, string? password)
         {
