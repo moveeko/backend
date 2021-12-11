@@ -27,7 +27,7 @@ namespace backend.Controllers
             {
                 HandleAction action = new(_config);
 
-                await action.SetResponse(json, "email, string", Actions.LoginUser);
+                await action.SetResponse(json, "email, password", Actions.LoginUser);
 
                 return action.Response;
             })!;

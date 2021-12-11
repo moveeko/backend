@@ -8,10 +8,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="127580c2-9f7f-400b-aee5-ece84f8cad4a" name="Changes" comment="chc">
+    <list default="true" id="127580c2-9f7f-400b-aee5-ece84f8cad4a" name="Changes" comment="fix MainController.cs">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.backend/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.backend/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controllers/MainController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/MainController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Utilities/HandleAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Utilities/HandleAction.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Structure/Actions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Structure/Actions.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,6 +31,7 @@
     <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Utilities/HandleAction.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Controllers/DeveloperController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Controllers/DeveloperController.cs" root0="SKIP_HIGHLIGHTING" />
@@ -233,7 +234,14 @@
       <option name="project" value="LOCAL" />
       <updated>1639208203437</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="fix MainController.cs">
+      <created>1639209692125</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1639209692125</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -270,7 +278,8 @@
     <MESSAGE value="add some endpoints" />
     <MESSAGE value="some changes" />
     <MESSAGE value="chc" />
-    <option name="LAST_COMMIT_MESSAGE" value="chc" />
+    <MESSAGE value="fix MainController.cs" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix MainController.cs" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
