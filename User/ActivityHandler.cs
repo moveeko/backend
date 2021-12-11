@@ -49,7 +49,7 @@ public class ActivityHandler
         command.Connection = con;
         
         command.CommandText =
-            $"SELECT * FROM user_{user.Id}.activity ORDER BY index ASC LIMIT {limit});";
+            $"SELECT * FROM user_{user.Id}.activity ORDER BY index DESC LIMIT {limit});";
         await command.ExecuteNonQueryAsync();
 
         return null;
