@@ -217,8 +217,7 @@ namespace backend.UserManager
                     sql = $"create table user_{user.Id}.activity(" +
                           $"data varchar," +
                           $"type int," +
-                          $"GoOffice varchar" +
-                          $"BackOffice varchar);";
+                          $"index serial);";
                     command.CommandText = sql;
                     await command.ExecuteNonQueryAsync();
                     

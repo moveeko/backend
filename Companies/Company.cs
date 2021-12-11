@@ -28,6 +28,7 @@ namespace backend.Companies
             CompanyId = id;
             CompanyEmail = companyEmail;
             CompanyName = companyName;
+            //CompanyName = companyAvatar;
             workers = ids;
         }
 
