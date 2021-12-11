@@ -8,14 +8,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="127580c2-9f7f-400b-aee5-ece84f8cad4a" name="Changes" comment="some changes">
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.backend/.idea/dataSources.xml" afterDir="false" />
+    <list default="true" id="127580c2-9f7f-400b-aee5-ece84f8cad4a" name="Changes" comment="chc">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.backend/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.backend/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Companies/CompaniesMethod.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Companies/CompaniesMethod.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Companies/Company.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Companies/Company.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/DeveloperController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/DeveloperController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controllers/MainController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/MainController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Structure/Actions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Structure/Actions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utilities/HandleAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Utilities/HandleAction.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,6 +37,7 @@
     <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
@@ -229,7 +226,14 @@
       <option name="project" value="LOCAL" />
       <updated>1639205371100</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="chc">
+      <created>1639208203437</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1639208203437</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -265,7 +269,8 @@
     <MESSAGE value="somefixes" />
     <MESSAGE value="add some endpoints" />
     <MESSAGE value="some changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="some changes" />
+    <MESSAGE value="chc" />
+    <option name="LAST_COMMIT_MESSAGE" value="chc" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -282,136 +287,6 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="56" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Companies/CompaniesMethod.cs</url>
-          <line>90</line>
-          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\Companies\CompaniesMethod.cs" initialLine="90" containingFunctionPresentation="method 'GetCompany'">
-            <startOffsets>
-              <option value="2913" />
-            </startOffsets>
-            <endOffsets>
-              <option value="2938" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="62" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Companies/CompaniesMethod.cs</url>
-          <line>104</line>
-          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\Companies\CompaniesMethod.cs" initialLine="105" containingFunctionPresentation="method 'GetCompany'">
-            <startOffsets>
-              <option value="3341" />
-            </startOffsets>
-            <endOffsets>
-              <option value="3406" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="63" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Companies/CompaniesMethod.cs</url>
-          <line>115</line>
-          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\Companies\CompaniesMethod.cs" initialLine="116" containingFunctionPresentation="method 'GetCompany'">
-            <startOffsets>
-              <option value="3810" />
-            </startOffsets>
-            <endOffsets>
-              <option value="3882" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="64" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Companies/CompaniesMethod.cs</url>
-          <line>126</line>
-          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\Companies\CompaniesMethod.cs" initialLine="127" containingFunctionPresentation="method 'ReturnWorkers'">
-            <startOffsets>
-              <option value="4146" />
-            </startOffsets>
-            <endOffsets>
-              <option value="4237" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="66" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Companies/CompaniesMethod.cs</url>
-          <line>133</line>
-          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\Companies\CompaniesMethod.cs" initialLine="134" containingFunctionPresentation="method 'ReturnWorkers'">
-            <startOffsets>
-              <option value="4448" />
-            </startOffsets>
-            <endOffsets>
-              <option value="4509" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="67" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Utilities/HandleAction.cs</url>
-          <line>74</line>
-          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\Utilities\HandleAction.cs" initialLine="74" containingFunctionPresentation="method 'SetResponse'">
-            <startOffsets>
-              <option value="2373" />
-            </startOffsets>
-            <endOffsets>
-              <option value="2411" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="68" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Utilities/HandleAction.cs</url>
-          <line>61</line>
-          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\Utilities\HandleAction.cs" initialLine="61" containingFunctionPresentation="method 'SetResponse'">
-            <startOffsets>
-              <option value="1933" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1979" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="69" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Utilities/HandleAction.cs</url>
-          <line>69</line>
-          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\Utilities\HandleAction.cs" initialLine="69" containingFunctionPresentation="method 'SetResponse'">
-            <startOffsets>
-              <option value="2228" />
-            </startOffsets>
-            <endOffsets>
-              <option value="2274" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="70" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Utilities/HandleAction.cs</url>
-          <line>57</line>
-          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\Utilities\HandleAction.cs" initialLine="57" containingFunctionPresentation="method 'SetResponse'">
-            <startOffsets>
-              <option value="1806" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1853" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="71" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Utilities/HandleAction.cs</url>
-          <line>53</line>
-          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\Utilities\HandleAction.cs" initialLine="53" containingFunctionPresentation="method 'SetResponse'">
-            <startOffsets>
-              <option value="1701" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1724" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="72" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
