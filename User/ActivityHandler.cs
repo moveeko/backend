@@ -38,7 +38,7 @@ public class ActivityHandler
             $"Insert into user_{user.Id}.activity (data, type)  VALUES('{today.Data.ToString()}', {(int) today.Type}, null);";
         await command.ExecuteNonQueryAsync();
         
-        return today;
+        return today; 
     }
 
     public static async Task<object> ReturnActivity(User user, int limit)
