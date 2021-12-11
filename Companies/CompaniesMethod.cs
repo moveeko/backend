@@ -39,26 +39,25 @@ namespace backend.Companies
     public static async Task<object> CreateCompany(string? name, string? email, string? password)
     {
         string? id = CreateCompanyMethod.GenerateId().Result;
-        Company user = new Company(id, email);
+        Company company = new Company(id, email);
             
         if (!ValidateLogin(name,email, password))
         {
             throw new CustomError("InvalidLogin");
         }
-        if (CreateCompanyMethod.IsLoginOrEmailExist(user).Result)
+        if (CreateCompanyMethod.IsLoginOrEmailExist(company).Result)
         {
             throw new CustomError("UserIsExist");
         }
 
-        await CreateCompanyMethod.CreateDataBase(user, password);
+        await CreateCompanyMethod.CreateDataBase(company, password);
 
-        return user;
+        return company;
     }
-    
-    private static async Task<string> GetUserPassword(int id)
+    private static async Task<string> GetUserPassword(string id)
     {
         string? password = string.Empty;
-        string sql = $"SELECT password, login FROM user_{id}.user;";
+        string sql = $"SELECT password, login FROM company_{id}.data;";
 
         NpgsqlConnection con = new(ConnectionsData.GetConectionString("moveeko"));
         await using (NpgsqlCommand command = new NpgsqlCommand(sql, con))
@@ -159,6 +158,30 @@ namespace backend.Companies
 
         return true;
     }
+
+    public async static Task<List<Company>> GetAllCompany()
+    {
+        List<Company> companies = new List<Company>();
+        string sql = $"SELECT * FROM base.company;";
+
+        NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
+        NpgsqlCommand command = new NpgsqlCommand(sql, con);
+
+        await con.OpenAsync();
+        NpgsqlDataReader reader = await command.ExecuteReaderAsync();
+
+        var result = reader.HasRows;
+
+        await con.CloseAsync();
+
+        while (reader.Read())
+        {
+            companies.Add(GetCompany(reader.GetString(0), false).Result);
+        }
+
+        return companies;
+    }
+
     private static class CreateCompanyMethod
         {
             private static async Task<string?> CreateIdToken()
@@ -255,7 +278,7 @@ namespace backend.Companies
             }
             public static async Task<bool> IsLoginOrEmailExist(Company company)
             {
-                string sql = $"SELECT * FROM base.base WHERE email = '{company.CompanyEmail}';";
+                string sql = $"SELECT * FROM base.company WHERE email = '{company.CompanyEmail}';";
                 NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
 
                 using (NpgsqlCommand command = new NpgsqlCommand(sql, con))
@@ -268,6 +291,39 @@ namespace backend.Companies
                     return hasRows;
                 }
             }
+            
+            
         }
-}
+
+    public static async Task<object> Login(string? email, string? password)
+    {
+        string sql = $"SELECT id FROM base.base WHERE email = '{email}';";
+
+        NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
+        NpgsqlCommand command = new NpgsqlCommand(sql, con);
+
+        await con.OpenAsync();
+        NpgsqlDataReader reader = await command.ExecuteReaderAsync();
+        string id;
+        if (reader.HasRows)
+        {
+            await reader.ReadAsync();
+            id = reader.GetString(0);
+        }
+        else
+        {
+            throw new CustomError("InvalidLogin");
+        }
+
+        await con.CloseAsync();
+
+        if (password != GetUserPassword(id).Result)
+        {
+            throw new CustomError("InvalidLogin");
+        }
+
+        Company company = GetCompany(id, false).Result;
+
+        return company;
+    }
 }

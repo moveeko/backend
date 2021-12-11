@@ -1,6 +1,4 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using backend.UserManager;
+using backend.Utilities;
 using backend.Utilitis;
 using Npgsql;
 
@@ -29,7 +27,6 @@ namespace backend.Companies
             workers = ids;
         }
 
-
         public async Task<bool> AddWorkers(int userid)
         {
             string sql = $"INSERT INTO company_{CompanyId}.workers VALUES({userid});";
@@ -48,4 +45,22 @@ namespace backend.Companies
             return true;
         }
     }
+    
+    private static async Task<bool> IsUserInCompany(int id)
+    {
+        string sql = $"SELECT * FROM base.company WHERE idtoken = {id};";
+        NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
+        bool hasRows;
+        using (NpgsqlCommand command = new NpgsqlCommand(sql, con))
+        {
+            await con.OpenAsync();
+            NpgsqlDataReader reader = await command.ExecuteReaderAsync();
+            hasRows = reader.HasRows;
+
+            await con.CloseAsync();
+        }
+        return !hasRows;
+
+    }
 }
+
