@@ -62,6 +62,8 @@ namespace backend.Companies
             {
                 await con.OpenAsync();
                 await command.ExecuteNonQueryAsync();
+                
+                command.CommandText = $"UPDATE company_{CompanyId}.workers SET companytoken = '{CompanyId}');";
                 await con.CloseAsync();
             }
 
