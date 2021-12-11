@@ -21,7 +21,7 @@ namespace backend.structure
         SetNewEmail,
         SetNewPassword,
         
-        AddTodayActivityBeforteWork,
+        AddTodayActivity,
         ChangeCompanyPrivacy,
         GetTodayActivity,
         SetStartActivity,
@@ -29,7 +29,8 @@ namespace backend.structure
         GetCompanyWorkers,
         JoinCompany,
         LoginCompany,
-        Empty
+        Empty,
+        ReturnActivity
     }
 
     public static class ActionHandler
@@ -54,8 +55,8 @@ namespace backend.structure
                 Actions.LoginCompany => await CompaniesMethod.Login(args["email"].ToString(), args["password"].ToString()),
                 Actions.DeleteWorkerFromCompany => CompaniesMethod.GetCompany(args["token"].ToString(),  false).Result.DeleteWorker((int)args["id"]),
                 
-                Actions.AddTodayActivityBeforteWork => await ActivityHandler.AddActivity(await UserMethod.GetUserData((int)args["id"], false), (ActivityHandler.TransportType)args["type"]),
-                Actions.AddTodayActivityBeforteWork => await ActivityHandler.ReturnActivity(await UserMethod.GetUserData((int)args["id"], false), (int)args["limit"]),
+                Actions.AddTodayActivity => await ActivityHandler.AddActivity(await UserMethod.GetUserData((int)args["id"], false), (ActivityHandler.TransportType)args["type"]),
+                Actions.ReturnActivity => await ActivityHandler.ReturnActivity(await UserMethod.GetUserData((int)args["id"], false), (int)args["limit"]),
                 
                 _ => throw new CustomError("UnknownAction", 500)
             };
