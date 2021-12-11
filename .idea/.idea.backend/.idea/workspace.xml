@@ -20,43 +20,6 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="HighlightingSettingsPerFile">
-    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/User/ActivityHandler.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Utilities/HandleAction.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Utilities/HandleAction.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Controllers/DeveloperController.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Controllers/DeveloperController.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/IL/99af41e51f8f4e4fac04f388c69639ea19400/12/18a502c8/0200000Cpdb.il" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Controllers/DeveloperController.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/User/ActivityHandler.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Controllers/MainController.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/krzys/Documents/programing/.hc/Structure/Actions.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
-  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -288,14 +251,7 @@
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/User/ActivityHandler.cs</url>
           <line>73</line>
-          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\User\ActivityHandler.cs" initialLine="73" containingFunctionPresentation="method 'ReturnActivity'">
-            <startOffsets>
-              <option value="2295" />
-            </startOffsets>
-            <endOffsets>
-              <option value="2309" />
-            </endOffsets>
-          </properties>
+          <properties documentPath="C:\Users\krzys\Documents\programing\.hc\User\ActivityHandler.cs" initialLine="73" containingFunctionPresentation="method 'ReturnActivity'" />
           <option name="timeStamp" value="56" />
         </line-breakpoint>
       </breakpoints>
