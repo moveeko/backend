@@ -100,13 +100,13 @@ namespace backend.UserManager
                 string firstName = reader.GetString(1);
                 string lastName = reader.GetString(2);
                 string email = reader.GetString(3);
-                string avatar = reader.GetString(4);
+                string avatar = reader.GetString(5);
 
                 user = new User(
                     id,
                     firstName,
                     lastName,
-                    email, reader.GetString(5),avatar);
+                    email, reader.GetString(6),avatar);
             }
             
             await con.CloseAsync();
