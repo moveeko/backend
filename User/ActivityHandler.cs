@@ -11,7 +11,16 @@ public class ActivityHandler
         Walk,
         Bike,
     }
-    
+    public class ReturnDay
+    {
+        private string Data;
+        private int Type;
+        public ReturnDay(string data, int type)
+        {
+            Data = data;
+            Type = type;
+        }        
+    }
     public class  OneDay
     {
         public DateTime Data;
@@ -22,6 +31,8 @@ public class ActivityHandler
             Data = data;
             Type = type;
         }
+
+
     }
 
     public static async Task<object> AddActivity(User user, TransportType type)
@@ -41,7 +52,7 @@ public class ActivityHandler
         return today; 
     }
 
-     public static async Task<object> ReturnActivity(User user, int limit)
+     public static async Task<ReturnDay> ReturnActivity(User user, int limit)
      {
          NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
          await con.OpenAsync();
@@ -50,8 +61,8 @@ public class ActivityHandler
          
          command.CommandText =
              $"SELECT * FROM user_{user.Id}.activity ORDER BY index DESC LIMIT {limit});";
-         await command.ExecuteNonQueryAsync();
+         NpgsqlDataReader reader = await command.ExecuteReaderAsync();
  
-         return null;
+         return new ReturnDay(reader.GetString(0), reader.GetInt32(1));
      }
 }
