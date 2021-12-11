@@ -232,7 +232,8 @@ namespace backend.UserManager
                           $"email varchar(255)," +
                           $"password varchar(255)," +
                           $"avatar varchar(1048576)," +
-                          $"companyToken varchar(255));";
+                          $"companyToken varchar(255)" +
+                          $"maxusers int);";
                     command.CommandText = sql;
                     await command.ExecuteNonQueryAsync();
 
@@ -253,7 +254,7 @@ namespace backend.UserManager
 
                     command.CommandText =
                         $"Insert into user_{user.Id}.user (id, firstName, lastName, email, password, avatar, companyToken)" +
-                        $" VALUES({user.Id},'{user.FirstName}','{user.LastName}','{user.Email}','{Convert.ToBase64String(Encoding.UTF8.GetBytes(password))}', '{baseImage}', '0');";
+                        $" VALUES({user.Id},'{user.FirstName}','{user.LastName}','{user.Email}','{Convert.ToBase64String(Encoding.UTF8.GetBytes(password))}', '{baseImage}', 0);";
                     await command.ExecuteNonQueryAsync();
                     
                     await con.CloseAsync();
