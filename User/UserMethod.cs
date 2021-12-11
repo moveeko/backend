@@ -232,7 +232,7 @@ namespace backend.UserManager
                           $"email varchar(255)," +
                           $"password varchar(255)," +
                           $"avatar varchar(1048576)," +
-                          $"companyToken varchar(255)" +
+                          $"companyToken varchar(255)," +
                           $"maxusers int);";
                     command.CommandText = sql;
                     await command.ExecuteNonQueryAsync();
