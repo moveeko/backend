@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace backend.Utilities
+﻿namespace backend.Utilities
 {
     [Serializable]
     public class CustomError : Exception

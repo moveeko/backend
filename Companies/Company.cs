@@ -1,51 +1,59 @@
-using System;
-using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
-using backend.UserManager;
+using backend.User;
 using backend.Utilities;
-using backend.Utilitis;
 using Npgsql;
 
 namespace backend.Companies
 {
     public class Company
     {
+        private static readonly string DataBaseName = "moveeko"; 
+
         public string? CompanyId;
-        public string CompanyName;
+        public string? CompanyName;
         public string? CompanyEmail;
         public string? CompanyAvatar;
-        public User[]? CompanyUsers;
+        public User.User[]? CompanyUsers;
 
-        public int companyPointsSum;
-        public int companyPointsAvg;
+        public int CompanyPointsSum;
+        public int CompanyPointsAvg;
 
-        public List<int> workers;
+        public List<int>? Workers;
+        public List<int>? WorkersIds;
 
-        public int maxusers;
+        public int Maxusers;
+        
+        public Company(string? id, string? companyEmail, string? companyName,string companyAvatar, List<int>? ids, List<int>? workers)
+        {
+            CompanyId = id;
+            CompanyEmail = companyEmail; 
+            CompanyName = companyName;
+            CompanyAvatar = companyAvatar;
+            Workers = ids;
+            WorkersIds = workers ?? throw new ArgumentNullException(nameof(workers));
+        }
 
-        public Company(string? id, string? companyEmail, string? name)
+        public Company(string? id, string? companyEmail, string? name, string companyAvatar, List<int>? workers)
         {
             CompanyId = id;
             CompanyEmail = companyEmail;
             CompanyName = name;
+            CompanyAvatar = companyAvatar;
+            Workers = workers;
         }
 
-        public Company(string? id, string? companyEmail, string companyName,string companyAvatar, List<int> ids)
+        public Company(string? id, string? companyEmail, string? companyName)
         {
             CompanyId = id;
             CompanyEmail = companyEmail;
             CompanyName = companyName;
-            CompanyAvatar = companyAvatar;
-            workers = ids;
         }
 
         public async Task<bool> DeleteWorker(int userid)
         {
             string sql = $"DELETE FROM company_{CompanyId}.workers WHERE id = {userid});";
 
-            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
-            Company company;
+            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString(DataBaseName));
 
             await using (NpgsqlCommand command = new NpgsqlCommand(sql, con))
             {
@@ -60,10 +68,11 @@ namespace backend.Companies
         
         public async Task<bool> AddWorkers(int userid)
         {
+            if (await IsUserInCompany(userid)) throw new CustomError("User is Exist in Company");
+            
             string sql = $"INSERT INTO company_{CompanyId}.workers VALUES({userid});";
 
-            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
-            Company company;
+            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString(DataBaseName));
 
             await using (NpgsqlCommand command = new NpgsqlCommand(sql, con))
             {
@@ -83,8 +92,7 @@ namespace backend.Companies
         {
             string sql = $"DELETE FROM company_{CompanyId}.workers WHERE id = {userid};";
 
-            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
-            Company company;
+            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString(DataBaseName));
 
             await using (NpgsqlCommand command = new NpgsqlCommand(sql, con))
             {
@@ -97,13 +105,13 @@ namespace backend.Companies
             return true;
         }
         
-        public async Task<List<User>> ReturnWorkers()
+        public async Task<List<User.User>> ReturnWorkers()
         {
             string sql = $"SELECT * FROM company_{CompanyId}.workers;";
 
-            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
+            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString(DataBaseName));
 
-            List<User> workers = new List<User>();
+            List<User.User> workers = new List<User.User>();
 
             await using (NpgsqlCommand command = new NpgsqlCommand(sql, con))
             {
@@ -121,10 +129,11 @@ namespace backend.Companies
             return workers;
         }  
 
+        //Todo: Dodac do joinUser
         private static async Task<bool> IsUserInCompany(int id)
         {
             string sql = $"SELECT * FROM base.company WHERE idtoken = {id};";
-            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
+            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString(DataBaseName));
             bool hasRows;
             await using (NpgsqlCommand command = new NpgsqlCommand(sql, con))
             {
@@ -141,7 +150,7 @@ namespace backend.Companies
         
         public async Task<bool> SetNewEmail(string? newEmail) //Async
         {
-            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
+            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString(DataBaseName));
             NpgsqlCommand command = new NpgsqlCommand();
             command.Connection = con;
             await con.OpenAsync();
@@ -159,7 +168,7 @@ namespace backend.Companies
         }
         public async Task<bool> SetNewAvatar(string? newAvatar) //Async
         {
-            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
+            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString(DataBaseName));
             NpgsqlCommand command = new NpgsqlCommand();
             command.Connection = con;
             await con.OpenAsync();
@@ -173,7 +182,7 @@ namespace backend.Companies
         }
         public async Task<bool> SetNewPassword(string? newPassword) //Async
         {
-            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
+            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString(DataBaseName));
             NpgsqlCommand command = new NpgsqlCommand();
             command.Connection = con;
             await con.OpenAsync();
@@ -186,7 +195,7 @@ namespace backend.Companies
             await con.CloseAsync();
             return true;
         }
-        public async Task<int> CalculatePoints(bool AVG)
+        public async Task<int> CalculatePoints(bool avg)
         {
             var list = await this.ReturnWorkers();
 
@@ -195,13 +204,13 @@ namespace backend.Companies
 
             foreach (var item in list)
             {
-                sum += item.points;
+                sum += item.Points;
                 i++;
             }
 
-            if (AVG)
+            if (avg)
             {
-                if (sum == 0) return 0;
+                if (i == 0) return 0;
                 return sum / i;
             }
             else
@@ -210,15 +219,15 @@ namespace backend.Companies
             }
         }
 
-        public async Task<bool> ChoosePlan(int maxusers)
+        public async Task<bool> ChoosePlan(int usercount)
         {
-            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
+            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString(DataBaseName));
             NpgsqlCommand command = new NpgsqlCommand();
             command.Connection = con;
             await con.OpenAsync();
             //
             command.CommandText =
-                $"UPDATE company_{this.CompanyId}.data SET maxusers = {maxusers};";
+                $"UPDATE company_{this.CompanyId}.data SET usercount = {usercount};";
             await command.ExecuteNonQueryAsync();
             
             await con.CloseAsync();

@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using backend.structure;
-using Microsoft.AspNetCore.Hosting;
+﻿using backend.structure;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Linq;
 
 namespace backend.Utilities

@@ -1,24 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
-using backend.Companies;
-using backend.UserManager;
 using backend.Utilities;
-using backend.Utilitis;
 using Npgsql;
 
 namespace backend.Companies
 {
     public static class CompaniesMethod
     {
+        private static readonly string DataBaseName = "moveeko"; 
+
         public static async Task<object> IsCompanyExist(string? id)
         {
             string sql = $"SELECT * FROM base.company WHERE idtoken = '{id}';";
 
-            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
+            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString(DataBaseName));
             NpgsqlCommand command = new NpgsqlCommand(sql, con);
 
             await con.OpenAsync();
@@ -60,7 +54,7 @@ namespace backend.Companies
             string? password = string.Empty;
             string sql = $"SELECT password FROM company_{id}.data;";
 
-            NpgsqlConnection con = new(ConnectionsData.GetConectionString("moveeko"));
+            NpgsqlConnection con = new(ConnectionsData.GetConectionString(DataBaseName));
             await using (NpgsqlCommand command = new NpgsqlCommand(sql, con))
             {
                 await con.OpenAsync();
@@ -85,21 +79,19 @@ namespace backend.Companies
         {
             if (reqCheckId)
             {
-                var name = "";
                 try
                 {
                     await IsCompanyExist(id);
                 }
                 catch (CustomError cf)
                 {
-                    name = cf.Name;
-                    throw new CustomError(name);
+                    throw new CustomError( cf.Name);
                 }
             }
 
             string sql = $"SELECT * FROM company_{id}.data;";
 
-            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
+            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString(DataBaseName));
             Company company;
 
             await using (NpgsqlCommand command = new NpgsqlCommand(sql, con))
@@ -115,22 +107,22 @@ namespace backend.Companies
 
                 company = new Company(id, email, name, avatar, ReturnWorkers(companyid).Result);
 
-                company.maxusers = reader.GetInt32(5);
+                company.Maxusers = reader.GetInt32(5);
             }
 
             
-            company.companyPointsAvg = await company.CalculatePoints(true);
-            company.companyPointsSum = await company.CalculatePoints(false);
+            company.CompanyPointsAvg = await company.CalculatePoints(true);
+            company.CompanyPointsSum = await company.CalculatePoints(false);
                 
             await con.CloseAsync();
 
             return company;
         }
-        public static async Task<List<int>> ReturnWorkers(string id)
+        public static async Task<List<int>?> ReturnWorkers(string id)
         {
             string sql = $"SELECT * FROM company_{id}.workers;";
 
-            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
+            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString(DataBaseName));
 
             List<int> workers = new List<int>();
             
@@ -151,15 +143,15 @@ namespace backend.Companies
         }
         public static bool ValidateLogin(string? name, string? email, string? password)
         {
-            if (password.Length <= 5 || password.Length >= 30)
+            if (password != null && (password.Length <= 5 || password.Length >= 30))
                 return false;
-            if (!password.Any(char.IsUpper))
+            if (password != null && !password.Any(char.IsUpper))
                 return false;
-            if (!email.Contains('@'))
+            if (email != null && !email.Contains('@'))
                 return false;
-            if (!email.Contains('.'))
+            if (email != null && !email.Contains('.'))
                 return false;
-            if (!password.Any(char.IsLower))
+            if (password != null && !password.Any(char.IsLower))
                 return false;
 
             return true;
@@ -169,7 +161,7 @@ namespace backend.Companies
             List<Company> companies = new List<Company>();
             string sql = $"SELECT * FROM base.company;";
 
-            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
+            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString(DataBaseName));
             NpgsqlCommand command = new NpgsqlCommand(sql, con);
 
             await con.OpenAsync();
@@ -187,10 +179,8 @@ namespace backend.Companies
 
         private static class CreateCompanyMethod
             {
-                private static async Task<string?> CreateIdToken()
+                private static Task<string> CreateIdToken()
                 {
-                    Random rnd = new Random();
-
                     List<char> chars = new List<char>();
                     const int lengthToken = 6;
 
@@ -200,22 +190,22 @@ namespace backend.Companies
                     }
                     
                     Random random = new Random();
-                    string? IdToken= "";
+                    string idToken= "";
 
                     for (int i = 0; i != lengthToken; i++)
                     {
-                        IdToken += chars[random.Next(0, chars.Count - 1)];
+                        idToken += chars[random.Next(0, chars.Count - 1)];
                     }
 
-                    return IdToken;
+                    return Task.FromResult(idToken);
                 }
                 public static async Task<string?> GenerateId()
                 {
-                    NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
+                    NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString(DataBaseName));
 
-                    string? IdToken = CreateIdToken().Result;
+                    string idToken = CreateIdToken().Result;
                     
-                    string sql = $"SELECT * FROM base.company WHERE idtoken = '{IdToken}';";
+                    string sql = $"SELECT * FROM base.company WHERE idtoken = '{idToken}';";
 
                     using (NpgsqlCommand command = new NpgsqlCommand(sql, con))
                     {
@@ -225,16 +215,16 @@ namespace backend.Companies
 
                         while (await reader.ReadAsync())
                         {
-                            IdToken = CreateIdToken().Result;
+                            idToken = CreateIdToken().Result;
                             int idFromData = int.Parse(reader["id"].ToString() ?? string.Empty);
-                            if (IdToken != idFromData.ToString())
+                            if (idToken != idFromData.ToString())
                             {
                                 break;
                             }
                         }
 
                         await con.CloseAsync();
-                        return IdToken;
+                        return idToken;
                     }
                 }
                 public static async Task CreateDataBase(Company company, string? password)
@@ -243,7 +233,7 @@ namespace backend.Companies
 
                     if (password != null)
                     {
-                        NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
+                        NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString(DataBaseName));
                         await con.OpenAsync();
                         NpgsqlCommand command = new NpgsqlCommand();
                         command.Connection = con;
@@ -287,7 +277,7 @@ namespace backend.Companies
                 public static async Task<bool> IsLoginOrEmailExist(Company company)
                 {
                     string sql = $"SELECT * FROM base.company WHERE email = '{company.CompanyEmail}';";
-                    NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
+                    NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString(DataBaseName));
 
                     using (NpgsqlCommand command = new NpgsqlCommand(sql, con))
                     {
@@ -306,7 +296,7 @@ namespace backend.Companies
         {
             string sql = $"SELECT idtoken FROM base.company WHERE email = '{email}';";
 
-            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString("moveeko"));
+            NpgsqlConnection con = new NpgsqlConnection(ConnectionsData.GetConectionString(DataBaseName));
             NpgsqlCommand command = new NpgsqlCommand(sql, con);
 
             await con.OpenAsync();

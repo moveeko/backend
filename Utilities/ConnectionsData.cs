@@ -1,6 +1,4 @@
-using System.Data;
-
-namespace backend.Utilitis
+namespace backend.Utilities
 {
     public static class ConnectionsData
     {

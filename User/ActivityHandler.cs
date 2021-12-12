@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using backend.Utilitis;
+using backend.Utilities;
 using Npgsql;
 
-namespace backend.UserManager
+namespace backend.User
 {
     public class ActivityHandler
     {
@@ -49,7 +46,7 @@ namespace backend.UserManager
             command.Connection = con;
             
             command.CommandText =
-                $"Insert into user_{user.Id}.activity (data, type)  VALUES('{today.Data.ToString()}', {(int) today.Type});";
+                $"Insert into user_{user.Id}.activity (data, type)  VALUES('{today.Data}', {(int) today.Type});";
             await command.ExecuteNonQueryAsync();
 
 
@@ -74,7 +71,6 @@ namespace backend.UserManager
              while (await reader.ReadAsync())
              {
                  list.Add(new ReturnDay(reader.GetString(0), reader.GetInt32(1)));
-                 var stop = "";
              }
 
              await con.CloseAsync();

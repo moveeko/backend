@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using backend.Companies;
-using backend.UserManager;
+﻿using backend.Companies;
+using backend.User;
 using backend.Utilities;
 
 namespace backend.structure
